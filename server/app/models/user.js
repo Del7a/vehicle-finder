@@ -23,21 +23,20 @@ UserSchema
         return this._password;
     });
 
-
 /**
  * Validations
  **/
 UserSchema.path('username').validate(function (name) {
-    if (this.skipValidation()) 
+    if (this.skipValidation())
         return true;
-    
+
     return name.length;
 }, 'Name cannot be blank');
 
 UserSchema.path('email').validate(function (email) {
-    if (this.skipValidation()) 
+    if (this.skipValidation())
         return true;
-    
+
     return email.length;
 }, 'Email cannot be blank');
 
@@ -97,9 +96,9 @@ UserSchema.methods = {
         if (!password) return '';
         try {
             return crypto
-            .createHmac('sha1', this.salt)
-            .update(password)
-            .digest('hex');
+                .createHmac('sha1', this.salt)
+                .update(password)
+                .digest('hex');
         } catch (err) {
             return '';
         }
