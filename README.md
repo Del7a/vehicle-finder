@@ -2,11 +2,10 @@
 Find and subscribe for vehicle offers
 
 ## How to setup
-1. Clone the git repository
-    `git clone https://github.com/Del7a/vehicle-finder.git`
+1. Install the latest version of `node.js` and `npm` 
 
-2. Install the dependencies
-    `npm install`
+2. Clone the git repository
+`git clone https://github.com/Del7a/vehicle-finder.git`
 
-3. Run the client app
-    `npm start`
+3. Install the dependencies
+`npm install`
