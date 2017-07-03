@@ -73,14 +73,14 @@ module.exports = function (app, passport) {
 
     app.use(flash());
 
-    if (env !== 'test') {
-        app.use(csrf());
+    // if (env !== 'test') {
+    //     app.use(csrf());
         
-        app.use(function (req, res, next) {
-            res.locals.csrf_token = req.csrfToken();
-            next();
-        });
-    }
+    //     app.use(function (req, res, next) {
+    //         res.locals.csrf_token = req.csrfToken();
+    //         next();
+    //     });
+    // }
 
     if (env == 'development') {
         app.locals.pretty = true;

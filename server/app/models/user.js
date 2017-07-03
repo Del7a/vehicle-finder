@@ -7,8 +7,7 @@ const UserSchema = new Schema({
     username: { type: String, default: '' },
     email: { type: String, default: '' },
     hashed_password: { type: String, default: '' },
-    salt: { type: String, default: '' },
-    authToken: { type: String, default: '' },
+    salt: { type: String, default: '' }
 });
 
 const validatePresenceOf = value => value && value.length;
@@ -22,45 +21,6 @@ UserSchema
     }).get(function () {
         return this._password;
     });
-
-/**
- * Validations
- **/
-UserSchema.path('username').validate(function (name) {
-    if (this.skipValidation())
-        return true;
-
-    return name.length;
-}, 'Name cannot be blank');
-
-UserSchema.path('email').validate(function (email) {
-    if (this.skipValidation())
-        return true;
-
-    return email.length;
-}, 'Email cannot be blank');
-
-UserSchema.path('email').validate(function (email, fn) {
-    const User = mongoose.model('User');
-    if (this.skipValidation()) fn(true);
-
-    // Check only when it is a new user or when email field is modified
-    if (this.isNew || this.isModified('email')) {
-        User.find({ email: email }).exec(function (err, users) {
-            fn(!err && users.length === 0);
-        });
-    } else fn(true);
-}, 'Email already exists');
-
-UserSchema.path('username').validate(function (username) {
-    if (this.skipValidation()) return true;
-    return username.length;
-}, 'Username cannot be blank');
-
-UserSchema.path('hashed_password').validate(function (hashed_password) {
-    if (this.skipValidation()) return true;
-    return hashed_password.length && this._password.length;
-}, 'Password cannot be blank');
 
 /**
  * Methods
@@ -105,4 +65,25 @@ UserSchema.methods = {
     }
 };
 
-mongoose.model('User', UserSchema);
+/**
+ * Statics
+ */
+
+UserSchema.statics = {
+
+    /**
+     * Load
+     *
+     * @param {Object} options
+     * @param {Function} cb
+     * @api private
+     */
+    load: function (options, cb) {
+        options.select = options.select || 'username';
+        return this.findOne(options.criteria)
+            .select(options.select)
+            .exec(cb);
+    }
+};
+
+module.exports = mongoose.model('User', UserSchema);

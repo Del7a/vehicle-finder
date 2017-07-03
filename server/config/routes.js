@@ -6,7 +6,7 @@ const users = require('../app/controllers/users');
 module.exports = function (app, passport) {
     
     app.use('/', main);
-    //app.use('/users', users);
+    app.use('/users', users);
 
     /**
      * Error handling

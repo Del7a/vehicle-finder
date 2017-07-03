@@ -11,13 +11,13 @@ const User = mongoose.model('User');
  * Expose
  */
 module.exports = new LocalStrategy({
-        usernameField: 'email',
+        usernameField: 'username',
         passwordField: 'password'
     },
-    function (email, passport, done) {
+    function (username, passport, done) {
         const options = {
-            criteria: { email: email },
-            select: 'name username email hashed_password salt'
+            criteria: { username: username },
+            select: 'username email hashed_password salt'
         };
 
         User.load(options, function (err, user) {
