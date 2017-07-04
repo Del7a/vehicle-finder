@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import Form from './common/Form'
+import RegisterForm from './common/RegisterForm'
 
 import {registerRequest} from '../actions'
 
@@ -21,7 +22,7 @@ class Register extends Component {
                 <div className='form-page__form-header'>
                 <h2 className='form-page__form-heading'>Register</h2>
         </div>
-        <Form data={this.props.data}
+        <RegisterForm data={this.props.data}
             dispatch={dispatch}
             history={this.props.history}
             onSubmit={this._register}
@@ -33,9 +34,9 @@ class Register extends Component {
     )
   }
 
-  _register (username, password) {
-    this.props.dispatch(registerRequest({username, password}))
-  }
+    _register (username, password, email) {
+        this.props.dispatch(registerRequest({username, password, email}))
+    }
 }
 
 Register.propTypes = {

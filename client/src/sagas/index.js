@@ -12,26 +12,24 @@ import {
 } from '../actions/constants'
 
 
-export function * authorize ({username, password, isRegistering}) {
+export function * authorize ({username, password, isRegistering, email}) {
 
     yield put({type: SENDING_REQUEST, sending: true})
 
     try {
-    let salt = '';
-    let hash = '';
     let response
 
     if (isRegistering) {
-        response = yield call(auth.register, username, hash)
+        response = yield call(auth.register, username, password, email)
     } else {
-        response = yield call(auth.login, username, hash)
+        response = yield call(auth.login, username, password, email)
     }
 
     return response
   } catch (error) {
-    console.log('hi')
+    console.log('hi ' + error);
 
-    yield put({type: REQUEST_ERROR, error: error.message})
+    yield put({type: REQUEST_ERROR, error: error})
 
     return false
   } finally {
@@ -51,7 +49,7 @@ export function * logout () {
 
         return response
     } catch (error) {
-        yield put({type: REQUEST_ERROR, error: error.message})
+        yield put({type: REQUEST_ERROR, error: error})
     }
 }
 
@@ -62,14 +60,17 @@ export function * loginFlow () {
         let request = yield take(LOGIN_REQUEST)
         let {username, password} = request.data
 
+        console.log("loginFlow password " + password);
+
         let winner = yield race({
-        auth: call(authorize, {username, password, isRegistering: false}),
-        logout: take(LOGOUT)
+            auth: call(authorize, {username, password, isRegistering: false}),
+            logout: take(LOGOUT)
         })
 
         if (winner.auth) {
+            console.log('winner ' + winner.auth);
             yield put({type: SET_AUTH, newAuthState: true}) // User is logged in (authorized)
-            yield put({type: CHANGE_FORM, newFormState: {username: '', password: ''}}) // Clear form
+            yield put({type: CHANGE_FORM, newFormState: {username: '', password: '', email: ''}}) // Clear form
         }
     }
 }
@@ -89,14 +90,13 @@ export function * registerFlow () {
     while (true) {
 
         let request = yield take(REGISTER_REQUEST)
-        let {username, password} = request.data
+        let {username, password, email} = request.data
 
-
-        let wasSuccessful = yield call(authorize, {username, password, isRegistering: true})
+        let wasSuccessful = yield call(authorize, {username, password, isRegistering: true, email})
 
         if (wasSuccessful) {
             yield put({type: SET_AUTH, newAuthState: true}) 
-            yield put({type: CHANGE_FORM, newFormState: {username: '', password: ''}})
+            yield put({type: CHANGE_FORM, newFormState: {username: '', password: '', email: ''}})
         }
     }
 }

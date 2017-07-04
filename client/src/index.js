@@ -21,13 +21,13 @@ import rootSaga from './sagas';
 
 
 
- const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+//const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
 
 const history = createHashHistory();
 let sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
-    rootReducer, composeEnhancers(applyMiddleware(sagaMiddleware))
+    rootReducer, applyMiddleware(sagaMiddleware)
   );
 
 store.subscribe(() => {console.log("store changed")});

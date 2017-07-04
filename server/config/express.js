@@ -26,8 +26,7 @@ module.exports = function (app, passport) {
 
     app.use(cors({
         origin: ['http://localhost:3000'],
-        optionSuccessStatus: 200,
-        credentials: true
+        optionSuccessStatus: 200
     }));
 
     let log = 'dev';

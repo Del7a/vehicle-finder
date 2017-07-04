@@ -50,4 +50,4 @@ CarModelSchema.statics = {
     }
 };
 
-module.exports = mongoose.module('CarModel', CarModelSchema);
+module.exports = mongoose.model('CarModel', CarModelSchema);

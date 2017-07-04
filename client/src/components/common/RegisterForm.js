@@ -4,15 +4,18 @@ import LoadingButton from './LoadingButton'
 
 import {changeForm} from '../../actions'
 
-let _user, _pass = '';
+let _user, _pass, _email = '';
 
-class Form extends Component {
+class RegisterForm extends Component {
+    
   constructor (props) {
     super(props)
 
     this._onSubmit = this._onSubmit.bind(this)
     this._changeUsername = this._changeUsername.bind(this)
     this._changePassword = this._changePassword.bind(this)
+    this._changeEmail = this._changeEmail.bind(this)
+
   }
 
   render () {
@@ -32,9 +35,23 @@ class Form extends Component {
                     autoCorrect='off'
                     autoCapitalize='off'
                     spellCheck='false' />
-                <label className='form__field-label' htmlFor='username'>
+                {/*<label className='form__field-label' htmlFor='username'>
                     Username
-                </label>
+                </label>*/}
+                <input
+                    className='form__field-input'
+                    type='text'
+                    id='email'
+                    value={this.props.data.email}
+                    placeholder='Email'
+                    onChange={this._changeEmail}
+                    autoCorrect='off'
+                    autoCapitalize='off'
+                    spellCheck='false' />
+                {/*<label className='form__field-label' htmlFor='email'>
+                    Email
+                </label>*/}
+                
             </div>
             <div className='form__field-wrapper'>
                 <input
@@ -71,17 +88,24 @@ class Form extends Component {
     _pass = event.target.value;
   }
 
+  _changeEmail (event) {
+    this._emitChange({...this.props.data, email: event.target.value})
+   _email = event.target.value;
+  }  
+
   _emitChange (newFormState) {
     this.props.dispatch(changeForm(newFormState))
   }
 
   _onSubmit (event) {
     event.preventDefault()
-    this.props.onSubmit(_user, _pass)
+    //console.log('onSubmit ' + this.props.data.username + " " + this.props.data.password + " " + this.props.data.email)
+    //this.props.onSubmit(this.props.data.username, this.props.data.password, this.props.data.email)
+    this.props.onSubmit(_user, _pass, _email);
   }
 }
 
-Form.propTypes = {
+RegisterForm.propTypes = {
   dispatch: React.PropTypes.func,
   data: React.PropTypes.object,
   onSubmit: React.PropTypes.func,
@@ -92,4 +116,4 @@ Form.propTypes = {
 }
 
 
-export default Form
+export default RegisterForm
