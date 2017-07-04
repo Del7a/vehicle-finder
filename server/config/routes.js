@@ -1,12 +1,17 @@
 'use strict';
 
-const main = require('../app/controllers/index');
-const users = require('../app/controllers/users');
+const account = require('../app/controllers/account');
+const auth = require('./middlewares/authorization');
 
 module.exports = function (app, passport) {
-    
-    app.use('/', main);
-    app.use('/users', users);
+    const pauth = passport.authenticate.bind(passport);
+
+    app.post('/register', account.register);
+    app.post('/login', pauth('local'), account.login);
+    app.get('/logout', auth.requiresLogin, account.logout);
+    app.get('/profile', auth.requiresLogin, account.getProfile);
+    app.post('/profile', auth.requiresLogin, account.saveProfile);
+    app.post('/passwd', auth.requiresLogin, account.changePassword);
 
     /**
      * Error handling
