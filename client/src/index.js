@@ -1,11 +1,13 @@
 import React from 'react';
 import {Component} from 'react'
 import ReactDOM from 'react-dom';
-import {Router, Route} from 'react-router'
+import {Router, Route, Switch} from 'react-router'
+import {BrowserRouter} from 'react-router-dom'
 import { createHashHistory } from 'history'
 import App from './App';
 import {Provider} from 'react-redux'
 import './index.css';
+//import './styles/main.css'
 import { createStore } from 'redux';
 import rootReducer from './reducers';
 import Home from './components/Home'
@@ -52,21 +54,30 @@ function checkAuth (nextState, replace) {
     }
 }
 
-
+class Found extends Component {
+  render () {
+    return (
+      <article>
+        <h1>Page found.</h1>
+      </article>
+    )
+  }
+}
 
 class AutoBot extends Component {
   render () {
     return (
       <Provider store={store}>
-        <Router history={history}>
-          <Route component={Login}>
-            <Route path='/' component={Home} />
-            <Route path='/login' component={Login} />
-            <Route path='/register' component={Register} />
-            <Route path='/dashboard' component={Dashboard} />
-            <Route path='*' component={NotFound} />
-          </Route>
-        </Router>
+            <BrowserRouter history={history}>
+                <App>
+                    <Switch>
+                        <Route path='/dashboard' component={Dashboard} />
+                        <Route path='/register' component={Register} />
+                        <Route path='/login' component={Login} />
+                        <Route path='*' component={NotFound} />                    
+                    </Switch>
+                </App>
+            </BrowserRouter>
       </Provider>
     )
   }
