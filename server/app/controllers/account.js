@@ -76,9 +76,9 @@ exports.changePassword = function (req, res) {
 };
 
 exports.getProfile = function (req, res) {
-    User.load({
-        username: req.user.username
-    }, function (err, user) {
+    User.load({ criteria: { 
+        username: req.user.username 
+    }}, function (err, user) {
         if (err) throw err;
 
         if (!user) {
@@ -90,9 +90,9 @@ exports.getProfile = function (req, res) {
 };
 
 exports.saveProfile = function (req, res) {
-    User.load({
-        username: req.user.username
-    }, function (err, user) {
+    User.load({ criteria: { 
+        username: req.user.username 
+    }}, function (err, user) {
         if (!user) {
             res.json({ success: false, msg: 'User not found.' });
         } else {

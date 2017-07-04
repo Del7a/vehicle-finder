@@ -13,8 +13,10 @@ const local = require('./passport/local');
  */ 
 module.exports = function (passport) {
     // session serialization
-    passport.serializeUser((user, cb) => cb(null, user.id));
-    passport.deserializeUser((id, cb) => User.load({ criteria: { _id: id } }, cb));
+    passport.serializeUser((user, cb) => 
+        cb(null, user.id));
+    passport.deserializeUser((id, cb) => 
+        User.load({ criteria: { _id: id } }, cb));
 
     // strategies
     passport.use(local);
