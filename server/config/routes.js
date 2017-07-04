@@ -1,6 +1,7 @@
 'use strict';
 
 const account = require('../app/controllers/account');
+const profile = require('../app/controllers/profile');
 const auth = require('./middlewares/authorization');
 
 module.exports = function (app, passport) {
@@ -9,9 +10,12 @@ module.exports = function (app, passport) {
     app.post('/register', account.register);
     app.post('/login', pauth('local'), account.login);
     app.get('/logout', auth.requiresLogin, account.logout);
-    app.get('/profile', auth.requiresLogin, account.getProfile);
-    app.post('/profile', auth.requiresLogin, account.saveProfile);
     app.post('/passwd', auth.requiresLogin, account.changePassword);
+
+    app.get('/profile', auth.requiresLogin, profile.getProfile);
+    app.post('/profile', auth.requiresLogin, profile.saveProfile);
+    app.get('/profile/subs', auth.requiresLogin, profile.getSubscriptions);
+
 
     /**
      * Error handling
