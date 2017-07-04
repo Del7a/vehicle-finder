@@ -1,8 +1,5 @@
 'use strict';
 
-/**
- * Dependencies
- */
 const express = require('express');
 const session = require('express-session');
 const compression = require('compression');
@@ -11,7 +8,6 @@ const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
-const csrf = require('csurf');
 const cors = require('cors');
 
 const mongoStore = require('connect-mongo')(session);
@@ -72,15 +68,6 @@ module.exports = function (app, passport) {
     app.use(passport.session());
 
     app.use(flash());
-
-    // if (env !== 'test') {
-    //     app.use(csrf());
-        
-    //     app.use(function (req, res, next) {
-    //         res.locals.csrf_token = req.csrfToken();
-    //         next();
-    //     });
-    // }
 
     if (env == 'development') {
         app.locals.pretty = true;

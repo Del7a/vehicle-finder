@@ -1,3 +1,5 @@
+'use strict';
+
 const mongoose = require('mongoose');
 const crypto = require('crypto');
 
@@ -8,6 +10,7 @@ const UserSchema = new Schema({
     firstName: { type: String, default: '', trim: true },
     lastName: { type: String, default: '', trim: true },
     username: { type: String, default: '', trim: true },
+    isAdmin: { type: Boolean, default: false },
     hashed_password: { type: String, default: '' },
     salt: { type: String, default: '' },
     subscriptions: [{
