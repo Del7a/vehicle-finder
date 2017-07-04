@@ -6,12 +6,10 @@ import { bindActionCreators } from 'redux';
 import {loginRequest} from '../actions'
 
 class Login extends Component {
-  constructor (props) {
-    super(props)
+  constructor () {
+    super()
 
     this._login = this._login.bind(this);
-    
-    this.props = {data: {username:'', password: ''}};
   }
 
   render () {

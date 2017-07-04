@@ -26,7 +26,11 @@ let auth = {
                 return response.json(response)
             }).then(function(json) {
                 console.log('parsed json', json)
-                return Promise.resolve(true);
+                if(json.success) {
+                    return Promise.resolve(true);
+                }else{
+                   return Promise.reject(); 
+                }
             }).catch(function(ex) {
                 console.log('parsing failed', ex)
                 return Promise.reject();
@@ -44,13 +48,17 @@ let auth = {
         .then(function(response) {
                 console.log(response);
                 return response.json(response)
-        }).then(function(json) {
-            console.log('parsed json', json)
-            return Promise.resolve(true);
-        }).catch(function(ex) {
-            console.log('parsing failed', ex)
-            return Promise.reject();
-        }); 
+            }).then(function(json) {
+                console.log('parsed json', json)
+                if(json.success) {
+                    return Promise.resolve(true);
+                }else{
+                   return Promise.reject(); 
+                }
+            }).catch(function(ex) {
+                console.log('parsing failed', ex)
+                return Promise.reject();
+            }); 
 
         // return fetch(registerUrl,
         // {

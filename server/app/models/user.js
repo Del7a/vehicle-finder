@@ -125,7 +125,7 @@ UserSchema.methods = {
             .map(sub => sub.id)
             .indexOf(subId);
 
-        if (~index) this.comments.splice(index, 1);
+        if (~index) this.subscriptions.splice(index, 1);
         else throw new Error('Subscription not found');
         return this.save();
     }
@@ -141,7 +141,7 @@ UserSchema.statics = {
      */
     load: function (options, cb) {
         options.select = options.select || 
-            'email firstName lastName username subscriptions';
+            'email firstName lastName username subscriptions isAdmin';
         return this.findOne(options.criteria)
             .select(options.select)
             .exec(cb);

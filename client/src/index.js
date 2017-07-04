@@ -81,7 +81,7 @@ class AutoBot extends Component {
                         <Route path='/dashboard' component={Dashboard} />
                         <Route path='/register' component={Register} />
                         <Route path='/login' component={Login} />
-                        <Route path='*' component={NotFound} />                    
+                        <Route path='*' component={NotFound} />
                     </Switch>
                 </App>
             </BrowserRouter>
