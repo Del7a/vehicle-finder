@@ -1,31 +1,38 @@
 import React from 'react';
-import {Component} from 'react'
+import {Component} from 'react';
 import ReactDOM from 'react-dom';
-import {Router, Route, Switch} from 'react-router'
-import {BrowserRouter} from 'react-router-dom'
-import { createHashHistory } from 'history'
+import {Router, Route, Switch} from 'react-router';
+import {BrowserRouter} from 'react-router-dom';
+import { createHashHistory } from 'history';
 import App from './App';
-import {Provider} from 'react-redux'
+import {Provider} from 'react-redux';
 import './index.css';
 //import './styles/main.css'
-import { createStore } from 'redux';
+import {createStore, applyMiddleware} from 'redux';
+import createSagaMiddleware from 'redux-saga';
 import rootReducer from './reducers';
-import Home from './components/Home'
-import Login from './components/Login'
-import Register from './components/Register'
-import Dashboard from './components/Dashboard'
-import NotFound from './components/NotFound'
-import {clearError} from './actions'
+import Home from './components/Home';
+import Login from './components/Login';
+import Register from './components/Register';
+import Dashboard from './components/Dashboard';
+import NotFound from './components/NotFound';
+import {clearError} from './actions';
+import rootSaga from './sagas';
 
 
-const history = createHashHistory()
+
+ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+
+const history = createHashHistory();
+let sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
-    rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    rootReducer, composeEnhancers(applyMiddleware(sagaMiddleware))
   );
 
 store.subscribe(() => {console.log("store changed")});
 
+    sagaMiddleware.run(rootSaga);
 
 function checkAuth (nextState, replace) {
   let {loggedIn} = store.getState()
