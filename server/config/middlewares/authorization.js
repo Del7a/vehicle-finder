@@ -8,8 +8,19 @@ exports.requiresLogin = function (req, res, next) {
     });
 };
 
+exports.isInAdminRole = function (req, res, next) {
+    if (!req.user.isAdmin) {
+        return res.json({
+            success: false,
+            message: 'You are not authorized.'
+        });
+    }
+    next();
+};
+
 exports.user = {
     hasAuthorization: function (req, res, next) {
+        if (req.user.isAdmin) next();
         if (req.profile.id != req.user.id) {
             return res.json({
                 success: false,
@@ -22,6 +33,7 @@ exports.user = {
 
 exports.subscription = {
     hasAuthorization: function (req, res, next) {
+        if (req.user.isAdmin) next();
         if (req.user.id === req.subscription.user.id) {
             next();
         } else {
