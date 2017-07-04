@@ -106,3 +106,14 @@ exports.saveProfile = function (req, res) {
         }
     });
 };
+
+exports.getSubscriptions = function (req, res) {
+    User.load({ criteria: {
+        username: req.user.username
+    }}, function(err, user) {
+        if (!user) {
+            res.json({ success: false, msg: 'User not found.' });
+        } else {
+        }
+    });
+}
