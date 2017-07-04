@@ -11,7 +11,11 @@ const ArticleSchema = new Schema({
     title: { type: String, default: '', trim: true },
     body: { type: String, default: '', trim: true },
     year: { type: Number, default: 0, },
-    model: { type: Schema.ObjectId, ref: 'CarModel' },
+    build: {
+        maker: { type: Schema.ObjectId, ref: 'Maker' },
+        model: { type: String, default: '', trim: true },
+        modelName: { type: String, default: '', trim: true }
+    },
     user: { type: Schema.ObjectId, ref: 'User' },
     tags: { type: [], get: getTags, set: setTags },
     imageUrl: { type: String, default: '', trim: true },
@@ -20,14 +24,14 @@ const ArticleSchema = new Schema({
 
 ArticleSchema.path('title').required(true, 'An offer must have a title');
 ArticleSchema.path('body').required(true, 'An offer must have a body');
-ArticleSchema.path('model').validate(function (modelId, fn) {
-    const CarModel = mongoose.model('CarModel');
+ArticleSchema.path('maker').validate(function (makerId, fn) {
+    const Maker = mongoose.model('Maker');
     
-    CarModel.findOne({ _id: modelId }, function (err, carModel) {
-        if (err || !carModel) fn(false);
+    Maker.findOne({ _id: makerId }, function (err, maker) {
+        if (err || !maker) fn(false);
         else fn(true);
     });
-}, 'CarModel does not exist');
+}, 'Maker does not exist');
 
 /**
  * Statics
@@ -37,13 +41,14 @@ ArticleSchema.statics = {
      * Find offer by id
      * 
      * @param {ObjectId} id
+     * @param {Function} cb
      * @api private
      */
-    load: function (_id) {
+    load: function (_id, cb) {
         return this.findOne({ _id }) 
-            .populate('model', 'name maker')
+            .populate('build.maker', 'name')
             .populate('user', 'username email')
-            .exec();
+            .exec(cb);
     },
     
     /**

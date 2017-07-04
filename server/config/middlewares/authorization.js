@@ -21,7 +21,7 @@ exports.isInAdminRole = function (req, res, next) {
 exports.user = {
     hasAuthorization: function (req, res, next) {
         if (req.user.isAdmin) next();
-        if (req.profile.id != req.user.id) {
+        else if (req.profile.id != req.user.id) {
             return res.json({
                 success: false,
                 message: 'You are not authorized.'
@@ -34,7 +34,21 @@ exports.user = {
 exports.subscription = {
     hasAuthorization: function (req, res, next) {
         if (req.user.isAdmin) next();
-        if (req.user.id === req.subscription.user.id) {
+        else if (req.user.id === req.subscription.user.id) {
+            next();
+        } else {
+            return res.json({
+                success: false,
+                message: 'You are not authorized.'
+            });
+        }
+    }
+};
+
+exports.article = {
+    hasAuthorization: function (req, res, next) {
+        if (req.user.isAdmin) next();
+        else if (req.user.id === req.article.user.id) {
             next();
         } else {
             return res.json({
