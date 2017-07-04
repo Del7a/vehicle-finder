@@ -16,6 +16,8 @@ const UserSchema = new Schema({
     }]
 });
 
+const validatePresenceOf = value => value && value.length;
+
 UserSchema
     .virtual('password')
     .set(function (password) {
@@ -25,6 +27,34 @@ UserSchema
     }).get(function () {
         return this._password;
     });
+
+UserSchema.path('username').validate(function (username, fn) {
+    const User = mongoose.model('User');
+    
+    if (this.isNew || this.isModified('username')) {
+        User.find({ username: username }).exec(function (err, users) {
+            fn(!err && users.length === 0);
+        });
+    } else fn(true);
+}, 'Username already exists');
+
+UserSchema.path('email').validate(function (email, fn) {
+    const User = mongoose.model('User');
+    
+    if (this.isNew || this.isModified('email')) {
+        User.find({ email: email }).exec(function (err, users) {
+            fn(!err && users.length === 0);
+        });
+    } else fn(true);
+}, 'Email already exists');
+
+UserSchema.pre('save', function (next) {
+    if (!this.isNew) return next();
+
+    if (!validatePresenceOf(this.password)) {
+        next(new Error('Invalid password'));
+    } else next();
+});
 
 UserSchema.methods = {
     /**

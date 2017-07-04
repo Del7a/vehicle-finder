@@ -1,14 +1,10 @@
-const express = require('express');
 const mongoose = require('mongoose');
-const passport = require('passport');
 const only = require('only');
-const auth = require('../../config/middlewares/authorization');
 
 const User = mongoose.model('User');
-const router = express.Router();
 const assign = Object.assign;
 
-router.post('/register', function (req, res) {
+exports.register = function (req, res) {
     if (!req.body.username || !req.body.password) {
         res.json({ success: false, msg: 'Please pass name and password.' });
     } else {
@@ -20,14 +16,14 @@ router.post('/register', function (req, res) {
 
         newUser.save(function (err) {
             if (err) {
-                return res.json({ success: false, msg: 'Username already exists.' });
+                return res.json({ success: false, msg: err.message });
             }
             res.json({ success: true, msg: 'Successful created new user.' });
         });
     }
-});
+};
 
-router.post('/login', passport.authenticate('local'), function (req, res) {
+exports.login = function (req, res) {
     User.findOne({
         username: req.body.username
     }, function (err, user) {
@@ -46,15 +42,15 @@ router.post('/login', passport.authenticate('local'), function (req, res) {
             }
         }
     });
-});
+};
 
-router.post('/logout', auth.requiresLogin, function (req, res) {
+exports.logout = function (req, res) {
     req.logout();
     res.json({ success: true });
-});
+};
 
-router.post('/passwd', auth.requiresLogin, function (req, res) {
-    if (!req.body.oldPassword || !req.body.password || 
+exports.changePassword = function (req, res) {
+    if (!req.body.oldPassword || !req.body.password ||
         (req.body.password !== req.body.passwordRepeat)) {
         return res.json({ success: false, msg: 'Please fill all fields properly.' });
     }
@@ -69,17 +65,17 @@ router.post('/passwd', auth.requiresLogin, function (req, res) {
                 return res.json({ success: false, msg: 'Wrong password.' });
 
             assign(user, only(req.body, 'password'));
-            try {
-                user.save();
-                res.json({ success: true });
-            } catch (err) {
-                res.json({ success: false, msg: err });
-            }
+            user.save(function (err) {
+                if (err) {
+                    return res.json({ success: false, msg: err.message });
+                }
+                res.json({ success: true, msg: 'Password changed' });
+            });
         }
     });
-});
+};
 
-router.get('/profile', auth.requiresLogin, function (req, res) {
+exports.getProfile = function (req, res) {
     User.load({
         username: req.user.username
     }, function (err, user) {
@@ -91,9 +87,9 @@ router.get('/profile', auth.requiresLogin, function (req, res) {
             res.json({ success: true, user: user });
         }
     });
-});
+};
 
-router.post('/profile', auth.requiresLogin, function (req, res) {
+exports.saveProfile = function (req, res) {
     User.load({
         username: req.user.username
     }, function (err, user) {
@@ -101,15 +97,12 @@ router.post('/profile', auth.requiresLogin, function (req, res) {
             res.json({ success: false, msg: 'User not found.' });
         } else {
             assign(user, only(req.body, 'email firstName lastName'));
-            
-            try {
-                user.save();
-                res.json({ success: true });
-            } catch (err) {
-                res.json({ success: false, msg: err });
-            }
+            user.save(function (err) {
+                if (err) {
+                    return res.json({ success: false, msg: err.message });
+                }
+                res.json({ success: true, msg: 'Profile edited' });
+            });
         }
     });
-});
-
-module.exports = router;
+};
