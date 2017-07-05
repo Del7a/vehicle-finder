@@ -8,12 +8,8 @@ exports.register = function (req, res) {
     if (!req.body.username || !req.body.password) {
         res.json({ success: false, msg: 'Please pass name and password.' });
     } else {
-        var newUser = new User({
-            username: req.body.username,
-            password: req.body.password,
-            email: req.body.email
-        });
-
+        var newUser = new User();
+        assign(newUser, only(req.body, 'username password email'));
         newUser.save(function (err) {
             if (err) {
                 return res.json({ success: false, msg: err.message });

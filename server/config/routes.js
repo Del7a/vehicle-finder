@@ -4,9 +4,11 @@ const account = require('../app/controllers/account');
 const profile = require('../app/controllers/profile');
 const maker = require('../app/controllers/maker');
 const model = require('../app/controllers/model');
+const article = require('../app/controllers/article');
 const auth = require('./middlewares/authorization');
 
 const isAdmin = [auth.requiresLogin, auth.isInAdminRole];
+const articleAuth = [auth.requiresLogin, auth.article.hasAuthorization];
 
 module.exports = function (app, passport) {
     const pauth = passport.authenticate.bind(passport);
@@ -21,6 +23,14 @@ module.exports = function (app, passport) {
     app.get('/profile', auth.requiresLogin, profile.getProfile);
     app.post('/profile', auth.requiresLogin, profile.saveProfile);
     app.get('/profile/subs', auth.requiresLogin, profile.getSubscriptions);
+
+    // article routes
+    app.param('artId', article.load);
+    app.get('/articles', auth.requiresLogin, article.showAll);
+    app.post('/articles', auth.requiresLogin, article.create);
+    app.get('/articles/:artId', auth.requiresLogin, article.show);
+    app.put('/articles/:artId', articleAuth, article.update);
+    app.delete('/articles/:artId', articleAuth, article.destroy);
 
     // makers routes
     app.param('id', maker.load);    

@@ -11,23 +11,25 @@ const ArticleSchema = new Schema({
     title: { type: String, default: '', trim: true },
     body: { type: String, default: '', trim: true },
     year: { type: Number, default: 0, },
-    model: { type: Schema.ObjectId, ref: 'CarModel' },
-    user: { type: Schema.ObjectId, ref: 'User' },
-    tags: { type: [], get: getTags, set: setTags },
+    maker: { type: Schema.ObjectId, ref: 'Maker' },
+    model: { type: Schema.ObjectId, ref: 'Maker.models' },
     imageUrl: { type: String, default: '', trim: true },
+    tags: { type: [], get: getTags, set: setTags },
+    user: { type: Schema.ObjectId, ref: 'User' },
     createdAt: { type: Date, default: Date.now }
 });
 
 ArticleSchema.path('title').required(true, 'An offer must have a title');
 ArticleSchema.path('body').required(true, 'An offer must have a body');
-ArticleSchema.path('model').validate(function (modelId, fn) {
-    const CarModel = mongoose.model('CarModel');
+ArticleSchema.path('model').required(true, 'An offer must have a model');
+ArticleSchema.path('maker').validate(function (makerId, fn) {
+    const Maker = mongoose.model('Maker');
     
-    CarModel.findOne({ _id: modelId }, function (err, carModel) {
-        if (err || !carModel) fn(false);
+    Maker.findOne({ _id: makerId }, function (err, maker) {
+        if (err || !maker) fn(false);
         else fn(true);
     });
-}, 'CarModel does not exist');
+}, 'Maker does not exist');
 
 /**
  * Statics
@@ -37,32 +39,36 @@ ArticleSchema.statics = {
      * Find offer by id
      * 
      * @param {ObjectId} id
+     * @param {Function} cb
      * @api private
      */
-    load: function (_id) {
-        return this.findOne({ _id }) 
-            .populate('model', 'name maker')
+    load: function (_id, cb) {
+        return this.findOne({ _id })
+            .select('title model maker user body year imageUrl tags createdAt')
+            .populate('maker', 'name models')
             .populate('user', 'username email')
-            .exec();
+            .exec(cb);
     },
     
     /**
      * List all offers
      * 
      * @param {Object} options
+     * @param {Function} cb
      * @api private
      */
-    list: function (options) {
+    list: function (options, cb) {
         const criteria = options.criteria || {};
         const page = options.page || 0;
         const limit = options.limit || 30;
         return this.find(criteria)
-            .populate('model', 'name maker')
+            .select('title model maker user body year imageUrl tags createdAt')
+            .populate('maker', 'name models')
             .populate('user', 'username email')
             .sort({ createdAt: -1 })
             .limit(limit)
             .skip(limit * page)
-            .exec();
+            .exec(cb);
     }
 };
 
