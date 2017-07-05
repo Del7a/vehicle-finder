@@ -5,6 +5,7 @@ const profile = require('../app/controllers/profile');
 const maker = require('../app/controllers/maker');
 const model = require('../app/controllers/model');
 const article = require('../app/controllers/article');
+const search = require('../app/controllers/search');
 const auth = require('./middlewares/authorization');
 
 const isAdmin = [auth.requiresLogin, auth.isInAdminRole];
@@ -26,9 +27,9 @@ module.exports = function (app, passport) {
 
     // article routes
     app.param('artId', article.load);
-    app.get('/articles', auth.requiresLogin, article.showAll);
+    app.get('/articles', article.showAll);
     app.post('/articles', auth.requiresLogin, article.create);
-    app.get('/articles/:artId', auth.requiresLogin, article.show);
+    app.get('/articles/:artId', article.show);
     app.put('/articles/:artId', articleAuth, article.update);
     app.delete('/articles/:artId', articleAuth, article.destroy);
 
@@ -45,6 +46,9 @@ module.exports = function (app, passport) {
     app.post('/makers/:id/models', isAdmin, model.create);
     app.get('/makers/:id/models/:modelId', isAdmin, model.get);
     app.delete('/makers/:id/models/:modelId', isAdmin, model.destroy);
+
+    // search routes
+    app.post('/search', search.searchByName);
 
     /**
      * Error handling

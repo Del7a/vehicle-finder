@@ -22,7 +22,7 @@ exports.showAll = function (req, res) {
             return res.json({ success: false, msg: err.message });
 
         if (!articles) {
-            res.json({ success: false, msg: 'No makers found' });
+            res.json({ success: false, msg: 'No articles found' });
         } else {
             res.json({ success: true, articles: articles });
         }
