@@ -2,6 +2,7 @@
 
 const account = require('../app/controllers/account');
 const profile = require('../app/controllers/profile');
+const users = require('../app/controllers/users');
 const maker = require('../app/controllers/maker');
 const model = require('../app/controllers/model');
 const article = require('../app/controllers/article');
@@ -24,6 +25,13 @@ module.exports = function (app, passport) {
     app.get('/profile', auth.requiresLogin, profile.getProfile);
     app.post('/profile', auth.requiresLogin, profile.saveProfile);
     app.get('/profile/subs', auth.requiresLogin, profile.getSubscriptions);
+
+    // users routes
+    app.param('userId', users.load);
+    app.post('/users', isAdmin, account.register);
+    app.get('/users/:userId', isAdmin, users.show);
+    //app.put('/users/:userId', isAdmin, users.update);
+    app.delete('/users/:userId', isAdmin, users.destroy);
 
     // article routes
     app.param('artId', article.load);
