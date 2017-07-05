@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import Form from './common/Form'
 import { bindActionCreators } from 'redux';
 
-import {loginRequest} from '../actions'
+import {loginRequest, clearError} from '../actions'
 
 class Login extends Component {
   constructor () {
@@ -37,6 +37,11 @@ class Login extends Component {
 
   _login (username, password) {
     this.props.dispatch(loginRequest({username, password}))
+    setTimeout(() => {
+      //TODO: remove IT
+       //this.props.dispatch(loginRequest({username, password}))
+       this.props.history.push('/profile'); 
+    }, 1000)
   }
 }
 

@@ -5,8 +5,8 @@ import {Link} from 'react-router-dom'
 import {logout, clearError} from '../../actions'
 
 class Nav extends Component {
-  constructor (props) {
-    super(props)
+  constructor () {
+    super()
     this._logout = this._logout.bind(this)
     this._clearError = this._clearError.bind(this)
   }

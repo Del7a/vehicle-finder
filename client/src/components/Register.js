@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import Form from './common/Form'
 import RegisterForm from './common/RegisterForm'
 
 import {registerRequest} from '../actions'

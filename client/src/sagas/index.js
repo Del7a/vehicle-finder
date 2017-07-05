@@ -60,8 +60,6 @@ export function * loginFlow () {
         let request = yield take(LOGIN_REQUEST)
         let {username, password} = request.data
 
-        console.log("loginFlow password " + password);
-
         let winner = yield race({
             auth: call(authorize, {username, password, isRegistering: false}),
             logout: take(LOGOUT)
@@ -70,7 +68,8 @@ export function * loginFlow () {
         if (winner.auth) {
             console.log('winner ' + winner.auth);
             yield put({type: SET_AUTH, newAuthState: true}) // User is logged in (authorized)
-            yield put({type: CHANGE_FORM, newFormState: {username: '', password: '', email: ''}}) // Clear form
+            //yield put({type: CHANGE_FORM, newFormState: {username: '', password: '', email: ''}}) // Clear form
+            console.log(this);
         }
     }
 }

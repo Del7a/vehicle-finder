@@ -16,8 +16,10 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
 import NotFound from './components/NotFound';
+import UserProfile from './components/UserProfile';
 import {clearError} from './actions';
 import rootSaga from './sagas';
+import thunkMiddleware from 'redux-thunk';
 
 
 
@@ -27,12 +29,12 @@ const history = createHashHistory();
 let sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
-    rootReducer, applyMiddleware(sagaMiddleware)
+    rootReducer, applyMiddleware(sagaMiddleware, thunkMiddleware)
   );
 
-store.subscribe(() => {console.log("store changed")});
+store.subscribe(() => {});
 
-    sagaMiddleware.run(rootSaga);
+sagaMiddleware.run(rootSaga);
 
 function checkAuth (nextState, replace) {
   let {loggedIn} = store.getState()
@@ -81,6 +83,7 @@ class AutoBot extends Component {
                         <Route path='/dashboard' component={Dashboard} />
                         <Route path='/register' component={Register} />
                         <Route path='/login' component={Login} />
+                        <Route path='/profile' component={UserProfile} />
                         <Route path='*' component={NotFound} />
                     </Switch>
                 </App>
