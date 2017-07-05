@@ -11,19 +11,17 @@ const ArticleSchema = new Schema({
     title: { type: String, default: '', trim: true },
     body: { type: String, default: '', trim: true },
     year: { type: Number, default: 0, },
-    build: {
-        maker: { type: Schema.ObjectId, ref: 'Maker' },
-        model: { type: String, default: '', trim: true },
-        modelName: { type: String, default: '', trim: true }
-    },
-    user: { type: Schema.ObjectId, ref: 'User' },
-    tags: { type: [], get: getTags, set: setTags },
+    maker: { type: Schema.ObjectId, ref: 'Maker' },
+    model: { type: Schema.ObjectId, ref: 'Maker.models' },
     imageUrl: { type: String, default: '', trim: true },
+    tags: { type: [], get: getTags, set: setTags },
+    user: { type: Schema.ObjectId, ref: 'User' },
     createdAt: { type: Date, default: Date.now }
 });
 
 ArticleSchema.path('title').required(true, 'An offer must have a title');
 ArticleSchema.path('body').required(true, 'An offer must have a body');
+ArticleSchema.path('model').required(true, 'An offer must have a model');
 ArticleSchema.path('maker').validate(function (makerId, fn) {
     const Maker = mongoose.model('Maker');
     
@@ -45,8 +43,9 @@ ArticleSchema.statics = {
      * @api private
      */
     load: function (_id, cb) {
-        return this.findOne({ _id }) 
-            .populate('build.maker', 'name')
+        return this.findOne({ _id })
+            .select('title model maker user body year imageUrl tags createdAt')
+            .populate('maker', 'name models')
             .populate('user', 'username email')
             .exec(cb);
     },
@@ -55,19 +54,21 @@ ArticleSchema.statics = {
      * List all offers
      * 
      * @param {Object} options
+     * @param {Function} cb
      * @api private
      */
-    list: function (options) {
+    list: function (options, cb) {
         const criteria = options.criteria || {};
         const page = options.page || 0;
         const limit = options.limit || 30;
         return this.find(criteria)
-            .populate('model', 'name maker')
+            .select('title model maker user body year imageUrl tags createdAt')
+            .populate('maker', 'name models')
             .populate('user', 'username email')
             .sort({ createdAt: -1 })
             .limit(limit)
             .skip(limit * page)
-            .exec();
+            .exec(cb);
     }
 };
 
