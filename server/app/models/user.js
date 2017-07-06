@@ -14,7 +14,9 @@ const UserSchema = new Schema({
     hashed_password: { type: String, default: '' },
     salt: { type: String, default: '' },
     subscriptions: [{
-        refId: { type: Number, default: 0 },
+        articleId: { type: Schema.ObjectId, ref: 'Article' },
+        externalId: { type: String, default: '', trim: true },
+        origin: {type: String, default: '', trim: true },
         name: { type: String, default: '', trim: true }
     }]
 });

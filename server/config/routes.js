@@ -72,26 +72,19 @@ module.exports = function (app, passport) {
         console.error(err.stack);
 
         if (err.stack.includes('ValidationError')) {
-            res.status(422).json({
+            return res.status(422).json({
                 message: 'Validation error',
                 error: err.stack 
-            });
-            return;
+            });            
         }
 
         // error page
-        res.status(500).json({
-            message: 'Server error',
-            stack: err.stack 
-        });
+        res.status(500).json({ message: 'Server error', stack: err.stack });
     });
 
     // assume 404 since no middleware responded
     app.use(function (req, res) {
-        const payload = {
-            url: req.originalUrl,
-            error: 'Not found'
-        };
+        const payload = { url: req.originalUrl, error: 'Not found' };
         return res.status(404).json(payload);
     });
 };
