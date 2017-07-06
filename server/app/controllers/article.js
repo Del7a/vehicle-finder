@@ -18,8 +18,7 @@ exports.load = function (req, res, next, artId) {
 
 exports.showAll = function (req, res) {
     Article.list({}, function (err, articles) {
-        if (err)
-            return res.json({ success: false, msg: err.message });
+        if (err) return res.json({ success: false, msg: err.message });
 
         if (!articles) {
             res.json({ success: false, msg: 'No articles found' });
@@ -46,18 +45,16 @@ exports.create = function (req, res) {
 };
 
 exports.update = function (req, res) {
-    Article.load(req.article._id, function (err, article) {
-        if (!article) {
-            res.json({ success: false, msg: 'Offer not found' });
-        } else {
-            assign(article,
-                only(req.body, 'title body year maker model imageUrl tags'));
-            article.save(function (err) {
-                if (err) return res.json({ success: false, msg: err.message });
-                res.json({ success: true, msg: 'Offer edited' });
-            });
-        }
-    });
+    if (!req.article) {
+        res.json({ success: false, msg: 'Offer not found' });
+    } else {
+        assign(req.article,
+            only(req.body, 'title body year maker model imageUrl tags'));
+        req.article.save(function (err) {
+            if (err) return res.json({ success: false, msg: err.message });
+            res.json({ success: true, msg: 'Offer edited' });
+        });
+    }
 };
 
 exports.show = function (req, res) {

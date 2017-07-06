@@ -75,6 +75,20 @@ MakerSchema.statics = {
         return this.findOne({ _id })
             .select('name models')
             .exec(cb);
+    },
+
+    /**
+     * List all makers
+     * 
+     * @param {Object} options
+     * @param {Function} cb
+     * @api private
+     */
+    list: function(options, cb) {
+        const criteria = options || {};
+        return this.find(criteria)
+            .select('name models')
+            .exec(cb);
     }
 };
 

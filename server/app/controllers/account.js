@@ -26,15 +26,13 @@ exports.login = function (req, res) {
         if (err) throw err;
 
         if (!user) {
-            res.json({
-                success: false,
-                msg: 'Authentication failed. User not found.'
-            });
+            res.json({ 
+                success: false, msg: 'Wrong username of password.' });
         } else {
             if (user.authenticate(req.body.password)) {
                 res.json({ success: true });
             } else {
-                res.json({ success: false, msg: 'Wrong username of password.' });
+                res.json({ success: false, msg: 'Wrong username of password' });
             }
         }
     });

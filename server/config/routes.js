@@ -28,9 +28,10 @@ module.exports = function (app, passport) {
 
     // users routes
     app.param('userId', users.load);
+    app.get('/users', isAdmin, users.showAll);
     app.post('/users', isAdmin, account.register);
     app.get('/users/:userId', isAdmin, users.show);
-    //app.put('/users/:userId', isAdmin, users.update);
+    app.put('/users/:userId', isAdmin, users.update);
     app.delete('/users/:userId', isAdmin, users.destroy);
 
     // article routes

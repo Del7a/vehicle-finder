@@ -142,10 +142,26 @@ UserSchema.statics = {
      * @api private
      */
     load: function (options, cb) {
-        options.select = options.select || 
+        const criteria = options.criteria || {};
+        const select = options.select || 
             'email firstName lastName username subscriptions isAdmin';
-        return this.findOne(options.criteria)
-            .select(options.select)
+        return this.findOne(criteria)
+            .select(select)
+            .exec(cb);
+    },
+
+    /**
+     * List users
+     * 
+     * @param {Object} options
+     * @param {Function} cb
+     */
+    list: function (options, cb) {
+        const criteria = options.criteria || {};
+        const select = options.select || 
+            'email firstName lastName username subscriptions isAdmin';
+        return this.find(criteria)
+            .select(select)
             .exec(cb);
     }
 };

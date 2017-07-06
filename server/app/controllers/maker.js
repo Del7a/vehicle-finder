@@ -16,33 +16,24 @@ exports.load = function (req, res, next, id) {
 };
 
 exports.showAll = function (req, res) {
-    Maker.find({}).select('name models')
-        .exec(function (err, makers) {
-            if (err) throw err;
+    Maker.list({}, function (err, makers) {
+        if (err) throw err;
 
-            if (!makers) {
-                res.json({
-                    success: false,
-                    msg: 'No makers found'
-                });
-            } else {
-                res.json({ success: true, makers: makers });
-            }
-        });
+        if (!makers) {
+            res.json({ success: false, msg: 'No makers found' });
+        } else {
+            res.json({ success: true, makers: makers });
+        }
+    });
 };
 
 exports.create = function (req, res) {
     if (!req.body.name) {
         res.json({ success: false, msg: 'Maker name required' });
     } else {
-        var newMaker = new Maker({
-            name: req.body.name
-        });
-
+        var newMaker = new Maker({ name: req.body.name });
         newMaker.save(function (err) {
-            if (err) {
-                return res.json({ success: false, msg: err.message });
-            }
+            if (err) return res.json({ success: false, msg: err.message });
             res.json({ success: true, msg: 'Maker created' });
         });
     }
@@ -53,19 +44,15 @@ exports.show = function (req, res) {
 };
 
 exports.update = function (req, res) {
-    Maker.load(req.maker._id, function (err, maker) {
-        if (!maker) {
-            res.json({ success: false, msg: 'Maker not found.' });
-        } else {
-            maker.name = req.body.name;
-            maker.save(function (err) {
-                if (err) {
-                    return res.json({ success: false, msg: err.message });
-                }
-                res.json({ success: true, msg: 'Maker edited' });
-            });
-        }
-    });
+    if (!req.maker) {
+        res.json({ success: false, msg: 'Maker not found.' });
+    } else {
+        req.maker.name = req.body.name;
+        req.maker.save(function (err) {
+            if (err) return res.json({ success: false, msg: err.message });
+            res.json({ success: true, msg: 'Maker edited' });
+        });
+    }
 };
 
 exports.destroy = function (req, res) {
