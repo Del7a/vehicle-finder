@@ -5,34 +5,66 @@ export default class Form extends Component {
     constructor(props) {
         super(props);
         
-        this.handleUserChange = this.handleUserChange.bind(this);
-        this.handlePassChange = this.handlePassChange.bind(this);
+        this.state = {
+            touched: {
+                email: false,
+                password: false,
+            }
+        };
+
+        this.validate = this.validate.bind(this);
     }
 
-    handleUserChange(event) {
-        const newFormState = {username: event.target.value};
+    validate(email, password) {
+        // true means invalid, so our conditions got reversed
+        return {
+            email: email !== undefined && email.length === 0,
+            password: password !== undefined && password.length === 0,
+        };
+    }
+
+    handleInputChange = (field) => evt =>{
+        const newFormState = {[field]: evt.target.value};
         this.props.formInputChanged(newFormState);
+        this.handleBlur(field);
     }
 
-    handlePassChange(event) {
-        const newFormState = {password: event.target.value};
-        this.props.formInputChanged(newFormState);
+    handleBlur = (field) => (evt) => {
+        this.setState({
+            touched: { ...this.state.touched, [field]: true },
+        });
     }
-
     
 
     render() {
+        const errors = this.validate(this.props.email, this.props.password);
+        const isEnabled = !Object.keys(errors).some(x => errors[x]);
+
+
         return (
             <form onSubmit={this.props.handleSubmit}>
                 <label>
                     User Name
-                    <input type="text" value={this.props.username} onChange={this.handleUserChange} />
+                    <input type="text" 
+                        className={errors.username ? "error" : ""}
+                        value={this.props.username}
+                        onChange={this.handleInputChange('username')}
+                        onBlur={this.handleBlur('username')}
+                    />
                 </label>
+                { this.props.usernameTaken 
+                    ? <span className="error">Name already taken</span> 
+                    : ""}
                 <label>
                     Password
-                    <input type="text" value={this.props.password} onChange={this.handlePassChange} />
+                    <input type="text"
+                        className={errors.password ? "error" : ""}
+                        value={this.props.password}
+                        onChange={this.handleInputChange('password')}
+                        onBlur={this.handleBlur('password')}
+                    />
                 </label>
-                <input type="submit" />
+                <input type="submit" disabled={!isEnabled} />
             </form>
         )
     }

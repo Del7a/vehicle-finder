@@ -27,14 +27,13 @@ class RegistrationForm extends Component {
     render(){
     return(
         this.props.user.isFetching ?
-        <div> Loading </div>
+        <div> Носи се! </div>
         :
         <Form
             handleSubmit={this.handleSubmit}
             formInputChanged={this.formInputChanged}
             username={this.props.user.username}
-            password={this.props.user.password}
-            usernameTaken={this.props.user.usernameTaken} />
+            password={this.props.user.password} />
     )}
     
 }
