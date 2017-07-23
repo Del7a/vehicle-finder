@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Form from '../components/registration/registration-form';
+import Form from '../components/profile/info';
 import { bindActionCreators } from 'redux';
-import {requestLogin, formChanged} from '../actions/user';
+import {getUserProfile, postUserProfile, formChanged} from '../actions/user';
 
 import { Redirect } from 'react-router'
 
 
-class LoginForm extends Component {
+class ProfileForm extends Component {
 
     constructor(props) {
         super(props);
@@ -15,10 +15,15 @@ class LoginForm extends Component {
         this.formInputChanged = this.formInputChanged.bind(this);
     }
 
+    componentDidMount() {
+        console.log('componentDidMount')
+        this.props.getUserProfile()
+    }
+
     handleSubmit(ev) {
         ev.preventDefault();
-        const {username, password} = this.props.user;
-        this.props.requestLogin(username, password);
+        const {username, email, firstName, lastName} = this.props.user;
+        this.props.postUserProfile(username, email, firstName, lastName);
     }
 
     formInputChanged(newFormState) {
@@ -39,11 +44,14 @@ class LoginForm extends Component {
             handleSubmit={this.handleSubmit}
             formInputChanged={this.formInputChanged}
             username={this.props.user.username}
-            password={this.props.user.password} />
+            password={this.props.user.password}
+            firstName={this.props.user.firstName}
+            lastName={this.props.user.lastName}
+            email={this.props.user.email} />
 
     return(
         <div>
-            <h1>Login</h1>
+            <h1>Profile</h1>
             <div>{form}</div>
             <div>{redirAfterLogin}</div>
         </div>
@@ -57,7 +65,7 @@ function mapStateToProps({user}) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({requestLogin, formChanged}, dispatch);
+    return bindActionCreators({getUserProfile, formChanged, postUserProfile}, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileForm);

@@ -42,30 +42,53 @@ export default class Form extends Component {
 
 
         return (
-            <form onSubmit={this.props.handleSubmit}>
-                <label>
-                    User Name
-                    <input type="text" 
-                        className={errors.username ? "error" : ""}
-                        value={this.props.username}
-                        onChange={this.handleInputChange('username')}
-                        onBlur={this.handleBlur('username')}
-                    />
-                </label>
-                { this.props.usernameTaken 
-                    ? <span className="error">Name already taken</span> 
-                    : ""}
-                <label>
-                    Password
-                    <input type="text"
-                        className={errors.password ? "error" : ""}
-                        value={this.props.password}
-                        onChange={this.handleInputChange('password')}
-                        onBlur={this.handleBlur('password')}
-                    />
-                </label>
-                <input type="submit" disabled={!isEnabled} />
-            </form>
+            <div className="container">
+                <div className="row main">
+                    <div className="main-login main-center">
+                    <form className="form-horizontal"
+                    onSubmit={this.props.handleSubmit}>
+                        <div className="form-group">
+                            <label className="cols-sm-2 control-label"> User Name </label>
+                                <div className="cols-sm-10">
+								<div className="input-group">
+
+                               
+                                    <input type="text" 
+                                        className={errors.username ? "error" : ""}
+                                        value={this.props.username}
+                                        onChange={this.handleInputChange('username')}
+                                        onBlur={this.handleBlur('username')}
+                                    />
+                                </div>
+                            </div>
+                            { this.props.usernameTaken 
+                                ? 
+                                <div className="alert alert-danger">
+                                    <strong>Danger!</strong>Name already taken
+                                </div>
+                                : ""}
+                        </div>
+                         <div className="form-group">
+                            <label className="cols-sm-2 control-label">Password</label>
+                                <div className="cols-sm-10">
+								<div className="input-group">
+                               
+                                <input type="text"
+                                    className={errors.password ? "error" : ""}
+                                    value={this.props.password}
+                                    onChange={this.handleInputChange('password')}
+                                    onBlur={this.handleBlur('password')}
+                                />
+                                 </div>
+                            </div>                            
+                        </div>
+                        <input type="submit"
+                            disabled={!isEnabled}
+                            className="btn btn-danger" />
+                    </form>
+                    </div>
+                </div>
+            </div>
         )
     }
 }

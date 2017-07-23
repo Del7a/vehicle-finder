@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import Form from '../components/registration/registration-form';
 import { bindActionCreators } from 'redux';
 import {fetchRegistrationRequest, formChanged} from '../actions/user';
+import {withRouter} from "react-router-dom";
+import { Redirect } from 'react-router';
 
 
 class RegistrationForm extends Component {
@@ -14,7 +16,7 @@ class RegistrationForm extends Component {
     }
 
     handleSubmit(ev) {
-        console.log(ev);
+        ev.preventDefault();
         const {username, password} = this.props.user;
         this.props.fetchRegistrationRequest(username, password);
     }
@@ -25,8 +27,12 @@ class RegistrationForm extends Component {
 
 
     render(){
-    return(
-        this.props.user.isFetching ?
+        const redirAfterReg = this.props.user.isLoggedIn ? 
+           <Redirect to={'/home'}/>
+        : '';
+
+
+        const form =  this.props.user.isFetching ?
         <div> Loading </div>
         :
         <Form
@@ -35,6 +41,15 @@ class RegistrationForm extends Component {
             username={this.props.user.username}
             password={this.props.user.password}
             usernameTaken={this.props.user.usernameTaken} />
+
+
+
+    return(
+       <div>
+           <h1>Register</h1>
+           <div>{form}</div>
+           <div>{redirAfterReg}</div>
+       </div>
     )}
     
 }
@@ -48,4 +63,4 @@ function mapDispatchToProps(dispatch) {
     //return { actions: bindActionCreators(fetchRegistrationRequest, dispatch) }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegistrationForm);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(RegistrationForm));
