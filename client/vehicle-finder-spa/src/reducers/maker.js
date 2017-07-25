@@ -10,9 +10,6 @@ import {
     SINGLE_MAKER_GET_SUCCESS,
 
 
-
-    SINGLE_MAKER_UPDATE_SUCCESS,
-
     MODEL_CREATE_FETCHING,
     MODEL_CREATE_SUCCESS,
     MODEL_CREATE_ERROR,
@@ -20,7 +17,11 @@ import {
 
     MODEL_DELETE_FETCHING,
     MODEL_DELETE_SUCCESS,
-    MODEL_DELETE_ERROR
+    MODEL_DELETE_ERROR,
+
+    MAKER_UPDATE_FETCHING,
+    MAKER_UPDATE_SUCCESS,
+    MAKER_UPDATE_ERROR 
 
 } from '../actions/maker';
 
@@ -62,10 +63,6 @@ const maker = function(state = defaultState, action) {
             return {...state, currentMaker: action.payload}
         
 
-        case SINGLE_MAKER_UPDATE_SUCCESS:
-            return {...state, isFetching: false, currentInfoMessage: action.payload.currentInfoMessage,
-                        currentErrorMessage: '' }
-
         case MODEL_FORM_CHANGED:
             return {...state, currentModelName: action.payload.currentModelName }
         case MODEL_CREATE_FETCHING:
@@ -87,6 +84,15 @@ const maker = function(state = defaultState, action) {
                 currentMaker: {...state.currentMaker,
                     models: remodeDeletedModelFromCurrent(state.currentMaker.models, action.payload.modelId)} }
         case MODEL_DELETE_ERROR:
+            return {...state, isFetching: false, currentInfoMessage: '',
+                currentErrorMessage: action.payload }
+
+        case MAKER_UPDATE_FETCHING:
+            return {...state, isFetching: true }
+        case MAKER_UPDATE_SUCCESS:
+            return {...state, isFetching: false, currentInfoMessage: action.payload.currentInfoMessage,
+                        currentErrorMessage: '' }
+        case MAKER_UPDATE_ERROR:
             return {...state, isFetching: false, currentInfoMessage: '',
                 currentErrorMessage: action.payload }
 

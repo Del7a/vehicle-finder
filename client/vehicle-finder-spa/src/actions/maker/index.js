@@ -10,9 +10,9 @@ export const SINGLE_MAKER_GET_FETCHING = 'SINGLE_MAKER_GET_FETCHING';
 export const SINGLE_MAKER_GET_SUCCESS = 'SINGLE_MAKER_GET_SUCCESS';
 export const SINGLE_MAKER_GET_ERROR = 'SINGLE_MAKER_GET_ERROR'; 
 
-export const SINGLE_MAKER_UPDATE_FETCHING = 'SINGLE_MAKER_UPDATE_FETCHING';
-export const SINGLE_MAKER_UPDATE_SUCCESS = 'SINGLE_MAKER_UPDATE_SUCCESS';
-export const SINGLE_MAKER_UPDATE_ERROR = 'SINGLE_MAKER_UPDATE_ERROR';
+export const MAKER_UPDATE_FETCHING = 'MAKER_UPDATE_FETCHING';
+export const MAKER_UPDATE_SUCCESS = 'MAKER_UPDATE_SUCCESS';
+export const MAKER_UPDATE_ERROR = 'MAKER_UPDATE_ERROR';
 
 export const SINGLE_MAKER_DELETE_FETCHING = 'SINGLE_MAKER_DELETE_FETCHING';
 export const SINGLE_MAKER_DELETE_SUCCESS = 'SINGLE_MAKER_DELETE_SUCCESS';
@@ -338,6 +338,58 @@ function createSingleModel(makerId, modelName) {
 }
 
 
+/**
+ * Update maker
+ */
+
+ function updateMakerFetching() {
+    return {
+        type: MAKER_UPDATE_FETCHING
+    }
+}
+
+function updateMakerSuccess(msg) {
+    return {
+        type: MAKER_UPDATE_SUCCESS,
+        payload: msg
+    }
+}
+
+function updateMakerError(msg) {
+    return {
+        type: MAKER_UPDATE_ERROR,
+        payload: msg
+    }
+}
+
+function updateMaker(maker) {
+    return dispatch => {
+        dispatch(updateMakerFetching())
+        debugger
+        return fetch(`http://localhost:3000/api/makers/${maker._id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({maker: maker})
+        })
+        .then(response => {
+                console.log(response);
+                return response.json()
+        })
+        .then(json => {
+            if(json.success) {
+                dispatch(updateMakerSuccess(json.msg))
+            } else {
+                dispatch(updateMakerError(json.msg))
+            }
+        })
+    }
+}
+
+/**
+ * Delete Maker
+ */
+
 function deleteModelFetching() {
     return {
         type: MODEL_DELETE_FETCHING
@@ -385,4 +437,4 @@ export { requestMakers, requestSingleUpdateMaker,
         requestSingleMaker, requestSingleDeleteMaker,
         formChanged, createSingleMakers,
         createSingleModel, modelFormChanged,
-        deleteSingleModel}
+        deleteSingleModel, updateMaker}

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import EditMakerForm from '../../components/maker/edit-form';
 import ModelListComponent from '../../components/model/model-list-view';
 import { bindActionCreators } from 'redux';
-import { requestSingleMaker, formChanged, requestSingleUpdateMaker,
+import { requestSingleMaker, formChanged, updateMaker,
         createSingleMakers, deleteSingleModel } from '../../actions/maker';
 import { Link } from 'react-router-dom';
 
@@ -28,9 +28,9 @@ class SingleMaker extends Component {
     handleSubmit(ev) {
         ev.preventDefault();
         console.log(this.props.maker)
+        debugger
         if(this.props.match.params.id) {
-            debugger
-            this.props.requestSingleUpdateMaker(this.props.maker.currentMaker);
+            this.props.updateMaker(this.props.maker.currentMaker);
         } else {
             this.props.createSingleMakers(this.props.maker.currentMaker.name);
         }
@@ -109,7 +109,7 @@ function mapStateToProps({maker}) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({formChanged, requestSingleMaker,
-        requestSingleUpdateMaker, createSingleMakers,
+        updateMaker, createSingleMakers,
         deleteSingleModel}, dispatch);
 }
 
