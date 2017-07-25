@@ -13,6 +13,9 @@ import LoginForm from './containers/login';
 import ChangePassword from './containers/change-password';
 import Profile from './containers/profile';
 import NotFound from './components/notfound';
+import SingleMaker from './containers/maker/single-maker';
+import SingleModel from './containers/model/single-model';
+import AllMakers from './containers/maker/all-makers';
 import { routerReducer, routerMiddleware } from 'react-router-redux'
 
 
@@ -49,6 +52,9 @@ class App extends Component {
                         <Route path='/login' component={LoginForm} />
                         <Route path='/change-pass' component={ChangePassword} />
                         <Route path='/profile' component={Profile} />
+                        <Route path='/single-maker/:id' component={SingleMaker} />
+                        <Route path='/model/:makerId/:modelId' component={SingleModel} />
+                        <Route path='/all-makers' component={AllMakers} />
                         <Route path='*' component={NotFound} />
                     </Switch>
             </BrowserRouter>
