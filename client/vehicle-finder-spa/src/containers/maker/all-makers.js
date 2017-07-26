@@ -16,7 +16,6 @@ class AllMakers extends Component {
     }
 
     componentDidMount() {
-        console.log('componentDidMount')
         this.props.requestMakers()
     }
 

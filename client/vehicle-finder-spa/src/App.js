@@ -16,8 +16,9 @@ import NotFound from './components/notfound';
 import SingleMaker from './containers/maker/single-maker';
 import SingleModel from './containers/model/single-model';
 import AllMakers from './containers/maker/all-makers';
+import AllUsers from './containers/user-management/all-users';
+import SingleUser from './containers/user-management/single-user';
 import { routerReducer, routerMiddleware } from 'react-router-redux'
-
 
 
 
@@ -55,6 +56,8 @@ class App extends Component {
                         <Route path='/single-maker/:id' component={SingleMaker} />
                         <Route path='/model/:makerId/:modelId' component={SingleModel} />
                         <Route path='/all-makers' component={AllMakers} />
+                        <Route path='/all-users' component={AllUsers} />
+                        <Route path='/user/:userId' component={SingleUser} />
                         <Route path='*' component={NotFound} />
                     </Switch>
             </BrowserRouter>

@@ -34,7 +34,7 @@ exports.update = function (req, res) {
     if (req.selectedUser.isAdmin)
         return res.json({ success: false, msg: "Cannot edit, user is admin." });
     
-    assign(req.selectedUser, only(req.body, 'email firstName lastName'));
+    Object.assign(req.selectedUser, only(req.body, 'email firstName lastName'));
     req.selectedUser.save(function (err) {
         if (err) return res.json({ success: false, msg: err.message }); 
         res.json({ success: true, msg: 'User edited' });

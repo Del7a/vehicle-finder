@@ -16,7 +16,8 @@ import {
     PROFILE_FETCH_ERROR,
     PROFILE_UPDATE_FETCHING,
     PROFILE_UPDATE_SUCCESS,
-    PROFILE_UPDATE_ERROR
+    PROFILE_UPDATE_ERROR,
+    SET_CURRENT_USER
 } from '../actions/user/index'
 
 const defaultState = {
@@ -44,11 +45,16 @@ const defaultState = {
 const user = function(state = defaultState, action) {
     switch (action.type) {
         case REQUEST_REGISTRATION:
-            return {...state, isFetching: true, hasReqestedRegistration: true}
+            return {...state, isFetching: true, hasReqestedRegistration: true,
+                usernameTaken: false, currentErrorMessage: ''}
         case FORM_CHANGED:
             return Object.assign({}, state, action.payload)
         case USERNAME_ALREADY_USED:
             return {...state, usernameTaken: action.payload}
+        case REGISTRATIONS_SUCCESS:
+            return {...state, currentErrorMessage: '', usernameTaken: false,
+                username: '', password: ''
+            }
         case REGISTRATION_ERROR: 
             return {...state, hasError: action.payload}
         case REGISTRATION_FETCHED:
@@ -81,9 +87,16 @@ const user = function(state = defaultState, action) {
         case PROFILE_UPDATE_SUCCESS:
             return Object.assign({}, state, {isFetching: false} ,action.payload)
         case PROFILE_UPDATE_ERROR:
-        return{...state, isFetching: false,
-            currentErrorMessage: action.payload.message
-        }
+            return{...state, isFetching: false,
+                currentErrorMessage: action.payload.message
+            }
+        case SET_CURRENT_USER:
+            return {...state, userId: action.payload.user.user_id,
+                    firstName: action.payload.user.firstName,
+                    lastName: action.payload.user.lastName,
+                    email: action.payload.user.email,
+                    username: action.payload.user.username    
+                }
          
         default:
             return state

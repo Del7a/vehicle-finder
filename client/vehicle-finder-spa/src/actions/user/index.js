@@ -22,6 +22,8 @@ export const PROFILE_UPDATE_FETCHING = 'PROFILE_UPDATE_FETCHING';
 export const PROFILE_UPDATE_SUCCESS = 'PROFILE_UPDATE_SUCCESS';
 export const PROFILE_UPDATE_ERROR = 'PROFILE_UPDATE_ERROR';
 
+export const SET_CURRENT_USER = 'SET_CURRENT_USER';
+
 
 
 function reqestRegistration(username, password) {
@@ -42,6 +44,13 @@ function registrationError(payload) {
     return {
         type: REGISTRATION_ERROR,
         payload: payload
+    }
+}
+
+function registratinSuccess(user) {
+    return {
+        type: REGISTRATIONS_SUCCESS,
+        payload: user
     }
 }
 
@@ -202,6 +211,9 @@ function fetchRegistrationRequest(username, password) {
         })
         .then(json => {
             console.log(json);
+            if(json.success) {
+                dispatch(registratinSuccess())
+            }
             if(json.msg && json.msg.indexOf('already exists') > 0) {
                 console.log('Username exists');
                 dispatch(usernameTaken(true));
@@ -262,5 +274,13 @@ function postUserProfile(username, email, firstName, lastName) {
     }
 }
 
+function setCurrentUser(user) {
+    return {
+        type: SET_CURRENT_USER,
+        payload: {user: user}
+    }
+}
+
 export {fetchRegistrationRequest, formChanged, requestLogin,
-        requestPasswordChange, getUserProfile, postUserProfile}
+        requestPasswordChange, getUserProfile, postUserProfile,
+        setCurrentUser}
