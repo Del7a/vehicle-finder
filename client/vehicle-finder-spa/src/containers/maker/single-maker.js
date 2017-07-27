@@ -113,4 +113,4 @@ function mapDispatchToProps(dispatch) {
         deleteSingleModel}, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SingleMaker );
+export default connect(mapStateToProps, mapDispatchToProps)(SingleMaker);
