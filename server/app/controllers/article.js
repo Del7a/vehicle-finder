@@ -39,7 +39,7 @@ exports.create = function (req, res) {
             if (err) {
                 return res.json({ success: false, msg: err.message });
             }
-            res.json({ success: true, msg: 'Offer created' });
+            res.json({ success: true, msg: 'Offer created', id: newArticle._id });
         });
     }
 };

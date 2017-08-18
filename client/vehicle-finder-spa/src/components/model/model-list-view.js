@@ -10,7 +10,6 @@ export default class ModelListComponent extends Component {
     }
 
     handleDelete(ev) {
-        debugger
         this.props.handleModelDelete(this.props.makerId, ev)
     }
 
@@ -20,12 +19,13 @@ export default class ModelListComponent extends Component {
             this.props.models.length > 0 ?
             this.props.models.map((model) =>
                 <li key={model._id}>
-                    <Link to={{
+                    {/* <Link to={{
                         pathname: `/model/${this.props.makerId}/${model._id}`,
                         state: { maker: true }}}>
                         {model.name}
-                    </Link>
-                     <button
+                    </Link> */}
+                    {model.name}
+                    <button
                         onClick={this.handleDelete.bind(this, model._id)}>
                         X
                     </button> 

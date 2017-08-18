@@ -15,8 +15,19 @@ import {
     ARTICLE_DELETE_SUCCESS,
     ARTICLE_DELETE_ERROR,
 
+    ARTICLE_SEARCH_FETCHING,
+    ARTICLE_SEARCH_SUCCESS,
+    ARTICLE_SEARCH_ERROR,
+
+    SET_CURRENT_ARTICLE,
     UPDATE_ARTICLE_FORM
 } from '../actions/article';
+
+const defaultCurrentArticle = {
+        title: '', body: '', year: '', maker: '',
+        model: '', resourceUrl: '', tags: '',
+        user: {}, createdAt: ''    
+    }
 
 const defaultState = {
     isFetching: false,
@@ -24,11 +35,7 @@ const defaultState = {
     currentErrorMessage: '',
     articlesNeedResync: false,
     allArticles: [],
-    currentArticle: {
-        title: '', body: '', year: '', maker: '597642e10d5c59436bc0893b',
-        model: '5977ab3e21cdee47db5f7c1c', resourceUrl: '', tags: '',
-        user: {}, createdAt: ''    
-    }
+    currentArticle: defaultCurrentArticle
 }
 
 const article = function(state = defaultState, action) {
@@ -51,7 +58,7 @@ const article = function(state = defaultState, action) {
                 currentErrorMessage: ''
             }
         case SINGLE_ARTICLE_GET_SUCCESS:
-            return {...state, isFetching: false, allArticles: action.payload.article}
+            return {...state, isFetching: false, currentArticle: action.payload.article}
         case SINGLE_ARTICLE_GET_ERROR:
             return {...state, isFetching: false, currentErrorMessage: action.payload.message}
         
@@ -60,8 +67,10 @@ const article = function(state = defaultState, action) {
                 currentErrorMessage: ''
             }
         case ARTICLE_POST_SUCCESS:
-            return {...state, isFetching: false,
-                allArticles: state.allArticles.splice().push(action.payload.article)}
+            const newArr = state.allArticles.filter((el) => {return el})
+            newArr.push(action.payload.article)
+            return {...state, isFetching: false, allArticles: newArr,
+                    currentInfoMessage: action.payload.message}
         case ARTICLE_POST_ERROR:
             return {...state, isFetching: false, currentErrorMessage: action.payload.message}
         
@@ -85,19 +94,33 @@ const article = function(state = defaultState, action) {
         case ARTICLE_PUT_ERROR:
             return {...state, isFetching: false, currentErrorMessage: action.payload.message}
            
+        case SET_CURRENT_ARTICLE:
+            return {...state , currentArticle: action.payload.currentArticle ?
+                    action.payload.currentArticle: defaultCurrentArticle
+            }
+
+
+        case ARTICLE_SEARCH_FETCHING:
+            return {...state, isFetching: true, currentInfoMessage: '',
+                currentErrorMessage: ''
+            }
+        case ARTICLE_SEARCH_SUCCESS:
+            return {...state, isFetching: false, allArticles: action.payload.articles}
+        case ARTICLE_SEARCH_ERROR:
+            return {...state, isFetching: false, currentErrorMessage: action.payload.message}
         
         default:
             return state
     }
 }
 
-function removeArticleFromState(arr, artile) {
+function removeArticleFromState(arr, article) {
     return arr.filter(function (el) {
         return el._id !== article._id
     })
 }
 
-function updateArticleFromState(arr, artile) {
+function updateArticleFromState(arr, article) {
     return arr.filter(function (el) {
         if(el._id !== article._id) {
             return el

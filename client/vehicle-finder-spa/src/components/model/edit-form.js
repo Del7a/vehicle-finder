@@ -21,7 +21,7 @@ export default class EditModelForm extends Component {
                                 <div className="cols-sm-10">
 								<div className="input-group">
                                
-                               <input type="text" value={this.props.currentModelId} />
+                               <input type="hidden" value={this.props.currentModelId} />
                                 <input type="text"
                                     //className={errors.oldPassword ? "error" : ""}
                                     value={this.props.currentModelName}

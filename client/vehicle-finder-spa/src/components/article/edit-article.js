@@ -2,13 +2,64 @@ import React, { Component } from 'react';
 
 export default class EditArticleForm extends Component {  
 
+    constructor(props) {
+        super(props)
+
+        this.onMakerChange = this.onMakerChange.bind(this)
+        this.onModelChange = this.onModelChange.bind(this)
+    }
+
     handleInputChange = (field) => evt =>{
         const newFormState = {[field]: evt.target.value};
         this.props.formInputChanged(newFormState);
-        //this.handleBlur(field);
+    }
+
+    onMakerChange(ev) {
+        console.log(ev.target.value)
+        this.handleInputChange('maker')(ev)
+    }
+
+    onModelChange(ev) {
+        console.log(ev.target.value)
+        this.handleInputChange('model')(ev)
     }
 
     render() {
+        const makerDropDown = 
+            <select onChange={this.onMakerChange}
+                value={this.props.maker._id}
+            >
+                {this.props.makersList.map((maker) => 
+                    <option key={maker._id} value={maker._id}>
+                        {maker.name}
+                    </option>
+                )}
+            </select>
+
+        const curentMakerId = this.props.maker._id
+        const currentMaker = this.props.makersList.filter(function(el){
+            return el._id === curentMakerId
+        })
+
+        let currentMakersModels = [];
+
+        console.log(currentMakersModels)
+
+        if (currentMaker.length > 0) {
+            currentMakersModels = currentMaker[0].models
+        }
+
+        const modelDropDown = 
+            <select onChange={this.onModelChange}
+                value={this.props.model}>
+                {currentMakersModels.map((model) => 
+                    <option key={model._id} value={model._id}>
+                        {model.name}
+                    </option>
+                )}
+            </select>
+
+
         return (
             <div className="container">
                 <div className="row main">
@@ -46,12 +97,13 @@ export default class EditArticleForm extends Component {
                                 <label className="cols-sm-2 control-label">Maker</label>
                                 <div className="cols-sm-10">
                                     <div className="input-group">
-                                        <input type="text"
+                                        <input type="hidden"
                                             //className={errors.oldPassword ? "error" : ""}
-                                            value={this.props.maker}
+                                            value={this.props.maker._id}
                                             onChange={this.handleInputChange('maker')}
                                             //onBlur={this.handleBlur('oldPassword')}
                                         />
+                                        {makerDropDown}
                                     </div>
                                 </div>                        
                             </div>
@@ -59,12 +111,13 @@ export default class EditArticleForm extends Component {
                                 <label className="cols-sm-2 control-label">Model</label>
                                 <div className="cols-sm-10">
                                     <div className="input-group">
-                                        <input type="text"
+                                        <input type="hidden"
                                             //className={errors.oldPassword ? "error" : ""}
                                             value={this.props.model}
                                             onChange={this.handleInputChange('model')}
                                             //onBlur={this.handleBlur('oldPassword')}
                                         />
+                                        {modelDropDown}
                                     </div>
                                 </div>                        
                             </div>
@@ -100,8 +153,8 @@ export default class EditArticleForm extends Component {
                                     <div className="input-group">
                                         <input type="text"
                                             //className={errors.oldPassword ? "error" : ""}
-                                            value={this.props.url}
-                                            onChange={this.handleInputChange('url')}
+                                            value={this.props.imageUrl}
+                                            onChange={this.handleInputChange('imageUrl')}
                                             //onBlur={this.handleBlur('oldPassword')}
                                         />
                                     </div>

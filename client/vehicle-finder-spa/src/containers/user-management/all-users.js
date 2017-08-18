@@ -40,14 +40,14 @@ class AllUsers extends Component {
     }
 
     render() {
-        const needResunc = !this.props.userManagement.usersNeedResync?
+        const needResync = !this.props.userManagement.usersNeedResync ?
         <div> No need</div>
         : <div>Needs resync</div>
         
         return (
             <div>
                 <h1>All users</h1>
-                <div className="hidden">{needResunc}</div>
+                <div className="hidden">{needResync}</div>
                 <UserListComponent
                     users={this.props.userManagement.allUsers}
                     onHandleDelete={this.handleDelete}

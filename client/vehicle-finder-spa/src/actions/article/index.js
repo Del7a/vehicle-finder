@@ -18,13 +18,26 @@ export const ARTICLE_DELETE_FETCHING = 'ARTICLE_DELETE_FETCHING';
 export const ARTICLE_DELETE_SUCCESS = 'ARTICLE_DELETE_SUCCESS';
 export const ARTICLE_DELETE_ERROR = 'ARTICLE_DELETE_ERROR';
 
+export const ARTICLE_SEARCH_FETCHING = 'ARTICLE_SEARCH_FETCHING';
+export const ARTICLE_SEARCH_SUCCESS = 'ARTICLE_SEARCH_SUCCESS';
+export const ARTICLE_SEARCH_ERROR = 'ARTICLE_SEARCH_ERROR';
+
 export const UPDATE_ARTICLE_FORM = 'UPDATE_ARTICLE_FORM';
+
+export const SET_CURRENT_ARTICLE = 'SET_CURRENT_ARTICLE';
 
 
 function updateForm(newState) {
     return {
         type: UPDATE_ARTICLE_FORM,
         payload: {newState: newState}
+    }
+}
+
+function setCurrentArticle(article) {
+    return {
+        type: SET_CURRENT_ARTICLE,
+        payload: {currentArticle: article}
     }
 }
 
@@ -103,7 +116,7 @@ function articleUpdateError(msg) {
 function updateArticle(article) {
      return dispatch => {
         dispatch(articleUpdateFetching())
-        return fetch(`http://localhost:3000/api/articles${article._id}`, {
+        return fetch(`http://localhost:3000/api/articles/${article._id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
@@ -138,10 +151,10 @@ function articlePostFetching() {
     }
 }
 
-function articlePostSuccess(article) {
+function articlePostSuccess(article,msg) {
     return {
         type: ARTICLE_POST_SUCCESS,
-        payload: {article: article}
+        payload: {article: article, message: msg}
     }
 }
 
@@ -168,7 +181,8 @@ function createArticle(article) {
             .then(json => {
                 console.log(json);
                 if(json.success) {
-                    dispatch(articlePostSuccess(json.article))
+                    const newArticle = {...article, _id: json.id};
+                    dispatch(articlePostSuccess(newArticle, json.msg))
                 } else {
                     dispatch(articlePostError(json.msg))
                 }                
@@ -204,7 +218,7 @@ function articleDeleteError(msg) {
 function deleteArticle(article) {
      return dispatch => {
         dispatch(articleDeleteFetching())
-        return fetch(`http://localhost:3000/api/articles${article._id}`, {
+        return fetch(`http://localhost:3000/api/articles/${article._id}`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include'
@@ -216,7 +230,7 @@ function deleteArticle(article) {
             .then(json => {
                 console.log(json);
                 if(json.success) {
-                    dispatch(articleDeleteSuccess(json.article))
+                    dispatch(articleDeleteSuccess(article))
                 } else {
                     dispatch(articleDeleteError(json.msg))
                 }                
@@ -251,7 +265,7 @@ function singleArticleGetError(msg) {
 function getSingleArticle(articleId) {
      return dispatch => {
         dispatch(singleArticleGetFetching())
-        return fetch(`http://localhost:3000/api/articles${articleId}`, {
+        return fetch(`http://localhost:3000/api/articles/${articleId}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include'
@@ -271,6 +285,54 @@ function getSingleArticle(articleId) {
     }
 }
 
+/**
+ * Article search result
+ */
+
+function articlesSearchFetching() {
+    return {
+        type: ARTICLE_SEARCH_FETCHING
+    }
+}
+
+function articlesSearchSuccess(articles) {
+    return {
+        type: ARTICLE_SEARCH_SUCCESS,
+        payload: {articles: articles}
+    }
+}
+
+function articlesSearchError(msg) {
+    return {
+        type: ARTICLE_SEARCH_ERROR,
+        payload: {message: msg}
+    }
+}
+
+function searchArticles(input) {
+     return dispatch => {
+        dispatch(articlesSearchFetching())
+        return fetch(`http://localhost:3000/api/search`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({query: input})
+            })
+            .then(response => {
+                return response.json()
+            })
+            .then(json => {
+                console.log(json);
+                if(json.success) {
+                    dispatch(articlesSearchSuccess(json.articles))
+                } else {
+                    dispatch(articlesSearchError(json.msg))
+                }                
+            })
+    }
+}
+
 
 export {requestAllArticles, updateArticle, deleteArticle,
-        getSingleArticle, createArticle, updateForm}
+        getSingleArticle, createArticle, updateForm, setCurrentArticle,
+        searchArticles}

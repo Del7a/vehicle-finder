@@ -27,8 +27,6 @@ class SingleMaker extends Component {
 
     handleSubmit(ev) {
         ev.preventDefault();
-        console.log(this.props.maker)
-        debugger
         if(this.props.match.params.id) {
             this.props.updateMaker(this.props.maker.currentMaker);
         } else {

@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { createArticle, updateForm } from '../../actions/article';
+import { createArticle, updateForm, getSingleArticle, updateArticle } from '../../actions/article';
+import {requestMakers} from '../../actions/maker';
+import {setCurrentArticle} from '../../actions/article';
 import EditArticleForm from '../../components/article/edit-article';
 import { Link } from 'react-router-dom';
+import { browserHistory } from 'react-router';
 
 
 class NewArticle extends Component {
@@ -15,6 +18,19 @@ class NewArticle extends Component {
         this.handleSubmit = this.handleSubmit.bind(this)
     }
 
+    componentDidMount() {
+
+        if (this.props.match.params.id) {
+            this.props.getSingleArticle(this.props.match.params.id)
+        } else {
+            this.props.setCurrentArticle()
+        }
+
+        if (this.props.maker.makers.length === 0) {
+            this.props.requestMakers()
+        }
+    }
+
     onInputFormChange(ev) {
         console.log(ev)
         this.props.updateForm(ev)
@@ -22,33 +38,69 @@ class NewArticle extends Component {
     
     handleSubmit(ev) {
         ev.preventDefault()
-        this.props.createArticle(this.props.article.currentArticle)
+        if (this.props.match.params.id) {
+            this.props.updateArticle(this.props.article.currentArticle)
+        } else {
+            this.props.createArticle(this.props.article.currentArticle)
+        }
     }
 
     render() {
+
+        var divStyle = {
+                color: 'white',
+                maxWidth: '80%',
+                WebkitTransition: 'all', // note the capital 'W' here
+                msTransition: 'all' // 'ms' is the only lowercase vendor prefix
+            };
+
+        const infoMessage = this.props.article.currentInfoMessage !== '' ?
+                <div className="alert alert-success">
+                    <strong>Success!</strong> {this.props.article.currentInfoMessage}
+                </div>
+                : ''
+        const errorMessage = this.props.article.currentErrorMessage !== '' ?
+                <div className="alert alert-danger">
+                    {this.props.article.currentErrorMessage}
+                </div>
+                : ''
+        
+
+
         return (
-            <div>{<EditArticleForm
+            <div>
+                {infoMessage}
+                {errorMessage}
+                {<EditArticleForm
                     title={this.props.article.currentArticle.title}
                     body={this.props.article.currentArticle.body}
                     year={this.props.article.currentArticle.year}
                     tags={this.props.article.currentArticle.tag}
-                    url={this.props.article.currentArticle.url}
+                    imageUrl={this.props.article.currentArticle.imageUrl}
                     maker={this.props.article.currentArticle.maker}
                     model={this.props.article.currentArticle.model}
+                    makersList={this.props.maker.makers}
                     formInputChanged={this.onInputFormChange}
                     handleSubmit={this.handleSubmit}
-                />}</div>
+                />}
+                <img style={divStyle} src={this.props.article.currentArticle.imageUrl} />
+                  <button onClick={ () =>
+                            this.props.history.goBack()
+                            }>Back</button> 
+                </div> 
         )
     }
 }
 
-function mapStateToProps({article}) {
+function mapStateToProps({article, maker}) {
     console.log(article)
-    return {article};
+    return {article, maker};
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({createArticle, updateForm}, dispatch);
+    return bindActionCreators({createArticle, updateForm,
+                                requestMakers, setCurrentArticle,
+                                getSingleArticle, updateArticle}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewArticle);

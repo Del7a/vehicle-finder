@@ -348,10 +348,10 @@ function createSingleModel(makerId, modelName) {
     }
 }
 
-function updateMakerSuccess(msg) {
+function updateMakerSuccess(msg, maker) {
     return {
         type: MAKER_UPDATE_SUCCESS,
-        payload: msg
+        payload: {msg: msg, maker: maker}
     }
 }
 
@@ -365,12 +365,11 @@ function updateMakerError(msg) {
 function updateMaker(maker) {
     return dispatch => {
         dispatch(updateMakerFetching())
-        debugger
         return fetch(`http://localhost:3000/api/makers/${maker._id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
-            body: JSON.stringify({maker: maker})
+            body: JSON.stringify(maker)
         })
         .then(response => {
                 console.log(response);
@@ -378,7 +377,7 @@ function updateMaker(maker) {
         })
         .then(json => {
             if(json.success) {
-                dispatch(updateMakerSuccess(json.msg))
+                dispatch(updateMakerSuccess(json.msg, maker))
             } else {
                 dispatch(updateMakerError(json.msg))
             }

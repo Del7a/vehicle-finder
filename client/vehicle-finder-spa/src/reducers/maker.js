@@ -82,7 +82,7 @@ const maker = function(state = defaultState, action) {
                 makers: removeDeletedModelFromMakers(state.makers, action.payload.makerId,
                     action.payload.modelId),
                 currentMaker: {...state.currentMaker,
-                    models: remodeDeletedModelFromCurrent(state.currentMaker.models, action.payload.modelId)} }
+                    models: removeDeletedModelFromCurrent(state.currentMaker.models, action.payload.modelId)} }
         case MODEL_DELETE_ERROR:
             return {...state, isFetching: false, currentInfoMessage: '',
                 currentErrorMessage: action.payload }
@@ -90,8 +90,11 @@ const maker = function(state = defaultState, action) {
         case MAKER_UPDATE_FETCHING:
             return {...state, isFetching: true }
         case MAKER_UPDATE_SUCCESS:
-            return {...state, isFetching: false, currentInfoMessage: action.payload.currentInfoMessage,
-                        currentErrorMessage: '' }
+        debugger
+            return {...state, isFetching: false,
+                    currentInfoMessage: action.payload.currentInfoMessage,
+                    currentErrorMessage: '', 
+                    makers: updateMaker(state.makers, action.payload.maker) }
         case MAKER_UPDATE_ERROR:
             return {...state, isFetching: false, currentInfoMessage: '',
                 currentErrorMessage: action.payload }
@@ -101,19 +104,29 @@ const maker = function(state = defaultState, action) {
     }
 }
 
-function remodeDeletedModelFromCurrent(arr, modelId) {
+function removeDeletedModelFromCurrent(arr, modelId) {
     return arr.filter(function (el){
         return el._id !== modelId
     })
 }
 
 function removeDeletedModelFromMakers(arr, makerId, modelId) {
-    return arr.filter(function(maker) {
+    return arr.filter((maker) => {
             let makerCopy = maker;
             makerCopy.models = makerCopy.models.filter(function(el) {
                 return el._id !== modelId && makerCopy._id !== makerId
             })
             return makerCopy
+    })
+}
+
+function updateMaker(makers, makerForUpdate) {
+    return makers.filter((el) => {
+        if (el._id === makerForUpdate._id) {
+            return makerForUpdate
+        } else {
+            return el
+        }
     })
 }
 

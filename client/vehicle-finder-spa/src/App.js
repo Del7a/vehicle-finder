@@ -20,6 +20,7 @@ import AllUsers from './containers/user-management/all-users';
 import SingleUser from './containers/user-management/single-user';
 import NewArticle from './containers/article/new-article';
 import AllArticles from './containers/article/all-articles';
+import SingleArticle from './containers/article/single-article';
 import { routerReducer, routerMiddleware } from 'react-router-redux'
 
 
@@ -61,7 +62,9 @@ class App extends Component {
                         <Route path='/all-users' component={AllUsers} />
                         <Route path='/user/:userId' component={SingleUser} />
                         <Route path='/create-article' component={NewArticle} />
+                        <Route path='/edit-article/:id' component={NewArticle} />
                         <Route path='/articles' component={AllArticles} />
+                        <Route path='/article/:id' component={SingleArticle} />
                         <Route path='*' component={NotFound} />
                     </Switch>
             </BrowserRouter>

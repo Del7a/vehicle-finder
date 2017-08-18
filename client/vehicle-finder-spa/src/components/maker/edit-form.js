@@ -21,7 +21,7 @@ export default class EditMakerForm extends Component {
                                 <div className="cols-sm-10">
 								<div className="input-group">
                                
-                               <input type="text" value={this.props.currentMakerId} />
+                               <input type="hidden" value={this.props.currentMakerId} />
                                 <input type="text"
                                     //className={errors.oldPassword ? "error" : ""}
                                     value={this.props.currentMakerName}
