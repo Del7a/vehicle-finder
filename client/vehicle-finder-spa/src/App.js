@@ -57,6 +57,7 @@ class App extends Component {
                         <Route path='/change-pass' component={ChangePassword} />
                         <Route path='/profile' component={Profile} />
                         <Route path='/single-maker/:id' component={SingleMaker} />
+                        <Route path='/create-maker' component={SingleMaker} />
                         <Route path='/model/:makerId/:modelId' component={SingleModel} />
                         <Route path='/all-makers' component={AllMakers} />
                         <Route path='/all-users' component={AllUsers} />
