@@ -22,6 +22,8 @@ const ArticleSchema = new Schema({
 
 ArticleSchema.path('title').required(true, 'An offer must have a title');
 ArticleSchema.path('body').required(true, 'An offer must have a body');
+ArticleSchema.path('year').required(true, 'An offer must have a year');
+ArticleSchema.path('price').required(true, 'An offer must have a price');
 ArticleSchema.path('model').required(true, 'An offer must have a model');
 ArticleSchema.path('maker').validate(function (makerId, fn) {
     const Maker = mongoose.model('Maker');

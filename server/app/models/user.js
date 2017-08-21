@@ -144,7 +144,7 @@ UserSchema.statics = {
     load: function (options, cb) {
         const criteria = options.criteria || {};
         const select = options.select || 
-            'email firstName lastName username subscriptions isAdmin';
+            'email firstName lastName username notifications isAdmin';
         return this.findOne(criteria)
             .select(select)
             .exec(cb);
@@ -159,7 +159,7 @@ UserSchema.statics = {
     list: function (options, cb) {
         const criteria = options.criteria || {};
         const select = options.select || 
-            'email firstName lastName username subscriptions isAdmin';
+            'email firstName lastName username notifications isAdmin';
         return this.find(criteria)
             .select(select)
             .exec(cb);

@@ -17,6 +17,10 @@ const SubscriptionSchema = new Schema({
 });
 
 SubscriptionSchema.path('title').required(true, 'A subscription must have a title');
+SubscriptionSchema.path('yearFrom').required(true, 'Please specify the starting range for the manifacturing year');
+SubscriptionSchema.path('yearTo').required(true, 'Please specify the closing range for the manifacturing year');
+SubscriptionSchema.path('priceFrom').required(true, 'Please specify the starting range for the price');
+SubscriptionSchema.path('priceTo').required(true, 'Please specify the closing range for the price');
 SubscriptionSchema.path('maker').validate(function (makerId, fn) {
     const Maker = mongoose.model('Maker');
     Maker.findOne({ _id: makerId }, function (err, maker) {
@@ -47,7 +51,7 @@ SubscriptionSchema.statics = {
     /**
      * List all offers
      * 
-     * @param {ObjectId} options
+     * @param {Object} options
      * @param {Function} cb
      * @api private
      */
@@ -63,6 +67,20 @@ SubscriptionSchema.statics = {
             .skip(limit * page)
             .exec(cb);
     },
+
+    /**
+     * Collerate all offers for subscription notifications
+     * 
+     * @param {Object} options
+     * @param {Function} cb
+     * @api private
+     */
+    collerate: function(options, cb) {
+        return this.find(options)
+            .select('title user')
+            //.populate('user', 'notifications addNotification')
+            .exec(cb);
+    }
 };
 
 module.exports = mongoose.model('Subscription', SubscriptionSchema);
