@@ -4,28 +4,21 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const getTags = tags => tags.join(',');
-const setTags = tags => tags.split(',');
-
-const ArticleSchema = new Schema({
+const SubscriptionSchema = new Schema({
     title: { type: String, default: '', trim: true },
-    body: { type: String, default: '', trim: true },
-    year: { type: Number, default: 0 },
-    price: { type: Number, default: 0 },
-    maker: { type: Schema.ObjectId, ref: 'Maker' },
-    model: { type: Schema.ObjectId, ref: 'Maker.models' },
-    imageUrl: { type: String, default: '', trim: true },
-    tags: { type: [], get: getTags, set: setTags },
+    yearFrom: { type: Number, default: 0 },
+    yearTo: { type: Number, default: 0 },
+    priceFrom: { type: Number, default: 0 },
+    priceTo: { type: Number, default: 0 },
+    maker: { type: Schema.ObjectId, ref: 'Maker'},
+    model: { type: Schema.ObjectId, ref: 'Maker.models'},
     user: { type: Schema.ObjectId, ref: 'User' },
     createdAt: { type: Date, default: Date.now }
 });
 
-ArticleSchema.path('title').required(true, 'An offer must have a title');
-ArticleSchema.path('body').required(true, 'An offer must have a body');
-ArticleSchema.path('model').required(true, 'An offer must have a model');
-ArticleSchema.path('maker').validate(function (makerId, fn) {
+SubscriptionSchema.path('title').required(true, 'A subscription must have a title');
+SubscriptionSchema.path('maker').validate(function (makerId, fn) {
     const Maker = mongoose.model('Maker');
-    
     Maker.findOne({ _id: makerId }, function (err, maker) {
         if (err || !maker) fn(false);
         else fn(true);
@@ -35,7 +28,7 @@ ArticleSchema.path('maker').validate(function (makerId, fn) {
 /**
  * Statics
  */
-ArticleSchema.statics = {
+SubscriptionSchema.statics = {
     /**
      * Find offer by id
      * 
@@ -45,16 +38,16 @@ ArticleSchema.statics = {
      */
     load: function (_id, cb) {
         return this.findOne({ _id })
-            .select('title model maker user body year price imageUrl tags createdAt')
+            .select('title yearFrom yearTo priceFrom priceTo maker model user createdAt')
             .populate('maker', 'name models')
             .populate('user', 'username email')
             .exec(cb);
     },
-    
+
     /**
      * List all offers
      * 
-     * @param {Object} options
+     * @param {ObjectId} options
      * @param {Function} cb
      * @api private
      */
@@ -63,14 +56,13 @@ ArticleSchema.statics = {
         const page = options.page || 0;
         const limit = options.limit || 30;
         return this.find(criteria)
-            .select('title model maker user body year price imageUrl tags createdAt')
+            .select('title yearFrom yearTo priceFrom priceTo maker model createdAt')
             .populate('maker', 'name models')
-            .populate('user', 'username email')
             .sort({ createdAt: -1 })
             .limit(limit)
             .skip(limit * page)
             .exec(cb);
-    }
+    },
 };
 
-module.exports = mongoose.model('Article', ArticleSchema);
+module.exports = mongoose.model('Subscription', SubscriptionSchema);

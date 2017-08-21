@@ -34,7 +34,7 @@ exports.create = function (req, res) {
     } else {
         var newArticle = new Article({ user: req.user });
         assign(newArticle,
-            only(req.body, 'title body year maker model imageUrl tags'));
+            only(req.body, 'title body year maker model price imageUrl tags'));
         newArticle.save(function (err) {
             if (err) {
                 return res.json({ success: false, msg: err.message });
@@ -49,7 +49,7 @@ exports.update = function (req, res) {
         res.json({ success: false, msg: 'Offer not found' });
     } else {
         assign(req.article,
-            only(req.body, 'title body year maker model imageUrl tags'));
+            only(req.body, 'title body year maker price model imageUrl tags'));
         req.article.save(function (err) {
             if (err) return res.json({ success: false, msg: err.message });
             res.json({ success: true, msg: 'Offer edited' });

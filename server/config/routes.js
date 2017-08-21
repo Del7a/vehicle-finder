@@ -3,6 +3,7 @@
 const account = require('../app/controllers/account');
 const profile = require('../app/controllers/profile');
 const users = require('../app/controllers/users');
+const subscription = require('../app/controllers/subscription');
 const maker = require('../app/controllers/maker');
 const model = require('../app/controllers/model');
 const article = require('../app/controllers/article');
@@ -11,6 +12,7 @@ const auth = require('./middlewares/authorization');
 
 const isAdmin = [auth.requiresLogin, auth.isInAdminRole];
 const articleAuth = [auth.requiresLogin, auth.article.hasAuthorization];
+const subscriptionAuth = [auth.requiresLogin, auth.subscription.hasAuthorization];
 
 module.exports = function (app, passport) {
     const pauth = passport.authenticate.bind(passport);
@@ -24,7 +26,9 @@ module.exports = function (app, passport) {
     // profile routes
     app.get('/profile', auth.requiresLogin, profile.getProfile);
     app.post('/profile', auth.requiresLogin, profile.saveProfile);
-    app.get('/profile/subs', auth.requiresLogin, profile.getSubscriptions);
+    app.get('/profile/notifications', auth.requiresLogin, profile.getNotifications);
+    app.put('/profile/notifications/:notificationId', 
+                auth.requiresLogin, profile.markNotificationSeen);
 
     // users routes
     app.param('userId', users.load);
@@ -33,6 +37,13 @@ module.exports = function (app, passport) {
     app.get('/users/:userId', isAdmin, users.show);
     app.put('/users/:userId', isAdmin, users.update);
     app.delete('/users/:userId', isAdmin, users.destroy);
+
+    // subscription routes
+    app.param('subId', subscription.load);
+    app.get('/subscriptions', auth.requiresLogin, subscription.showAll);
+    app.post('/subscriptions', auth.requiresLogin, subscription.create);
+    app.get('/subscriptions/:subId', subscriptionAuth, subscription.show);
+    app.delete('/subscriptions/:subId', subscriptionAuth, subscription.destroy);
 
     // article routes
     app.param('artId', article.load);
