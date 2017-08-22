@@ -22,9 +22,20 @@ exports.saveProfile = function (req, res) {
     });
 };
 
-exports.getSubscriptions = function (req, res) {
+// TODO: make this to retrieve only last X notifications
+exports.getNotifications = function (req, res) {
     if (!req.user)
         return res.json({ success: false, msg: 'User not found.' });
-    
-    res.json({ success: true, subscriptions: req.user.subscriptions });
+
+    res.json({ success: true, notifications: req.user.notifications });
+};
+
+exports.markNotificationSeen = function (req, res) {
+    if (!req.user)
+        return res.json({ success: false, msg: 'User not found.' });
+
+    req.user.markNotificationSeen(req.params.notificationId, function (err) {
+        if (err) return res.json({ success: false, msg: err });
+        res.json({ success: true, msg: 'Notification marked as seen' });
+    });
 }

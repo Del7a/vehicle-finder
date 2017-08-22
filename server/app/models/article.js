@@ -10,7 +10,8 @@ const setTags = tags => tags.split(',');
 const ArticleSchema = new Schema({
     title: { type: String, default: '', trim: true },
     body: { type: String, default: '', trim: true },
-    year: { type: Number, default: 0, },
+    year: { type: Number, default: 0 },
+    price: { type: Number, default: 0 },
     maker: { type: Schema.ObjectId, ref: 'Maker' },
     model: { type: Schema.ObjectId, ref: 'Maker.models' },
     imageUrl: { type: String, default: '', trim: true },
@@ -21,6 +22,8 @@ const ArticleSchema = new Schema({
 
 ArticleSchema.path('title').required(true, 'An offer must have a title');
 ArticleSchema.path('body').required(true, 'An offer must have a body');
+ArticleSchema.path('year').required(true, 'An offer must have a year');
+ArticleSchema.path('price').required(true, 'An offer must have a price');
 ArticleSchema.path('model').required(true, 'An offer must have a model');
 ArticleSchema.path('maker').validate(function (makerId, fn) {
     const Maker = mongoose.model('Maker');
@@ -44,7 +47,7 @@ ArticleSchema.statics = {
      */
     load: function (_id, cb) {
         return this.findOne({ _id })
-            .select('title model maker user body year imageUrl tags createdAt')
+            .select('title model maker user body year price imageUrl tags createdAt')
             .populate('maker', 'name models')
             .populate('user', 'username email')
             .exec(cb);
@@ -62,7 +65,7 @@ ArticleSchema.statics = {
         const page = options.page || 0;
         const limit = options.limit || 30;
         return this.find(criteria)
-            .select('title model maker user body year imageUrl tags createdAt')
+            .select('title model maker user body year price imageUrl tags createdAt')
             .populate('maker', 'name models')
             .populate('user', 'username email')
             .sort({ createdAt: -1 })

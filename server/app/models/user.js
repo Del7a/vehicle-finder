@@ -13,11 +13,11 @@ const UserSchema = new Schema({
     isAdmin: { type: Boolean, default: false },
     hashed_password: { type: String, default: '' },
     salt: { type: String, default: '' },
-    subscriptions: [{
-        articleId: { type: Schema.ObjectId, ref: 'Article' },
-        externalId: { type: String, default: '', trim: true },
-        origin: {type: String, default: '', trim: true },
-        name: { type: String, default: '', trim: true }
+    notifications: [{
+        subscription: { type: Schema.ObjectId, ref: 'Subscription' },
+        article: { type: Schema.ObjectId, ref: 'Article' },
+        isSeen: { type: Boolean, default: false },
+        createdAt: { type: Date, default: Date.now }
     }]
 });
 
@@ -101,34 +101,34 @@ UserSchema.methods = {
     },
 
     /**
-     * Add subscription
+     * Add new notification
      * 
-     * @param {Number} refId
-     * @param {String} name
+     * @param {ObjectId} subId
+     * @param {ObjectId} articleId
      * @api private
      */
-    addSubsciption: function (refId, name) {
-        this.subscriptions.push({
-            refId: refId,
-            name: name
+    addNotification: function (subId, articleId) {
+        this.notifications.push({
+            subscription: subId,
+            article: articleId    
         });
 
         return this.save();
     },
 
     /**
-     * Remove subscription
+     * Mark notification as seen
      * 
-     * @param {subscriptionId} subId
+     * @param {ObjectId} notificationId
      * @api private
      */
-    removeSubscription: function (subId) {
-        const index = this.subscriptions
-            .map(sub => sub.id)
-            .indexOf(subId);
+    markNotificationSeen: function (notificationId) {
+        const index = this.notifications
+            .map(notif => notif.id)
+            .indexOf(notificationId);
 
-        if (~index) this.subscriptions.splice(index, 1);
-        else throw new Error('Subscription not found');
+        if (~index) this.notifications[index].isSeen = true;
+        else throw new Error('Notification not found');
         return this.save();
     }
 };
@@ -144,7 +144,7 @@ UserSchema.statics = {
     load: function (options, cb) {
         const criteria = options.criteria || {};
         const select = options.select || 
-            'email firstName lastName username subscriptions isAdmin';
+            'email firstName lastName username notifications isAdmin';
         return this.findOne(criteria)
             .select(select)
             .exec(cb);
@@ -159,7 +159,7 @@ UserSchema.statics = {
     list: function (options, cb) {
         const criteria = options.criteria || {};
         const select = options.select || 
-            'email firstName lastName username subscriptions isAdmin';
+            'email firstName lastName username notifications isAdmin';
         return this.find(criteria)
             .select(select)
             .exec(cb);
