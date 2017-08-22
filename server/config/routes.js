@@ -8,11 +8,13 @@ const maker = require('../app/controllers/maker');
 const model = require('../app/controllers/model');
 const article = require('../app/controllers/article');
 const search = require('../app/controllers/search');
+const messageThread = require('../app/controllers/message');
 const auth = require('./middlewares/authorization');
 
 const isAdmin = [auth.requiresLogin, auth.isInAdminRole];
 const articleAuth = [auth.requiresLogin, auth.article.hasAuthorization];
 const subscriptionAuth = [auth.requiresLogin, auth.subscription.hasAuthorization];
+const messageAuth = [auth.requiresLogin, auth.messageThread.hasAuthorization];
 
 module.exports = function (app, passport) {
     const pauth = passport.authenticate.bind(passport);
@@ -45,6 +47,14 @@ module.exports = function (app, passport) {
     app.get('/subscriptions/:subId', subscriptionAuth, subscription.show);
     app.delete('/subscriptions/:subId', subscriptionAuth, subscription.destroy);
 
+    // messages routes
+    app.param('msgThreadId', messageThread.load);
+    app.get('/messages', auth.requiresLogin, messageThread.showAll);
+    app.post('/messages', auth.requiresLogin, messageThread.sendMsgThread);
+    app.get('/messages/:msgThreadId', messageAuth, messageThread.show);
+    app.put('/messages/:msgThreadId', messageAuth, messageThread.sendMessage);
+    app.patch('/messages/:msgThreadId', messageAuth, messageThread.markThreadRead);
+
     // article routes
     app.param('artId', article.load);
     app.get('/articles', article.showAll);
@@ -52,6 +62,8 @@ module.exports = function (app, passport) {
     app.get('/articles/:artId', article.show);
     app.put('/articles/:artId', articleAuth, article.update);
     app.delete('/articles/:artId', articleAuth, article.destroy);
+    app.post('/articles/:artId/offer', 
+                auth.requiresLogin, messageThread.sendOfferMsgThread);
 
     // makers routes
     app.param('id', maker.load);    

@@ -78,7 +78,6 @@ SubscriptionSchema.statics = {
     collerate: function(options, cb) {
         return this.find(options)
             .select('title user')
-            //.populate('user', 'notifications addNotification')
             .exec(cb);
     }
 };

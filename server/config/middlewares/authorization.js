@@ -45,6 +45,21 @@ exports.subscription = {
     }
 };
 
+exports.messageThread = {
+    hasAuthorization: function (req, res, next) {
+        if (req.user.isAdmin) next();
+        else if (req.user.id === req.messageThread.sendUser.id 
+            || req.user.id === req.messageThread.receiveUser.id) {
+            next();
+        } else {
+            return res.json({
+                success: false,
+                message: 'You are not authorized.'
+            });
+        }
+    }
+};
+
 exports.article = {
     hasAuthorization: function (req, res, next) {
         if (req.user.isAdmin) next();
