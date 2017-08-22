@@ -213,6 +213,8 @@ function fetchRegistrationRequest(username, password) {
             console.log(json);
             if(json.success) {
                 dispatch(registratinSuccess())
+                debugger
+                dispatch(requestLogin(username, password))
             }
             if(json.msg && json.msg.indexOf('already exists') > 0) {
                 console.log('Username exists');

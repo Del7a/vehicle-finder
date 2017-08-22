@@ -36,7 +36,7 @@ export default class EditArticleForm extends Component {
                 )}
             </select>
 
-        const curentMakerId = this.props.maker._id
+        const curentMakerId = this.props.maker
         const currentMaker = this.props.makersList.filter(function(el){
             return el._id === curentMakerId
         })
