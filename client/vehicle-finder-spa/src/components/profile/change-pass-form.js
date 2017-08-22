@@ -45,7 +45,6 @@ export default class Form extends Component {
                 this.props.newPassword, this.props.newPasswordRepeat);
         const isEnabled = !Object.keys(errors).some(x => errors[x]);
 
-
         return (
             <div className="container">
                 <div className="row main">
@@ -57,21 +56,33 @@ export default class Form extends Component {
                                 <div className="cols-sm-10">
 								<div className="input-group">
                                
-                                <input type="text"
+                                <input type="password"
                                     className={errors.oldPassword ? "error" : ""}
                                     value={this.props.oldPassword}
                                     onChange={this.handleInputChange('oldPassword')}
                                     onBlur={this.handleBlur('oldPassword')}
                                 />
                                  </div>
-                            </div>                            
-                        </div>
+                            </div>   
+                            { this.props.passwordChanged
+                                ? 
+                                <div className="alert alert-success">
+                                    <strong>Success!</strong> Password changed
+                                </div>
+                                : ""}  
+                            { this.props.passwordChangeError
+                                ? 
+                                <div className="alert alert-danger">
+                                    <strong>Error!</strong> {this.props.currentErrorMessage}
+                                </div>
+                                : ""}                         
+                        </div>        
                          <div className="form-group">
                             <label className="cols-sm-2 control-label">New Password</label>
                                 <div className="cols-sm-10">
 								<div className="input-group">
                                
-                                <input type="text"
+                                <input type="password"
                                     className={errors.newPassword ? "error" : ""}
                                     value={this.props.newPassword}
                                     onChange={this.handleInputChange('newPassword')}
@@ -85,12 +96,18 @@ export default class Form extends Component {
                                 <div className="cols-sm-10">
 								<div className="input-group">
                                
-                                <input type="text"
+                                <input type="password"
                                     className={errors.newPasswordRepeat ? "error" : ""}
                                     value={this.props.newPasswordRepeat}
                                     onChange={this.handleInputChange('newPasswordRepeat')}
                                     onBlur={this.handleBlur('newPasswordRepeat')}
                                 />
+                                { this.props.newPassword !== this.props.newPasswordRepeat
+                                    ? 
+                                    <div className="alert alert-danger">
+                                        Dont match
+                                    </div>
+                                : ""}   
                                  </div>
                             </div>                            
                         </div>
@@ -103,4 +120,4 @@ export default class Form extends Component {
             </div>
         )
     }
-}
+} 

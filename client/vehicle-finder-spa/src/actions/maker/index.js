@@ -224,7 +224,6 @@ function singleMakerFetchedUpdateError(msg) {
 function requestSingleUpdateMaker(maker) {
     return dispatch => {
         const body =JSON.stringify(maker)
-        debugger
         dispatch(singleMakerUpdateFetching())
         return fetch(`http://localhost:3000/api/makers/${maker._id}`,
             {
@@ -315,8 +314,7 @@ function createrModelError(msg) {
 
 function createSingleModel(makerId, modelName) {
     return dispatch => {
-        dispatch(createrModelFetching())
-        debugger
+        dispatch(createrModelFetching())   
         return fetch(`http://localhost:3000/api/makers/${makerId}/models`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -412,7 +410,6 @@ function deleteModelError(msg) {
 function deleteSingleModel(makerId, modelId) {
     return dispatch => {
         dispatch(deleteModelFetching())
-        debugger
         return fetch(`http://localhost:3000/api/makers/${makerId}/models/${modelId}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },

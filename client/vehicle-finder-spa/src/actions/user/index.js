@@ -76,7 +76,7 @@ function loginSuccess() {
 
 function loginFailed(msg) {
     return {
-        type: loginFailed,
+        type: LOGIN_FAILED,
         payload: {message: msg}
     }
 }
@@ -213,6 +213,7 @@ function fetchRegistrationRequest(username, password) {
             console.log(json);
             if(json.success) {
                 dispatch(registratinSuccess())
+                dispatch(requestLogin(username, password))
             }
             if(json.msg && json.msg.indexOf('already exists') > 0) {
                 console.log('Username exists');

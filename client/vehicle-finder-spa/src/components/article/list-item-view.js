@@ -11,7 +11,7 @@ export default class ArticleListComponent extends Component {
     }
 
     handleDelete(ev, articleId) {
-        this.props.handleArcticleDelete(this.props.makerId, ev)
+        this.props.handleArticleDelete(this.props.makerId, ev)
     }
 
     handleEditRequest(articleId) {

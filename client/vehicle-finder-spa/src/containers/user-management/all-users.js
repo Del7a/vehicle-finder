@@ -35,7 +35,6 @@ class AllUsers extends Component {
     }
 
     handleDelete(userId) {
-        debugger
         this.props.deleteSingleUser(userId)
     }
 

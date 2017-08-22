@@ -4,26 +4,23 @@ export default class Form extends Component {
 
     constructor(props) {
         super(props);
-        
         this.state = {
-            touched: {
-                username: false,
-                lastName: false,
-                firstName: false,
-                email: false
-            }
+                username: props.username,
+                email: props.email,
+                firstName: props.firstName,
+                lastName: props.lastName
         };
-
         this.validate = this.validate.bind(this);
     }
 
-    validate(oldPassword, newPassword, newPasswordRepeat) {
+    validate(email, firstName, lastName) {
         // true means invalid, so our conditions got reversed
+        var regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        var regName = /^[a-zA-Z\s]*$/
         return {
-            oldPassword: oldPassword !== undefined && oldPassword.length === 0,
-            newPassword: newPassword !== undefined && newPassword.length === 0,
-            newPasswordRepeat: newPasswordRepeat !== undefined && newPasswordRepeat.length === 0,
-            passWordMatch: newPassword !== newPasswordRepeat
+            email: !regEmail.test(email),
+            firstName: !regName.test(firstName),
+            lastName: !regName.test(lastName)
         };
     }
 
@@ -41,9 +38,14 @@ export default class Form extends Component {
     
 
     render() {
-        const errors = this.validate(this.props.oldPassword,
-                this.props.newPassword, this.props.newPasswordRepeat);
-        const isEnabled = !Object.keys(errors).some(x => errors[x]);
+        const errors = this.validate(this.props.email,
+                this.props.firstName, this.props.lastName);
+
+        var isEnabled = !(JSON.stringify(this.state.username) === JSON.stringify(this.props.username) &&
+                            JSON.stringify(this.state.email) === JSON.stringify(this.props.email) &&
+                            JSON.stringify(this.state.firstName) === JSON.stringify(this.props.firstName) &&
+                            JSON.stringify(this.state.lastName) === JSON.stringify(this.props.lastName))
+        isEnabled = isEnabled && !Object.keys(errors).some(x => errors[x]);
 
 
         return (
@@ -72,15 +74,20 @@ export default class Form extends Component {
                                 <div className="cols-sm-10">
 								<div className="input-group">
                                
-                                <input type="text"
-                                    readOnly={true}
+                                <input type="email"
                                     className={errors.email ? "error" : ""}
                                     value={this.props.email}
                                     onChange={this.handleInputChange('email')}
                                     onBlur={this.handleBlur('email')}
                                 />
                                  </div>
-                            </div>                            
+                            </div> 
+                            { errors.email
+                                ? 
+                                <div className="alert alert-danger">
+                                    <strong>Danger!</strong> Enter a valid email
+                                </div>
+                                : ""}                             
                         </div>
                         <div className="form-group">
                             <label className="cols-sm-2 control-label">First name</label>
@@ -94,7 +101,13 @@ export default class Form extends Component {
                                     onBlur={this.handleBlur('firstName')}
                                 />
                                  </div>
-                            </div>                            
+                            </div>  
+                            { errors.firstName
+                                ? 
+                                <div className="alert alert-danger">
+                                    <strong>Danger!</strong> Enter a valid name
+                                </div>
+                                : ""}                            
                         </div>
                         <div className="form-group">
                             <label className="cols-sm-2 control-label">Last name</label>
@@ -108,7 +121,13 @@ export default class Form extends Component {
                                     onBlur={this.handleBlur('lastName')}
                                 />
                                  </div>
-                            </div>                            
+                            </div>  
+                             { errors.lastName
+                                ? 
+                                <div className="alert alert-danger">
+                                    <strong>Danger!</strong> Enter a valid name
+                                </div>
+                                : ""}                            
                         </div>
                         <input type="submit"
                             disabled={!isEnabled}

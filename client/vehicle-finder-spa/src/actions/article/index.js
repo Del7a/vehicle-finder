@@ -79,7 +79,7 @@ function requestAllArticles() {
             })
             .then(json => {
                 console.log(json);
-                if(json.success) {
+                if (json.success) {
                     dispatch(allArticlesGetSuccess(json.articles))
                 } else {
                     dispatch(allArticlesGetError(json.msg))
@@ -141,10 +141,6 @@ function updateArticle(article) {
  * Article create
  */
 
-/**
- * Article update
- */
-
 function articlePostFetching() {
     return {
         type: ARTICLE_POST_FETCHING
@@ -166,7 +162,7 @@ function articlePostError(msg) {
 }
 
 function createArticle(article) {
-     return dispatch => {
+    return dispatch => {
         dispatch(articlePostFetching())
         return fetch(`http://localhost:3000/api/articles`, {
                 method: 'POST',

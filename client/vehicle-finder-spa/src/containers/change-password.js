@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import {requestPasswordChange, formChanged} from '../actions/user';
 
 
-
 class ChangePassword extends Component {
 
     constructor(props) {
@@ -26,19 +25,6 @@ class ChangePassword extends Component {
 
 
     render(){
-
-        const passCahngedSuccess = this.props.user.passwordChanged ?
-        <div className="alert alert-success">
-            <strong>Success!</strong> Password changed
-        </div>
-        : ''
-
-        const passChangeError = this.props.user.passwordChangeError ?
-         <div className="alert alert-danger">
-            <strong>Error!</strong> {this.props.user.currentErrorMessage}
-        </div>
-        : ''
-
         const form = this.props.user.isFetching ?
         <div> Loading </div>
         :
@@ -47,13 +33,14 @@ class ChangePassword extends Component {
             formInputChanged={this.formInputChanged}
             oldPassword={this.props.user.oldPassword}
             newPassword={this.props.user.newPassword}
-            newPasswordRepeat={this.props.user.newPasswordRepeat} />
+            newPasswordRepeat={this.props.user.newPasswordRepeat} 
+            passwordChanged={this.props.user.passwordChanged}
+            passwordChangeError={this.props.user.passwordChangeError}
+            currentErrorMessage={this.props.user.currentErrorMessage}/>
 
     return(
         <div>
             <h1>Change Password</h1>
-            <div>{passCahngedSuccess}</div>
-            <div>{passChangeError}</div>
             <div>{form}</div>
         </div>
     )}

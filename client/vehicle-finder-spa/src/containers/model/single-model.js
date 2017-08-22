@@ -31,7 +31,6 @@ class SingleModel extends Component {
         });
 
         if(curretMaker.length) {
-            debugger
             let modelId = this.props.match.params.modelId;
             let currentModelName = curretMaker[0].models.filter(function(el){
                 return el._id === modelId

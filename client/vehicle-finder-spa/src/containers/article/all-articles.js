@@ -12,7 +12,7 @@ class AllArticles extends Component {
     constructor(props) {
         super(props)
 
-        this.handleArcticleDelete = this.handleArcticleDelete.bind(this)
+        this.handleArticleDelete = this.handleArticleDelete.bind(this)
         this.handleSearch = this.handleSearch.bind(this)
         this.handleEditRequest = this.handleEditRequest.bind(this)
     }
@@ -23,7 +23,7 @@ class AllArticles extends Component {
         }
     }
 
-    handleArcticleDelete(ev, article) {
+    handleArticleDelete(ev, article) {
         this.props.deleteArticle(article)
     }
 
@@ -53,7 +53,7 @@ class AllArticles extends Component {
                 :
                 <ArticleListComponent 
                     articles={this.props.article.allArticles}
-                    handleArcticleDelete={this.handleArcticleDelete}
+                    handleArticleDelete={this.handleArticleDelete}
                     handleEditRequest={this.handleEditRequest}
                     currentUserId={this.props.user.currentUserId}
                 />}

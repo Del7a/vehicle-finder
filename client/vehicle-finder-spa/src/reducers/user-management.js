@@ -69,7 +69,6 @@ const userManagement = function(state = defaultState, action) {
                 currentInfoMessage: '',
             }
         case REGISTRATIONS_SUCCESS:
-        debugger
             return {...state, usersNeedResync: true}
         
         default:
@@ -78,7 +77,6 @@ const userManagement = function(state = defaultState, action) {
 }
 
 function removeUserById(users, userId) {
-    debugger
     return users.filter(function (el){
         return el._id !== userId
     });

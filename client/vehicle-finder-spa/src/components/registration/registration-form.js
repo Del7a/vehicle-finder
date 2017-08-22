@@ -7,7 +7,7 @@ export default class Form extends Component {
         
         this.state = {
             touched: {
-                email: false,
+                username: false,
                 password: false,
             }
         };
@@ -15,10 +15,10 @@ export default class Form extends Component {
         this.validate = this.validate.bind(this);
     }
 
-    validate(email, password) {
+    validate(username, password) {
         // true means invalid, so our conditions got reversed
         return {
-            email: email !== undefined && email.length === 0,
+            username: username !== undefined && username.length === 0,
             password: password !== undefined && password.length === 0,
         };
     }
@@ -37,7 +37,7 @@ export default class Form extends Component {
     
 
     render() {
-        const errors = this.validate(this.props.email, this.props.password);
+        const errors = this.validate(this.props.username, this.props.password);
         const isEnabled = !Object.keys(errors).some(x => errors[x]);
 
 
@@ -51,8 +51,6 @@ export default class Form extends Component {
                             <label className="cols-sm-2 control-label"> User Name </label>
                                 <div className="cols-sm-10">
 								<div className="input-group">
-
-                               
                                     <input type="text" 
                                         className={errors.username ? "error" : ""}
                                         value={this.props.username}
@@ -61,19 +59,25 @@ export default class Form extends Component {
                                     />
                                 </div>
                             </div>
-                            { this.props.usernameTaken 
+                            { this.props.usernameTaken
                                 ? 
                                 <div className="alert alert-danger">
-                                    <strong>Danger!</strong>Name already taken
+                                    <strong>Name already taken!</strong>
                                 </div>
                                 : ""}
-                        </div>
+                            { this.props.loginFailed
+                                ? 
+                                <div className="alert alert-danger">
+                                    <strong>Incorrect username or password!</strong>
+                                </div>
+                                : ""}
+                            </div>
                          <div className="form-group">
                             <label className="cols-sm-2 control-label">Password</label>
                                 <div className="cols-sm-10">
 								<div className="input-group">
                                
-                                <input type="text"
+                                <input type="password"
                                     className={errors.password ? "error" : ""}
                                     value={this.props.password}
                                     onChange={this.handleInputChange('password')}

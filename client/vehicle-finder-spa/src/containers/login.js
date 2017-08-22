@@ -23,8 +23,7 @@ class LoginForm extends Component {
 
     formInputChanged(newFormState) {
         this.props.formChanged(newFormState);
-    }
-
+    }    
 
     render(){
         const redirAfterLogin = this.props.user.isLoggedIn ? 
@@ -39,7 +38,8 @@ class LoginForm extends Component {
             handleSubmit={this.handleSubmit}
             formInputChanged={this.formInputChanged}
             username={this.props.user.username}
-            password={this.props.user.password} />
+            password={this.props.user.password}
+            loginFailed={this.props.user.loginFailed} />
 
     return(
         <div>
