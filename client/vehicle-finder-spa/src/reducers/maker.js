@@ -90,7 +90,6 @@ const maker = function(state = defaultState, action) {
         case MAKER_UPDATE_FETCHING:
             return {...state, isFetching: true }
         case MAKER_UPDATE_SUCCESS:
-        debugger
             return {...state, isFetching: false,
                     currentInfoMessage: action.payload.currentInfoMessage,
                     currentErrorMessage: '', 

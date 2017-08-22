@@ -184,7 +184,6 @@ function singleUserDeleteError(msg) {
 
 function deleteSingleUser(userId) {
      return dispatch => {
-         debugger
         dispatch(singleUsersDeleteFetching())
         return fetch(`http://localhost:3000/api/users/${userId}`, {
                 method: 'DELETE',
