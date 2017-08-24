@@ -21,6 +21,8 @@ import SingleUser from './containers/user-management/single-user';
 import NewArticle from './containers/article/new-article';
 import AllArticles from './containers/article/all-articles';
 import SingleArticle from './containers/article/single-article';
+import NewSubscription from './containers/subscription/new-subscription'
+import AllSubscriptions from './containers/subscription/all-subscriptions'
 import { routerReducer, routerMiddleware } from 'react-router-redux'
 
 
@@ -66,6 +68,9 @@ class App extends Component {
                         <Route path='/edit-article/:id' component={NewArticle} />
                         <Route path='/articles' component={AllArticles} />
                         <Route path='/article/:id' component={SingleArticle} />
+                        <Route path='/create-subscription' component={NewSubscription} />
+                        <Route path='/subscriptions' component={AllSubscriptions} />
+                        <Route path='/subscription/:id' />
                         <Route path='*' component={NotFound} />
                     </Switch>
             </BrowserRouter>

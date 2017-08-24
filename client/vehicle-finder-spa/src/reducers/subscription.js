@@ -10,7 +10,9 @@ import {
     SUBSCRIPTION_GET_ERROR,
     SUBSCRIPTION_DELETE_FETCHING,
     SUBSCRIPTION_DELETE_SUCCESS,
-    SUBSCRIPTION_DELETE_ERROR
+    SUBSCRIPTION_DELETE_ERROR,
+
+    UPDATE_SUBSCRIPTION_FORM
 } from '../actions/subscription';
 
 const defaultSubscription = {
@@ -19,8 +21,8 @@ const defaultSubscription = {
     yearTo: '',
     priceFrom: '',
     priceTo: '',
-    maker: {_id: 0, name: ''},
-    model: {_id: 0, name: ''},
+    maker: '',
+    model: '',
     createdAt: ''
 };
 
@@ -35,6 +37,11 @@ const defaultState = {
 
 const subscription = function(state = defaultState, action) {
     switch(action.type) {
+        case UPDATE_SUBSCRIPTION_FORM:
+            return {...state, currentSubscription: 
+                        {...state.currentSubscription, ...action.payload.newState}
+                    }
+
         case ALL_SUBSCRIPTIONS_GET_FETCHING:
             return {...state, isFetching: true, currentInfoMessage: '', currentErrorMessage: ''}
         case ALL_SUBSCRIPTIONS_GET_SUCCESS:
@@ -60,7 +67,8 @@ const subscription = function(state = defaultState, action) {
         case SUBSCRIPTION_DELETE_FETCHING:
             return {...state, isFetching: true, currentInfoMessage: '', currentErrorMessage: ''}
         case SUBSCRIPTION_DELETE_SUCCESS:
-            return {...state, isFetching: false, currentInfoMessage: action.payload}
+            return {...state, isFetching: false, currentInfoMessage: action.payload.message,
+                allSubscriptions: removeSubscriptionFromState(state.allSubscriptions, action.payload.subscriptionId)}
         case SUBSCRIPTION_DELETE_ERROR:
             return {...state, isFetching: false, currentErrorMessage: action.payload}
 
@@ -71,4 +79,10 @@ const subscription = function(state = defaultState, action) {
     }
 }
 
-export {subscription}
+function removeSubscriptionFromState(arr, subscriptionId) {
+    return arr.filter(function (el) {
+        return el._id !== subscriptionId
+    })
+}
+
+export default subscription

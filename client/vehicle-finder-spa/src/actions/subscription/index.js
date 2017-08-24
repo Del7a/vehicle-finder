@@ -14,6 +14,15 @@ export const SUBSCRIPTION_DELETE_FETCHING = 'SUBSCRIPTION_DELETE_FETCHING';
 export const SUBSCRIPTION_DELETE_SUCCESS = 'SUBSCRIPTION_DELETE_SUCCESS';
 export const SUBSCRIPTION_DELETE_ERROR = 'SUBSCRIPTION_DELETE_ERROR';
 
+export const UPDATE_SUBSCRIPTION_FORM = 'UPDATE_SUBSCRIPTION_FORM';
+
+function updateForm(newState) {
+    return {
+        type: UPDATE_SUBSCRIPTION_FORM,
+        payload: {newState: newState}
+    }
+}
+
 /**
  * Get all subscriptions
  */
@@ -52,7 +61,7 @@ function requestAllSubscriptions() {
         .then(json => {
             console.log(json)
             if(json.success) {
-                dispatch(allSubscriptionsSuccess(json.subscritions))
+                dispatch(allSubscriptionsSuccess(json.subscriptions))
             } else {
                 dispatch(allSubscriptionsError(json.msg))
             }
@@ -133,7 +142,7 @@ function createSubscriptionError(message) {
 function createSubscription(subscription) {
     return dispatch => {
         dispatch(createSubscriptionFetching())
-        fetch(`http://localhost:3000/subscriptions`, {
+        fetch(`http://localhost:3000/api/subscriptions`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include' ,
@@ -163,10 +172,10 @@ function deleteSubscriptionFetching() {
     }
 }
 
-function deleteSubscriptionSuccess(message) {
+function deleteSubscriptionSuccess(message, subscriptionId) {
     return {
         type: SUBSCRIPTION_DELETE_SUCCESS,
-        payload: message
+        payload: { message: message, subscriptionId: subscriptionId }
     }
 }
 
@@ -180,7 +189,7 @@ function deleteSubscriptionError(message) {
 function deleteSubscription(subscriptionId) {
     return dispatch => {
         dispatch(deleteSubscriptionFetching())
-        fetch(`http://localhost:3000/api/subscription/${subscriptionId}`, {
+        fetch(`http://localhost:3000/api/subscriptions/${subscriptionId}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include'
@@ -190,7 +199,7 @@ function deleteSubscription(subscriptionId) {
         })
         .then(json => {
             if(json.success) {
-                dispatch(deleteSubscriptionSuccess(json.msg))
+                dispatch(deleteSubscriptionSuccess(json.msg, subscriptionId))
             } else {
                 dispatch(deleteSubscriptionError(json.msg))
             }
@@ -199,4 +208,4 @@ function deleteSubscription(subscriptionId) {
 }
 
 export {requestAllSubscriptions,fetchSingleSubscription,
-        createSubscription, deleteSubscription}
+        createSubscription, deleteSubscription, updateForm}
