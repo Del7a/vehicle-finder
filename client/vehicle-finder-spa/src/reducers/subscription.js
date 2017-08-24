@@ -11,6 +11,12 @@ import {
     SUBSCRIPTION_DELETE_FETCHING,
     SUBSCRIPTION_DELETE_SUCCESS,
     SUBSCRIPTION_DELETE_ERROR,
+    NOTIFICATIONS_GET_FETCHING,
+    NOTIFICATIONS_GET_SUCCESS,
+    NOTIFICATIONS_GET_ERROR,
+    NOTIFICATION_PUT_FETCHING,
+    NOTIFICATION_PUT_SUCCESS,
+    NOTIFICATION_PUT_ERROR,
 
     UPDATE_SUBSCRIPTION_FORM
 } from '../actions/subscription';
@@ -31,7 +37,8 @@ const defaultState = {
     currentInfoMessage: '',
     currentErrorMessage: '',
     allSubscriptions: [],
-    currentSubscription: defaultSubscription
+    currentSubscription: defaultSubscription,
+    notifications: []
 }
 
 
@@ -72,7 +79,19 @@ const subscription = function(state = defaultState, action) {
         case SUBSCRIPTION_DELETE_ERROR:
             return {...state, isFetching: false, currentErrorMessage: action.payload}
 
-        
+        case NOTIFICATIONS_GET_FETCHING:
+            return {...state, isFetching: true, currentInfoMessage: '', currentErrorMessage: ''}
+        case NOTIFICATIONS_GET_SUCCESS:
+            return {...state, isFetching: false, notifications: action.payload}
+        case NOTIFICATIONS_GET_ERROR:
+            return {...state, isFetching: false, currentErrorMessage: action.payload}
+
+        case NOTIFICATION_PUT_FETCHING:
+            return {...state, isFetching: true, currentInfoMessage: '', currentErrorMessage: ''}
+        case NOTIFICATION_PUT_SUCCESS:
+            return {...state, isFetching: false}
+        case NOTIFICATION_PUT_ERROR:
+            return {...state, isFetching: false, currentErrorMessage: action.payload}
 
         default: 
             return state

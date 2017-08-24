@@ -75,6 +75,7 @@ class NewArticle extends Component {
                     title={this.props.article.currentArticle.title}
                     body={this.props.article.currentArticle.body}
                     year={this.props.article.currentArticle.year}
+                    price={this.props.article.currentArticle.price}
                     tags={this.props.article.currentArticle.tag}
                     imageUrl={this.props.article.currentArticle.imageUrl}
                     maker={this.props.article.currentArticle.maker}

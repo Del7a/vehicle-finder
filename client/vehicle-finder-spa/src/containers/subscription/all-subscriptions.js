@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { requestAllSubscriptions, deleteSubscription } from '../../actions/subscription';
+import { requestAllSubscriptions, deleteSubscription, requestNotifications } from '../../actions/subscription';
 import { Link } from 'react-router-dom';
 import SubscriptionListComponent  from '../../components/subscription/list-item-view';
 import { Redirect } from 'react-router'
@@ -17,6 +17,9 @@ class AllSubscriptions extends Component {
     componentDidMount() {
         if (this.props.subscription.allSubscriptions.length === 0) {
             this.props.requestAllSubscriptions()
+        }
+        if (this.props.subscription.notifications.length === 0) {
+            this.props.requestNotifications()
         }
     }
 
@@ -38,6 +41,7 @@ class AllSubscriptions extends Component {
                 <SubscriptionListComponent 
                     subscriptions={this.props.subscription.allSubscriptions}
                     handleSubscriptionDelete={this.handleSubscriptionDelete}
+                    notifications={this.props.subscription.notifications}
                 />}
             </div>
         )
@@ -50,8 +54,8 @@ function mapStateToProps({subscription}) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ requestAllSubscriptions,
-                                deleteSubscription }, dispatch);
+    return bindActionCreators({ requestAllSubscriptions, deleteSubscription,
+                                requestNotifications }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllSubscriptions);

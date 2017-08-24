@@ -50,13 +50,12 @@ export default class NewSubscriptionForm extends Component {
                 )}
             </select>
 
-        let curentMakerId = ''
-        if(this.props.makersList.length > 0) {
+       let curentMakerId = this.props.maker
+        if(this.props.makersList.length > 0 && !this.props.maker) {
             curentMakerId = this.props.makersList[0]._id
-            if(!this.props.maker) {
-                this.props.formInputChanged({maker: curentMakerId});
-            }
+            this.props.formInputChanged({maker: curentMakerId});
         }
+
         const currentMaker = this.props.makersList.filter(function(el){
             return el._id === curentMakerId
         })
