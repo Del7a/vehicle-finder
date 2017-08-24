@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 const MessageThreadSchema = new Schema({
     sendUser: { type: Schema.ObjectId, ref: 'User' },
     receiveUser: { type: Schema.ObjectId, ref: 'User' },
-    concernedOffer: { type: Scheme.ObjectId, ref: 'Article' },
+    concernedOffer: { type: Schema.ObjectId, ref: 'Article' },
     messages: [{ 
         from: { type: Schema.ObjectId, ref: 'User'},
         body: { type: String, default: '', trim: true },
