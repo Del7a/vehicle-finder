@@ -18,7 +18,12 @@ import {
     NOTIFICATION_PUT_SUCCESS,
     NOTIFICATION_PUT_ERROR,
 
-    UPDATE_SUBSCRIPTION_FORM
+    UPDATE_SUBSCRIPTION_FORM,
+
+    GET_NOTIFICATION_ARTICLE_FETCHING,
+    GET_NOTIFICATION_ARTICLE_SUCCESS,
+    GET_NOTIFICATION_ARTICLE_ERROR,
+    GET_NOTIFICATION_ARTICLE_RESET
 } from '../actions/subscription';
 
 const defaultSubscription = {
@@ -38,7 +43,8 @@ const defaultState = {
     currentErrorMessage: '',
     allSubscriptions: [],
     currentSubscription: defaultSubscription,
-    notifications: []
+    notifications: [],
+    notifArticles: []
 }
 
 
@@ -89,9 +95,18 @@ const subscription = function(state = defaultState, action) {
         case NOTIFICATION_PUT_FETCHING:
             return {...state, isFetching: true, currentInfoMessage: '', currentErrorMessage: ''}
         case NOTIFICATION_PUT_SUCCESS:
-            return {...state, isFetching: false}
+            return {...state, isFetching: false, notification: markNotificationAsSeen(state.notifications, action.payload.notification._id)}
         case NOTIFICATION_PUT_ERROR:
             return {...state, isFetching: false, currentErrorMessage: action.payload}
+
+        case GET_NOTIFICATION_ARTICLE_FETCHING:
+            return {...state}
+        case GET_NOTIFICATION_ARTICLE_SUCCESS:
+            return {...state, notifArticles: addToArray(state.notifArticles, action.payload.article, action.payload.seen)}
+        case GET_NOTIFICATION_ARTICLE_ERROR:
+            return {...state, isFetching: false, currentErrorMessage: action.payload}
+        case GET_NOTIFICATION_ARTICLE_RESET:
+            return {...state, notifArticles: []}
 
         default: 
             return state
@@ -102,6 +117,27 @@ function removeSubscriptionFromState(arr, subscriptionId) {
     return arr.filter(function (el) {
         return el._id !== subscriptionId
     })
+}
+
+function markNotificationAsSeen(notifications, targetId) {
+    return notifications.map((notification => {
+        if(notification._id === targetId) {
+            notification.isSeen = true;
+        }
+
+        return notification;
+    }));
+}
+
+function addToArray(arr, item, seen) {
+    item.seen = seen
+    var copy = arr.slice()
+    if(seen) {
+        copy.push(item)
+    } else {
+        copy.splice(0, 0, item);
+    }
+    return copy
 }
 
 export default subscription

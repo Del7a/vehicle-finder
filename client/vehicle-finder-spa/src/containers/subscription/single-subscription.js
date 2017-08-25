@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { requestNotifications, markAsSeen, requestAllSubscriptions } from '../../actions/subscription';
-import { deleteArticle, getSingleArticle} from '../../actions/article'
+import { requestNotifications, markAsSeen, getNotificationArticle, getNotificationArticleReset } from '../../actions/subscription';
+import { setCurrentArticle, deleteArticle } from '../../actions/article'
 import { Link } from 'react-router-dom';
-import ArticleListComponent  from '../../components/article/list-item-view';
+import NotificationListComponent  from '../../components/subscription/single-subscription';
 import { Redirect } from 'react-router'
 
 
@@ -13,20 +13,36 @@ class SingleSubscription extends Component {
     constructor(props) {
         super(props)
 
+        this.state = {areNotifsLoaded: false}
+
         this.handleArticleDelete = this.handleArticleDelete.bind(this)
         this.handleEditRequest = this.handleEditRequest.bind(this)
-        this.getSeen = this.getSeen.bind(this)
-        this.getUnseen = this.getUnseen.bind(this)
+        this.requestAllArticles = this.requestAllArticles.bind(this)
+        this.handleMarkAsSeen = this.handleMarkAsSeen.bind(this)
+        this.updateAcrticles = this.updateAcrticles.bind(this)
+        this.setCurrentArticle = this.setCurrentArticle.bind(this)
     }
 
     componentDidMount() {
-        if (this.props.user.notifications.length === 0) {
+        if (!this.props.subscription.notifications.length) {
             this.props.requestNotifications()
         }
-        debugger
-        console.log(this.props)
-        if (this.props.subscription.subscriptions.length === 0) {
-            this.props.requestAllSubscriptions()
+
+        if (this.props.subscription.notifArticles.length) {
+            this.props.getNotificationArticleReset()
+        }    
+
+        this.updateAcrticles()
+    }
+
+    componentDidUpdate() {
+        this.updateAcrticles()
+    }
+
+    updateAcrticles() {
+        if (this.props.subscription.notifications.length > 0 && !this.state.areNotifsLoaded) {
+            this.setState({areNotifsLoaded: true})
+            this.requestAllArticles(this.props.subscription.notifications, this.props.match.params.id)
         }
     }
 
@@ -38,58 +54,47 @@ class SingleSubscription extends Component {
         this.props.history.push(`/edit-article/${articleId}`)
     }
 
-    getUnseen(notifications, subscriptionId) {
-        const selected = notifications.filter((notification) => {
-                if(notification.subscription === subscriptionId
-                        && !notification.isSeen) {
-                    return true 
-                }
-            }).map((articleId) => {
-                return getSingleArticle(articleId)
-            })
-        return selected;
+    requestAllArticles(notification, subscriptionId) {
+        for(let i = 0; i < notification.length; i++) {
+            if(notification[i].subscription===subscriptionId) {
+                this.props.getNotificationArticle(notification[i].article, notification[i].isSeen)
+            }
+        }
     }
 
-    getSeen(notifications, subscriptionId) {
-        const selected = notifications.filter((notification) => {
-                if(notification.subscription === subscriptionId
-                        && notification.isSeen) {
-                    return true 
-                }
-            }).map((articleId) => {
-                return getSingleArticle(articleId)
-            })
-        return selected;
+    handleMarkAsSeen(articleId) {
+        var articles = this.props.subscription.notifications.filter((notif) => {
+            return notif.article === articleId
+        });
+        if (articles.length) {
+            articles.forEach(function(element) {
+                debugger
+                this.props.markAsSeen(element)
+            }, this);
+        }
+    }
+
+    setCurrentArticle(article) {
+        this.props.setCurrentArticle(article)
     }
 
     render() {
-        debugger
-        console.log(this.props)
-        const withNotification = this.getUnseen(this.props.user.notifications, 
-                        this.props.subscription.currentSubscription._id)
-        const withoutNotification = this.getSeen(this.props.user.notifications, 
-                        this.props.subscription.currentSubscription._id)               
+        const notifs = this.props.subscription.notifications;
         return (
             <div>
-                { withNotification.length
+                <input type="hidden" value={notifs.length} />
+                { !this.props.subscription.notifArticles.length
                 ? <div>None</div>
                 :
-                <ArticleListComponent 
-                    articles= {withNotification}
+                <NotificationListComponent 
+                    articles= {this.props.subscription.notifArticles}
                     handleArticleDelete={this.handleArticleDelete}
                     handleEditRequest={this.handleEditRequest}
                     currentUserId={this.props.user.currentUserId}
+                    markAsSeen={this.handleMarkAsSeen}
+                    setCurrentArticle={this.setCurrentArticle}
                 />}
                 <hr></hr>
-                { withoutNotification.length
-                ? <div>None</div>
-                :
-                <ArticleListComponent 
-                    articles= {withoutNotification}
-                    handleArticleDelete={this.handleArticleDelete}
-                    handleEditRequest={this.handleEditRequest}
-                    currentUserId={this.props.user.currentUserId}
-                />}
 
             </div>
         )
@@ -98,13 +103,13 @@ class SingleSubscription extends Component {
 
 function mapStateToProps({subscription, user}) {
     console.log(subscription)
-    console.log(user)
     return {subscription, user};
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({ requestNotifications, markAsSeen,
-                                deleteArticle }, dispatch);
+                                deleteArticle, setCurrentArticle, getNotificationArticle,
+                                getNotificationArticleReset }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleSubscription);

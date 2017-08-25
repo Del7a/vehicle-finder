@@ -24,6 +24,10 @@ export const NOTIFICATION_PUT_FETCHING = 'NOTIFICATION_PUT_FETCHING';
 export const NOTIFICATION_PUT_SUCCESS = 'NOTIFICATION_PUT_SUCCESS';
 export const NOTIFICATION_PUT_ERROR = 'NOTIFICATION_PUT_ERROR';
 
+export const GET_NOTIFICATION_ARTICLE_FETCHING = 'GET_NOTIFICATION_ARTICLE_FETCHING'
+export const GET_NOTIFICATION_ARTICLE_SUCCESS = 'GET_NOTIFICATION_ARTICLE_SUCCESS'
+export const GET_NOTIFICATION_ARTICLE_ERROR = 'GET_NOTIFICATION_ARTICLE_ERROR'
+export const GET_NOTIFICATION_ARTICLE_RESET = 'GET_NOTIFICATION_ARTICLE_RESET'
 
 function updateForm(newState) {
     return {
@@ -289,6 +293,7 @@ function markAsSeenError(msg) {
 function markAsSeen(notification) {
      return dispatch => {
         dispatch(markAsSeenFetching())
+        dispatch(markAsSeenSuccess(notification))
         return fetch(`http://localhost:3000/api/profile/notifications/${notification._id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
@@ -301,8 +306,9 @@ function markAsSeen(notification) {
             })
             .then(json => {
                 console.log(json);
+                debugger
                 if(json.success) {
-                    dispatch(markAsSeenSuccess(json.notification))
+                    dispatch(markAsSeenSuccess(notification))
                 } else {
                     dispatch(markAsSeenError(json.msg))
                 }                
@@ -310,6 +316,60 @@ function markAsSeen(notification) {
     }
 }
 
+/**
+ * Get notification article
+ */
+
+function getNotificationArticleFetching() {
+    return {
+        type: GET_NOTIFICATION_ARTICLE_FETCHING
+    }
+}
+
+function getNotificationArticleSuccess(article, seen) {
+    return {
+        type: GET_NOTIFICATION_ARTICLE_SUCCESS,
+        payload: {article: article, seen: seen}
+    }
+}
+
+function getNotificationArticleError(msg) {
+    return {
+        type: GET_NOTIFICATION_ARTICLE_ERROR,
+        payload: {message: msg}
+    }
+}
+
+function getNotificationArticleReset() {
+    return {
+        type: GET_NOTIFICATION_ARTICLE_RESET
+    }
+}
+
+function getNotificationArticle(articleId, seen) {
+     return dispatch => {
+        dispatch(getNotificationArticleFetching())
+        return fetch(`http://localhost:3000/api/articles/${articleId}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include'
+            })
+            .then(response => {
+                console.log(response);
+                return response.json()
+            })
+            .then(json => {
+                console.log(json);
+                if(json.success) {
+                    dispatch(getNotificationArticleSuccess(json.article, seen))
+                } else {
+                    dispatch(getNotificationArticleError(json.msg))
+                }                
+            })
+    }
+}
+
 export {requestAllSubscriptions,fetchSingleSubscription,
         createSubscription, deleteSubscription, updateForm,
-        requestNotifications, markAsSeen}
+        requestNotifications, markAsSeen, getNotificationArticle, 
+        getNotificationArticleReset}

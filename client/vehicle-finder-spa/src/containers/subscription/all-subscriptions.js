@@ -21,6 +21,7 @@ class AllSubscriptions extends Component {
         if (this.props.subscription.notifications.length === 0) {
             this.props.requestNotifications()
         }
+        console.log(this.props)
     }
 
     handleSubscriptionDelete(ev, subscription) {
