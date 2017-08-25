@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import SingleArticleComponent  from '../../components/article/single-item-view';
 import { Redirect } from 'react-router'
 
-
 class SingleArticle extends Component {
 
     componentDidMount() {

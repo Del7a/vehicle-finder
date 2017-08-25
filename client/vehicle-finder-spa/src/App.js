@@ -24,6 +24,7 @@ import SingleArticle from './containers/article/single-article';
 import NewSubscription from './containers/subscription/new-subscription'
 import AllSubscriptions from './containers/subscription/all-subscriptions'
 import SingleSubscription from './containers/subscription/single-subscription'
+import AllMessageThreads from './containers/messages/all-message-threads'
 import { routerReducer, routerMiddleware } from 'react-router-redux'
 
 
@@ -72,6 +73,7 @@ class App extends Component {
                         <Route path='/create-subscription' component={NewSubscription} />
                         <Route path='/subscriptions' component={AllSubscriptions} />
                         <Route path='/subscription/:id' component={SingleSubscription} />
+                        <Route path='/messages' component={AllMessageThreads} />
                         <Route path='*' component={NotFound} />
                     </Switch>
             </BrowserRouter>

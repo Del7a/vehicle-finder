@@ -16,7 +16,7 @@ import {
     MESSAGE_READ_ERROR
 } from '../actions/messages'
 
-const defaultState = {
+const defaultMessageThread = {
     sendUser: '',
     recieveUser: '',
     cuncernedOffer: '',
@@ -25,10 +25,14 @@ const defaultState = {
     recieverLastSeen: '',
     updatedAt: '',
     createdAt: '',
+}
+
+const defaultState = {
     isFetching: false,
     currentInfoMessage: '',
     currentErrorMessage: '',
-    messageThreads: []
+    messageThreads: [],
+    currentMessageThread: defaultMessageThread
 }
 
 const messages = function (state = defaultState, action) {
@@ -60,7 +64,7 @@ const messages = function (state = defaultState, action) {
             return {...state, isFetching: true, currentErrorMessage: '', currentInfoMessage: ''}
         case MESSAGE_PUT_SUCCESS:
             return {...state, isFetching: false, currentInfoMessage: action.payload.message, 
-                    messages: addElementToArray(state.messages, action.payload.chatMessage)}
+                    messages: addElementToArray(state.currentMessageThread.messages, action.payload.chatMessage)}
         case MESSAGE_PUT_ERROR:
             return {...state, isFetching: false, currentErrorMessage: action.payload.message}
         
@@ -69,7 +73,10 @@ const messages = function (state = defaultState, action) {
         case MESSAGE_READ_SUCCESS:
             return {...state, isFetching: false, currentInfoMessage: action.payload.message}
         case MESSAGE_READ_ERROR:
-            return {...state, isFetching: false, currentErrorMessage: action.payload.message}
+           return {...state, isFetching: false, currentErrorMessage: action.payload.message}
+        
+        default: 
+            return state
     }
 }
 
@@ -79,3 +86,5 @@ function addElementToArray(arr, messageThread)
     newArr.push(messageThread)
     return newArr
 }
+
+export default messages

@@ -3,8 +3,8 @@ import {Link} from 'react-router-dom';
 
 export default class ArticleListComponent extends Component {
 
-    constructor(propms) {
-        super(propms)
+    constructor(props) {
+        super(props)
 
         this.handleDelete = this.handleDelete.bind(this)
         this.handleEditRequest = this.handleEditRequest.bind(this)

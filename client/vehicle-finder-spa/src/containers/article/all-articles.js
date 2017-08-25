@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { requestAllArticles, updateForm, deleteArticle, searchArticles } from '../../actions/article';
 import { Link } from 'react-router-dom';
 import ArticleListComponent  from '../../components/article/list-item-view';
-import { Redirect } from 'react-router'
+
 
 
 class AllArticles extends Component {
@@ -18,7 +18,7 @@ class AllArticles extends Component {
     }
 
     componentDidMount() {
-        if (this.props.article.allArticles.length === 0) {
+        if (this.props.article.allArticles.length) {
             this.props.requestAllArticles()
         }
     }
@@ -63,7 +63,6 @@ class AllArticles extends Component {
 }
 
 function mapStateToProps({article, user}) {
-    console.log(article)
     return {article, user};
 }
 
