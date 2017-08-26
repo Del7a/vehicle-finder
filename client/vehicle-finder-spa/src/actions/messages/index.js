@@ -18,6 +18,8 @@ export const MESSAGE_READ_FETCHING = 'MESSAGE_READ_FETCHING'
 export const MESSAGE_READ_SUCCESS = 'MESSAGE_READ_SUCCESS'
 export const MESSAGE_READ_ERROR = 'MESSAGE_READ_ERROR'
 
+export const SET_CURRENT_MESSAGE_THREAD = 'SET_CURRENT_MESSAGE_THREAD';
+
 /**
  * Message threads get
  */
@@ -45,7 +47,7 @@ function allMessageThreadsGetError(msg) {
 function requestAllMessageThreads() {
     return dispatch => {
         dispatch(allMessageThreadsGetFetching())
-        return fetch(`http://localhost:3000/messages`, {
+        return fetch(`http://localhost:3000/api/messages`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include'
@@ -90,14 +92,19 @@ function messageThreadPostError(msg) {
     }
 }
 
-function createMessageThread(messageThread) {
+function addMessageToArticle(offerId, recipientId, newMessage) {
+    debugger
     return dispatch => {
         dispatch(messageThreadPostFetching())
-        return fetch(`http://localhost:3000/messages/`, {
+        return fetch(`http://localhost:3000/api/messages`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
-                body: JSON.stringify(messageThread)
+                body: JSON.stringify({
+                    concernedOffer: offerId,
+                    receiveUser: recipientId,
+                    msg: newMessage
+                })
             })
             .then(response => {
                 console.log(response);
@@ -124,23 +131,23 @@ function allMessagesGetFetching() {
     }
 }
 
-function allMessagesGetSuccess(messages) {
+function allMessagesGetSuccess(thread) {
     return {
-        type: ALL_MESSAGE_THREADS_GET_SUCCESS,
-        payload: { messages: messages }
+        type: ALL_MESSAGES_GET_SUCCESS,
+        payload: { thread: thread }
     }
 }
 
 function allMessagesGetError() {
     return {
-        type: ALL_MESSAGE_THREADS_GET_ERROR
+        type: ALL_MESSAGES_GET_ERROR
     }
 }
 
 function requestAllMessages(messageThread) {
     return dispatch => {
         dispatch(allMessagesGetFetching())
-        return fetch(`http://localhost:3000/messages/${messageThread._id}`, {
+        return fetch(`http://localhost:3000/api/messages/${messageThread._id}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include'
@@ -186,12 +193,13 @@ function messagePutError(msg) {
 
 function sendMessage(message, messageThread) {
      return dispatch => {
+         debugger
         dispatch(messagePutFetching())
         return fetch(`http://localhost:3000/api/messages/${messageThread._id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
-                body: JSON.stringify(message)
+                body: JSON.stringify({msg: message})
             })
             .then(response => {
                 console.log(response);
@@ -200,7 +208,7 @@ function sendMessage(message, messageThread) {
             .then(json => {
                 console.log(json);
                 if(json.success) {
-                    dispatch(messagePutSuccess(json.thread, json.msg))
+                    dispatch(messagePutSuccess(message, json.msg))
                 } else {
                     dispatch(messagePutError(json.msg))
                 }                
@@ -255,5 +263,18 @@ function markAsRead(messageThread) {
     }
 }
 
-export { requestAllMessageThreads, createMessageThread, requestAllMessages, 
-        sendMessage, markAsRead}
+function setCurrentMessageThread(messageThread) {
+    return {
+        type: SET_CURRENT_MESSAGE_THREAD,
+        payload: messageThread
+    }
+}
+
+function changeCurrentMessageThread(messageThread) {
+    return dispatch => {
+        dispatch(setCurrentMessageThread(messageThread))
+    }
+}
+
+export { requestAllMessageThreads, addMessageToArticle, requestAllMessages, 
+        sendMessage, markAsRead, changeCurrentMessageThread}

@@ -230,7 +230,7 @@ function notificationsFetching() {
     }
 }
 
-function notificationsSuccess(notification) {
+function notificationsSuccess(notification) {   
     return {
         type: NOTIFICATIONS_GET_SUCCESS,
         payload: notification

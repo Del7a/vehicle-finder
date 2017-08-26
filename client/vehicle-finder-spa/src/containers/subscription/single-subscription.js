@@ -13,7 +13,7 @@ class SingleSubscription extends Component {
     constructor(props) {
         super(props)
 
-        this.state = {areNotifsLoaded: false}
+        this.state = {areNotifsLoaded: false, notifRequested: false}
 
         this.handleArticleDelete = this.handleArticleDelete.bind(this)
         this.handleEditRequest = this.handleEditRequest.bind(this)
@@ -24,7 +24,8 @@ class SingleSubscription extends Component {
     }
 
     componentDidMount() {
-        if (!this.props.subscription.notifications.length) {
+        if (!this.props.subscription.notifications.length && !this.state.notifRequested) {
+            this.setState({notifRequested: true})
             this.props.requestNotifications()
         }
 
@@ -55,12 +56,26 @@ class SingleSubscription extends Component {
     }
 
     requestAllArticles(notification, subscriptionId) {
+        const requestedArticles = [];
+        
         for(let i = 0; i < notification.length; i++) {
-            if(notification[i].subscription===subscriptionId) {
-                this.props.getNotificationArticle(notification[i].article, notification[i].isSeen)
+            if(notification[i].subscription === subscriptionId 
+                && !requestedArticles.includes(notification[i].article)
+            ) {
+                requestedArticles.push(notification[i].article)
+                
+                const newArticlesCount = this.notSeen = notification.filter((n =>
+                    n.article === notification[i].article &&
+                    n.subscription === notification[i].subscription &&
+                    !n.isSeen
+                )).length;
+                
+                this.props.getNotificationArticle(notification[i].article, !newArticlesCount)
             }
         }
     }
+
+    checkArticleIn
 
     handleMarkAsSeen(articleId) {
         var articles = this.props.subscription.notifications.filter((notif) => {

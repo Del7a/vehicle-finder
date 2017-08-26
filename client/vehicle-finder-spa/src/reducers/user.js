@@ -48,6 +48,7 @@ const user = function(state = defaultState, action) {
             return {...state, isFetching: true, hasReqestedRegistration: true,
                 usernameTaken: false, currentErrorMessage: ''}
         case FORM_CHANGED:
+        debugger
             return Object.assign({}, state, action.payload)
         case USERNAME_ALREADY_USED:
             return {...state, usernameTaken: action.payload}
@@ -76,7 +77,9 @@ const user = function(state = defaultState, action) {
         case PROFILE_FETCH_REQUEST:
             return {...state, isFetching: true}
         case PROFILE_FETCHED:
-            return Object.assign({}, state, {isFetching: false} ,action.payload)
+            var newState = Object.assign({}, state, {isFetching: false}, action.payload);
+            newState.userId = action.payload._id;
+            return newState
         case PROFILE_FETCH_ERROR:
             return{...state, isFetching: false,
                 currentErrorMessage: action.payload.message
@@ -91,6 +94,7 @@ const user = function(state = defaultState, action) {
                 currentErrorMessage: action.payload.message
             }
         case SET_CURRENT_USER:
+            debugger
             return {...state, userId: action.payload.user.user_id,
                     firstName: action.payload.user.firstName,
                     lastName: action.payload.user.lastName,

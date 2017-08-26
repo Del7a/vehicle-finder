@@ -4,7 +4,8 @@ import { bindActionCreators } from 'redux';
 import { getSingleArticle, updateForm, setCurrentArticle } from '../../actions/article';
 import { Link } from 'react-router-dom';
 import SingleArticleComponent  from '../../components/article/single-item-view';
-import { Redirect } from 'react-router'
+import { Redirect } from 'react-router';
+import SingleMessageThread from '../messages/single-thread';
 
 class SingleArticle extends Component {
 
@@ -35,6 +36,10 @@ class SingleArticle extends Component {
                     year={this.props.article.currentArticle.year}
                     imageUrl={this.props.article.currentArticle.imageUrl}
                     tags={this.props.article.currentArticle.tags}
+                />
+                <SingleMessageThread
+                    articleId={this.props.article.currentArticle._id}
+                    articleOwner={this.props.article.currentArticle.user}
                 />
             </div>
         )

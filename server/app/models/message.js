@@ -46,11 +46,11 @@ MessageThreadSchema.methods = {
         });
 
         if (senderId == this.sendUser.id)
-            this.senderLastSeen(Date.now());
+            this.senderLastSeen = Date.now();
         else 
-            this.receiverLastSeen(Date.now());
+            this.receiverLastSeen = Date.now();
 
-        this.updatedAt(Date.now());
+        this.updatedAt = Date.now();
 
         return this.save(function (err) {
             return cb(err);
@@ -65,10 +65,10 @@ MessageThreadSchema.methods = {
      * @api private
      */
     markSeen: function (userId, cb) {
-        if (senderId == this.sendUser.id)
-            this.senderLastSeen(Date.now());
+        if (userId == this.sendUser.id)
+            this.senderLastSeen = Date.now();
         else 
-            this.receiverLastSeen(Date.now());
+            this.receiverLastSeen = Date.now();
 
         return this.save(function (err) {
             return cb(err);
@@ -108,7 +108,7 @@ MessageThreadSchema.statics = {
         return this.find(criteria)
             .select('sendUser receiveUser concernedOffer senderLastSeen receiverLastSeen updatedAt createdAt')
             .populate('sendUser', 'email firstName lastName')
-            .populate('receiveUser', 'email firstName, lastName')
+            .populate('receiveUser', 'email firstName lastName')
             .populate('concernedOffer', 'title')
             .sort({ updatedAt: -1 })
             .exec(cb);

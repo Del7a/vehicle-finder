@@ -13,8 +13,17 @@ import {
     MESSAGE_PUT_ERROR,
     MESSAGE_READ_FETCHING,
     MESSAGE_READ_SUCCESS,
-    MESSAGE_READ_ERROR
+    MESSAGE_READ_ERROR,
+
+    SET_CURRENT_MESSAGE_THREAD
 } from '../actions/messages'
+
+const defaultMessage = {
+    _id: '',
+    from: '',
+    createdAt: '',
+    body: ''
+}
 
 const defaultMessageThread = {
     sendUser: '',
@@ -56,7 +65,7 @@ const messages = function (state = defaultState, action) {
             return {...state, isFetching: true, currentErrorMessage: '', currentInfoMessage: ''}
         case ALL_MESSAGES_GET_SUCCESS:
             return {...state, isFetching: false, currentInfoMessage: action.payload.message, 
-                    messages: action.payload.messages}
+                    currentMessageThread: action.payload.thread}
         case ALL_MESSAGES_GET_ERROR:
             return {...state, isFetching: false}
 
@@ -64,7 +73,8 @@ const messages = function (state = defaultState, action) {
             return {...state, isFetching: true, currentErrorMessage: '', currentInfoMessage: ''}
         case MESSAGE_PUT_SUCCESS:
             return {...state, isFetching: false, currentInfoMessage: action.payload.message, 
-                    messages: addElementToArray(state.currentMessageThread.messages, action.payload.chatMessage)}
+                    currentMessageThread: {...state.currentMessageThread,
+                        messages: addNewMessage(state.currentMessageThread.messages, action.payload.chatMessage)}}
         case MESSAGE_PUT_ERROR:
             return {...state, isFetching: false, currentErrorMessage: action.payload.message}
         
@@ -75,15 +85,27 @@ const messages = function (state = defaultState, action) {
         case MESSAGE_READ_ERROR:
            return {...state, isFetching: false, currentErrorMessage: action.payload.message}
         
+        case SET_CURRENT_MESSAGE_THREAD:
+           return {...state, currentMessageThread: action.payload}
+
         default: 
             return state
     }
 }
 
-function addElementToArray(arr, messageThread)
-{
-    const newArr = arr.spice()
-    newArr.push(messageThread)
+function addNewMessage(arr, newMessageText) {
+    let sampleMessage = {...defaultMessage}
+    sampleMessage.body = newMessageText;
+    sampleMessage.createdAt = new Date().toJSON()
+    sampleMessage._id = Date.now();
+    sampleMessage
+    return addElementToArray(arr, sampleMessage)
+}
+
+function addElementToArray(arr, item) {
+    debugger
+    const newArr = arr.slice()
+    newArr.push(item)
     return newArr
 }
 

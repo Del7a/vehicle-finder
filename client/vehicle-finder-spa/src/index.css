@@ -3,3 +3,29 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+ul {
+  list-style-type: none
+}
+
+.message-box {
+  border-radius: 10em;
+  padding: 2em; 
+  margin-bottom: .5em
+}
+
+li:last-child .me {
+  border-radius: 10em 10em 10em 1em;
+}
+
+li:last-child .other {
+  border-radius: 10em 10em 1em 10em;
+}
+
+.me {
+  background-color: #5F98F4;
+}
+
+.other {
+  background-color: #95f78a;
+}

@@ -70,7 +70,8 @@ exports.sendMessage = function (req, res) {
     } else {
         req.messageThread.addMessage(req.user, req.body.msg, function (err) {
             if (err) return res.json({ success: false, msg: err });
-            res.json({ success: true, thread: msgThread._id, msg: 'Message sent!' });
+            //res.json({ success: true, thread: req.msgThread._id, msg: 'Message sent!' });
+            res.json({ success: true, msg: 'Message sent!' });
         });
     }
 };
