@@ -306,7 +306,6 @@ function markAsSeen(notification) {
             })
             .then(json => {
                 console.log(json);
-                debugger
                 if(json.success) {
                     dispatch(markAsSeenSuccess(notification))
                 } else {

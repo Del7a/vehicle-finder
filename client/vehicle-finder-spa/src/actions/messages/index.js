@@ -92,8 +92,7 @@ function messageThreadPostError(msg) {
     }
 }
 
-function addMessageToArticle(offerId, recipientId, newMessage) {
-    debugger
+function addMessageToArticle(offerId, recipientId, newMessage) {  
     return dispatch => {
         dispatch(messageThreadPostFetching())
         return fetch(`http://localhost:3000/api/messages`, {
@@ -177,10 +176,10 @@ function messagePutFetching() {
     }
 }
 
-function messagePutSuccess(chatMessage, msg) {
+function messagePutSuccess(chatMessage, msg, senderId) {
     return {
         type: MESSAGE_PUT_SUCCESS,
-        payload: {chatMessage: chatMessage, message: msg}
+        payload: {chatMessage: chatMessage, message: msg, senderId: senderId}
     }
 }
 
@@ -191,9 +190,8 @@ function messagePutError(msg) {
     }
 }
 
-function sendMessage(message, messageThread) {
-     return dispatch => {
-         debugger
+function sendMessage(message, messageThread, senderId) {
+     return dispatch => { 
         dispatch(messagePutFetching())
         return fetch(`http://localhost:3000/api/messages/${messageThread._id}`, {
                 method: 'PUT',
@@ -208,7 +206,7 @@ function sendMessage(message, messageThread) {
             .then(json => {
                 console.log(json);
                 if(json.success) {
-                    dispatch(messagePutSuccess(message, json.msg))
+                    dispatch(messagePutSuccess(message, json.msg, senderId))
                 } else {
                     dispatch(messagePutError(json.msg))
                 }                

@@ -31,13 +31,14 @@ class SingleMessageThread extends Component {
         let articleId = this.props.articleId;
 
         if (this.props.messages.currentMessageThread._id) {
-            this.props.sendMessage(newMessage, this.props.messages.currentMessageThread)
+            this.props.sendMessage(newMessage, this.props.messages.currentMessageThread, this.props.user.userId)
         } 
         else if (articleId) {
             let articleOwner = this.props.articleOwner._id;
             this.props.addMessageToArticle(articleId, articleOwner, newMessage)
         }
-
+        console.log(this.props)
+        debugger
     }
 
     onMessageThreadClick(messageThread) {

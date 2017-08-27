@@ -74,7 +74,7 @@ const messages = function (state = defaultState, action) {
         case MESSAGE_PUT_SUCCESS:
             return {...state, isFetching: false, currentInfoMessage: action.payload.message, 
                     currentMessageThread: {...state.currentMessageThread,
-                        messages: addNewMessage(state.currentMessageThread.messages, action.payload.chatMessage)}}
+                        messages: addNewMessage(state.currentMessageThread.messages, action.payload.chatMessage, action.payload.senderId)}}
         case MESSAGE_PUT_ERROR:
             return {...state, isFetching: false, currentErrorMessage: action.payload.message}
         
@@ -93,17 +93,16 @@ const messages = function (state = defaultState, action) {
     }
 }
 
-function addNewMessage(arr, newMessageText) {
+function addNewMessage(arr, newMessageText, senderId) {
     let sampleMessage = {...defaultMessage}
     sampleMessage.body = newMessageText;
     sampleMessage.createdAt = new Date().toJSON()
     sampleMessage._id = Date.now();
-    sampleMessage
+    sampleMessage.from = senderId
     return addElementToArray(arr, sampleMessage)
 }
 
-function addElementToArray(arr, item) {
-    debugger
+function addElementToArray(arr, item) { 
     const newArr = arr.slice()
     newArr.push(item)
     return newArr

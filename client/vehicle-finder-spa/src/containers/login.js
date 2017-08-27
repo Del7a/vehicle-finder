@@ -39,11 +39,11 @@ class LoginForm extends Component {
             formInputChanged={this.formInputChanged}
             username={this.props.user.username}
             password={this.props.user.password}
-            loginFailed={this.props.user.loginFailed} />
+            loginFailed={this.props.user.loginFailed} 
+            heading='Login'/>
 
     return(
         <div>
-            <h1>Login</h1>
             <div>{form}</div>
             <div>{redirAfterLogin}</div>
         </div>

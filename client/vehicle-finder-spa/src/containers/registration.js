@@ -40,13 +40,13 @@ class RegistrationForm extends Component {
             formInputChanged={this.formInputChanged}
             username={this.props.user.username}
             password={this.props.user.password}
-            usernameTaken={this.props.user.usernameTaken} />
+            usernameTaken={this.props.user.usernameTaken} 
+            heading='Register'/>
 
 
 
     return(
        <div>
-           <h1>Register</h1>
            <div>{form}</div>
            <div>{redirAfterReg}</div>
        </div>

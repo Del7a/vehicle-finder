@@ -26,6 +26,7 @@ import AllSubscriptions from './containers/subscription/all-subscriptions';
 import SingleSubscription from './containers/subscription/single-subscription';
 import AllMessageThreads from './containers/messages/all-message-threads';
 import SingleMessageThread from './containers/messages/single-thread';
+import Navbar from './containers/navbar'
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 
 
@@ -39,24 +40,20 @@ const history = createHashHistory(store);
 
 store.subscribe(() => { });
 
-class Home extends Component {
-  render() {
-    return(<div>HOME</div>);
-  }
-}
-
 class App extends Component {
   render() {
     
     return (
       <div>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css" />
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" />
 
         <Provider store={store}>
             <BrowserRouter history={history}>
+              <div>
+                <Navbar />
                     <Switch>
-                        <Route exact path='/' component={Home} />
-                        <Route path='/home' component={Home} />
+                        
                         <Route path='/register' component={RegistrationForm} />
                         <Route path='/login' component={LoginForm} />
                         <Route path='/change-pass' component={ChangePassword} />
@@ -79,6 +76,7 @@ class App extends Component {
                         
                         <Route path='*' component={NotFound} />
                     </Switch>
+              </div>
             </BrowserRouter>
         </Provider>
         </div>

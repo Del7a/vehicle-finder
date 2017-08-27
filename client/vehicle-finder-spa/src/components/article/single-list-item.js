@@ -33,9 +33,29 @@ export default class SingleListItem extends Component {
         return (
                 <li key={this.props.article._id} onClick={() => this.onClick(this.props.article)}>
                     <Link to={{pathname: `/article/${this.props.article._id}`}}>
-                    <img className="offer-image" src={imageSrc} alt="Offer" />
-                    
-                        {this.props.article.title} - {this.props.article.year}
+                    <div className="list-group-item active">
+                        <div class="media col-md-3">
+                            <figure className="pull-left">
+                                <img className="media-object img-rounded img-responsive" src={imageSrc} alt="Offer" />
+                            </figure>
+                        </div>
+                        <div className="col-md-6">
+                            <h4 className="list-group-item-heading"> {this.props.article.title} </h4>
+                            <p className="list-group-item-text"> {this.props.article.year} </p>
+                        </div>
+                        <div className="col-md-3 text-center">
+                            <h2> 14240 <small> votes </small></h2>
+                            <button type="button" class="btn btn-default btn-lg btn-block"> Vote Now! </button>
+                            <div class="stars">
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star-empty"></span>
+                    </div>
+                    <p> Average 4.5 <small> / </small> 5 </p>
+                        </div>
+                    </div>
                     </Link>
                     {this.props.article.user.id === this.props.currentUserId?
                     <button
@@ -50,7 +70,8 @@ export default class SingleListItem extends Component {
                     { this.props.article.seen === false ?
                     <span className="glyphicon glyphicon-exclamation-sign"> </span> : ''
                     }
-            </li>
+                </li>
+                
         )
     }
 }

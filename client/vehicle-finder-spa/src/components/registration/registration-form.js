@@ -40,58 +40,41 @@ export default class Form extends Component {
         const errors = this.validate(this.props.username, this.props.password);
         const isEnabled = !Object.keys(errors).some(x => errors[x]);
 
-
         return (
             <div className="container">
-                <div className="row main">
-                    <div className="main-login main-center">
-                    <form className="form-horizontal"
-                    onSubmit={this.props.handleSubmit}>
-                        <div className="form-group">
-                            <label className="cols-sm-2 control-label"> User Name </label>
-                                <div className="cols-sm-10">
-								<div className="input-group">
-                                    <input type="text" 
-                                        className={errors.username ? "error" : ""}
-                                        value={this.props.username}
-                                        onChange={this.handleInputChange('username')}
-                                        onBlur={this.handleBlur('username')}
-                                    />
-                                </div>
-                            </div>
-                            { this.props.usernameTaken
+
+                <h1 className="welcome text-center">Welcome to AutoBot </h1>
+                    <div className="card card-container">
+                    <h2 className='login_title text-center'>{this.props.heading}</h2>
+                    
+                        <form className="form-signin"
+                            onSubmit={this.props.handleSubmit}>
+                            <span id="reauth-email" className="reauth-email"></span>
+                            <p className="input_title">Username</p>
+                            <input type="text" id="inputEmail" className="login_box" placeholder="example" required autofocus 
+                                value={this.props.username}
+                                onChange={this.handleInputChange('username')}/>
+                            <p className="input_title">Password</p>
+                            <input type="password" id="inputPassword" className="login_box" placeholder="******" required 
+                                value={this.props.password}
+                                onChange={this.handleInputChange('password')}/>
+                            <div id="remember" className="checkbox">
+                                { this.props.usernameTaken
                                 ? 
                                 <div className="alert alert-danger">
                                     <strong>Name already taken!</strong>
                                 </div>
                                 : ""}
-                            { this.props.loginFailed
+                                { this.props.loginFailed
                                 ? 
                                 <div className="alert alert-danger">
                                     <strong>Incorrect username or password!</strong>
                                 </div>
-                                : ""}
+                                : ""} 
                             </div>
-                         <div className="form-group">
-                            <label className="cols-sm-2 control-label">Password</label>
-                                <div className="cols-sm-10">
-								<div className="input-group">
-                               
-                                <input type="password"
-                                    className={errors.password ? "error" : ""}
-                                    value={this.props.password}
-                                    onChange={this.handleInputChange('password')}
-                                    onBlur={this.handleBlur('password')}
-                                />
-                                 </div>
-                            </div>                            
-                        </div>
-                        <input type="submit"
-                            disabled={!isEnabled}
-                            className="btn btn-danger" />
-                    </form>
+                            <button className="btn btn-lg btn-primary" type="submit" disabled={!isEnabled}>{this.props.heading} </button>
+                        </form>
                     </div>
-                </div>
             </div>
         )
     }

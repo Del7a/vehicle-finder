@@ -48,7 +48,6 @@ const user = function(state = defaultState, action) {
             return {...state, isFetching: true, hasReqestedRegistration: true,
                 usernameTaken: false, currentErrorMessage: ''}
         case FORM_CHANGED:
-        debugger
             return Object.assign({}, state, action.payload)
         case USERNAME_ALREADY_USED:
             return {...state, usernameTaken: action.payload}
@@ -94,7 +93,6 @@ const user = function(state = defaultState, action) {
                 currentErrorMessage: action.payload.message
             }
         case SET_CURRENT_USER:
-            debugger
             return {...state, userId: action.payload.user.user_id,
                     firstName: action.payload.user.firstName,
                     lastName: action.payload.user.lastName,

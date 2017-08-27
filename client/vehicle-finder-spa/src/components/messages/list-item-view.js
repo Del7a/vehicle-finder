@@ -10,7 +10,6 @@ export default class MessageThreadListComponent extends Component {
     }
 
     onMessageThreadClick(messageThread) {
-        debugger
         this.props.onMessageThreadClick(messageThread)
     }
 
