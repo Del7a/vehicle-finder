@@ -16,12 +16,15 @@ export default class SubscriptionListComponent extends Component {
 
     getCount(subscriptionId)
     {
-        const unseen = this.props.notifications.filter((notification) => {
-                if(subscriptionId === notification.subscription && !notification.isSeen) {
-                    return true;
+        const notseen = []
+        this.props.notifications.forEach(function(element) {
+            if(!notseen.includes(element.article) && subscriptionId === element.subscription
+                && element.isSeen === false) {
+                    notseen.push(element.article)
                 }
-            })
-        return unseen.length
+        }, this);
+            
+        return notseen.length
     }
 
     render() {

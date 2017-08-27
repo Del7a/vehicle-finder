@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { requestAllArticles, updateForm, deleteArticle, searchArticles } from '../../actions/article';
+import { requestAllArticles, updateForm, deleteArticle, searchArticles, setCurrentArticle } from '../../actions/article';
 import { Link } from 'react-router-dom';
-import ArticleListComponent  from '../../components/article/list-item-view';
+import ArticleListComponent  from '../../components/article/all-articles';
 
 
 
@@ -15,10 +15,11 @@ class AllArticles extends Component {
         this.handleArticleDelete = this.handleArticleDelete.bind(this)
         this.handleSearch = this.handleSearch.bind(this)
         this.handleEditRequest = this.handleEditRequest.bind(this)
+        this.onClick = this.onClick.bind(this)
     }
 
     componentDidMount() {
-        if (this.props.article.allArticles.length) {
+        if (!this.props.article.allArticles.length) {
             this.props.requestAllArticles()
         }
     }
@@ -40,6 +41,11 @@ class AllArticles extends Component {
         this.props.history.push(`/edit-article/${articleId}`)
     }
 
+    onClick(article)
+    {
+       this.props.setCurrentArticle(article)
+    }
+
     render() {
         return (
             <div>
@@ -56,6 +62,9 @@ class AllArticles extends Component {
                     handleArticleDelete={this.handleArticleDelete}
                     handleEditRequest={this.handleEditRequest}
                     currentUserId={this.props.user.currentUserId}
+                    setCurrentArticle={this.setCurrentArticle}
+                    onClick={this.onClick}
+
                 />}
             </div>
         )
@@ -68,7 +77,7 @@ function mapStateToProps({article, user}) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({ requestAllArticles, updateForm,
-                                deleteArticle, searchArticles }, dispatch);
+                                deleteArticle, searchArticles, setCurrentArticle }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllArticles);

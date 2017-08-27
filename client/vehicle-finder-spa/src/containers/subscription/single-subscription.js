@@ -83,7 +83,6 @@ class SingleSubscription extends Component {
         });
         if (articles.length) {
             articles.forEach(function(element) {
-                debugger
                 this.props.markAsSeen(element)
             }, this);
         }

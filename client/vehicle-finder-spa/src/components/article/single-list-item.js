@@ -47,7 +47,7 @@ export default class SingleListItem extends Component {
                         onClick={this.handleEditRequest.bind(this, this.props.article._id)}>
                         Edit
                     </button> : ''}
-                    {!this.props.article.seen?
+                    { this.props.article.seen === false ?
                     <span className="glyphicon glyphicon-exclamation-sign"> </span> : ''
                     }
             </li>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import SingleListItem from './single-list-item';
 
 export default class ArticleListComponent extends Component {
 
@@ -8,6 +9,7 @@ export default class ArticleListComponent extends Component {
 
         this.handleDelete = this.handleDelete.bind(this)
         this.handleEditRequest = this.handleEditRequest.bind(this)
+        this.onClick = this.onClick.bind(this)
     }
 
     handleDelete(ev, articleId) {
@@ -18,23 +20,20 @@ export default class ArticleListComponent extends Component {
         this.props.handleEditRequest(articleId)
     }
 
+    onClick(article) {
+        this.props.onClick(article)
+    }
+
     render() {
         const listItems = this.props.articles.map((article) =>
-            <li key={article._id}>
-                <Link to={{pathname: `/article/${article._id}`}}>
-                    {article.title} - {article.year}
-                </Link>
-                {article.user.id === this.props.currentUserId?
-                <button
-                    onClick={this.handleDelete.bind(this, article)}>
-                    X
-                </button> : ''}
-                {article.user.id === this.props.currentUserId?
-                <button
-                    onClick={this.handleEditRequest.bind(this, article._id)}>
-                    Edit
-                </button> : ''}
-            </li>)
+            <SingleListItem
+                article={article}
+                handleDelete={this.handleDelete}
+                handleEditRequest={this.handleEditRequest}
+                onClick={this.props.onClick}
+                currentUserId={this.props.currentUserId}
+            />)
+
 
         return (
             <div>

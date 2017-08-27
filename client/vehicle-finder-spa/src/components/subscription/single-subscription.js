@@ -31,10 +31,6 @@ export default class NotificationListComponent extends Component {
 
     render() {
         const listItems = this.props.articles.map((article) => {
-            // let imageSrc = defaultPictureSrc;
-            // if(article.imageUrl) {
-            //     imageSrc = article.imageUrl
-            // }
             
             return <SingleListItem
                         article={article}
@@ -45,29 +41,6 @@ export default class NotificationListComponent extends Component {
                     />
 
         })
-
-            // return (
-            //     <li key={article._id} onClick={() => this.onClick(article)}>
-            //         <Link to={{pathname: `/article/${article._id}`}}>
-            //         <img className="offer-image" src={imageSrc} alt="Offer" />
-                    
-            //             {article.title} - {article.year}
-            //         </Link>
-            //         {article.user.id === this.props.currentUserId?
-            //         <button
-            //             onClick={this.handleDelete.bind(this, article)}>
-            //             X
-            //         </button> : ''}
-            //         {article.user.id === this.props.currentUserId?
-            //         <button
-            //             onClick={this.handleEditRequest.bind(this, article._id)}>
-            //             Edit
-            //         </button> : ''}
-            //         {!article.seen?
-            //         <span className="glyphicon glyphicon-exclamation-sign"> </span> : ''
-            //         }
-            // </li>)})
-
 
         return (
             <div>
