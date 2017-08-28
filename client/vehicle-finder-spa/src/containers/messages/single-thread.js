@@ -36,9 +36,7 @@ class SingleMessageThread extends Component {
         else if (articleId) {
             let articleOwner = this.props.articleOwner._id;
             this.props.addMessageToArticle(articleId, articleOwner, newMessage)
-        }
-        console.log(this.props)
-        debugger
+        }    
     }
 
     onMessageThreadClick(messageThread) {

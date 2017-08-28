@@ -13,8 +13,6 @@ class Navbar extends Component {
     }
 
     render(){
-        console.log(this.props.user)
-        debugger
         return(
             <NavbarComponent>
                 isLoggedIn={this.props.user.isLoggedIn}

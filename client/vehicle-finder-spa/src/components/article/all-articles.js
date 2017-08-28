@@ -36,14 +36,9 @@ export default class ArticleListComponent extends Component {
 
 
         return (
-            <div className="container">
-            <div className="row">
-		    <div className="well">
-            <h1 className="text-center">Vote for your favorite</h1>
-            <div className="list-group">
-            <div>
+            <div className="container article-container">
                 {listItems}
-            </div></div></div></div></div>
+            </div>
         )
     }
 }

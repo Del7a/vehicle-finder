@@ -106,7 +106,7 @@ hr{
 .card {
     background-color: #FFFFFF;
     /* just in case there no content*/
-    padding: 1px 25px 30px;
+    padding: 25px 25px 30px;
     margin: 0 auto 25px;
     margin-top: 15%x;
     /* shadows and rounded borders */
@@ -214,4 +214,22 @@ hr{
 .forgot-password:active,
 .forgot-password:focus{
     color: rgb(12, 97, 33);
+}
+
+.article-container img {
+  max-width: 30em;
+}
+
+.article-container .row {
+  margin: 2em 0em;
+}
+
+.article-container a,
+.article-container a:hover,
+.article-container a:visited {
+  color: black
+}
+
+.article-container .btn {
+  margin-right: 0.5em
 }

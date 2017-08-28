@@ -43,10 +43,8 @@ export default class NotificationListComponent extends Component {
         })
 
         return (
-            <div>
-                <ul>
+            <div className="container article-container">
                     {listItems}
-                </ul>
             </div>
         )
     }

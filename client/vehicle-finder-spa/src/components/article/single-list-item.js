@@ -31,46 +31,40 @@ export default class SingleListItem extends Component {
             imageSrc = this.props.article.imageUrl
         }
         return (
-                <li key={this.props.article._id} onClick={() => this.onClick(this.props.article)}>
+                <div key={this.props.article._id} onClick={() => this.onClick(this.props.article)}
+                    className="row card">
                     <Link to={{pathname: `/article/${this.props.article._id}`}}>
-                    <div className="list-group-item active">
-                        <div class="media col-md-3">
-                            <figure className="pull-left">
-                                <img className="media-object img-rounded img-responsive" src={imageSrc} alt="Offer" />
-                            </figure>
-                        </div>
-                        <div className="col-md-6">
-                            <h4 className="list-group-item-heading"> {this.props.article.title} </h4>
-                            <p className="list-group-item-text"> {this.props.article.year} </p>
-                        </div>
-                        <div className="col-md-3 text-center">
-                            <h2> 14240 <small> votes </small></h2>
-                            <button type="button" class="btn btn-default btn-lg btn-block"> Vote Now! </button>
-                            <div class="stars">
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star-empty"></span>
+                    <div className="col-md-7">
+                        <img className="media-object img-rounded img-responsive" src={imageSrc} alt="Offer" />
                     </div>
-                    <p> Average 4.5 <small> / </small> 5 </p>
-                        </div>
+                    <div className="col-md-5">
+                        <h3>
+                            {this.props.article.title} 
+                        </h3>
+                        <p>
+                            {this.props.article.body}
+                        </p>
+                        <p> Year: {this.props.article.year} </p>
+                    
+                    
+                        {this.props.article.user.id === this.props.currentUserId?
+                        <button className="btn btn-primary"
+                            onClick={this.handleEditRequest.bind(this, this.props.article._id)}>
+                            Edit
+                        </button> : ''}
+
+                        {this.props.article.user.id === this.props.currentUserId?
+                        <button className="btn btn-danger"
+                            onClick={this.handleDelete.bind(this, this.props.article)}>
+                            X
+                        </button> : ''}
+                    
+                        { this.props.article.seen === false ?
+                        <span className="glyphicon glyphicon-exclamation-sign"> </span> : ''
+                        }
                     </div>
                     </Link>
-                    {this.props.article.user.id === this.props.currentUserId?
-                    <button
-                        onClick={this.handleDelete.bind(this, this.props.article)}>
-                        X
-                    </button> : ''}
-                    {this.props.article.user.id === this.props.currentUserId?
-                    <button
-                        onClick={this.handleEditRequest.bind(this, this.props.article._id)}>
-                        Edit
-                    </button> : ''}
-                    { this.props.article.seen === false ?
-                    <span className="glyphicon glyphicon-exclamation-sign"> </span> : ''
-                    }
-                </li>
+                </div>
                 
         )
     }
