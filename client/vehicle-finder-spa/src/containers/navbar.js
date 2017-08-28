@@ -8,14 +8,14 @@ import { Redirect } from 'react-router'
 
 class Navbar extends Component {
 
-    constructor(props) {
-        super(props);
-    }
 
     render(){
+        const isLoggedIn = this.props.user.isLoggedIn
+                || localStorage.getItem("userIsLogged");
         return(
-            <NavbarComponent>
-                isLoggedIn={this.props.user.isLoggedIn}
+            <NavbarComponent
+                isLoggedIn={isLoggedIn}
+            >
             </NavbarComponent>
         )}
     

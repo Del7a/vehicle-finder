@@ -189,6 +189,7 @@ function requestLogin(username, password) {
             console.log(json)
             if (json.success) {
                 dispatch(loginSuccess())
+                localStorage.setItem("userIsLogged", "1");
             }
         })
     }

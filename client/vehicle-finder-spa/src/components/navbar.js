@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 
 class NavbarComponent extends Component {
   render () {
+      const isLogged = this.props.isLoggedIn;
     return (
     <div className="bs-example">
     <nav className="navbar navbar-default">
@@ -38,7 +39,7 @@ class NavbarComponent extends Component {
                     </span>
                 </div>
             </form>
-            {this.props.isLoggedin ?
+            {isLogged ?
             <ul className="nav navbar-nav navbar-right">
                 <li><Link to="/profile">Profile</Link></li>
             </ul> :
