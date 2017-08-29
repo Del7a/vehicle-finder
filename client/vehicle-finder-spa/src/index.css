@@ -15,7 +15,9 @@ ul {
 .message-box {
   border-radius: 10em;
   padding: 2em; 
-  margin-bottom: .5em
+  margin-bottom: .5em;
+  transition: background-color 100s;
+  transition: border-radius 2s;
 }
 
 li:last-child .me {
@@ -232,4 +234,14 @@ hr{
 
 .article-container .btn {
   margin-right: 0.5em
+}
+
+.bs-example {
+  position: fixed;
+  top: 0;
+  width: 100%
+}
+
+.lastMessage {
+  height: 0;
 }

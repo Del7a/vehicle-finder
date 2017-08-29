@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React,  { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { requestAllMessages,  sendMessage, markAsRead, addMessageToArticle, changeCurrentMessageThread} from '../../actions/messages';
@@ -11,20 +11,47 @@ class SingleMessageThread extends Component {
     constructor(props) {
         super(props)
 
-        console.log(props)
+        this.state = {pollRequestId: -1}
         this.handleMessageSend = this.handleMessageSend.bind(this) 
         this.onMessageThreadClick = this.onMessageThreadClick.bind(this)
+        this.scrollToBottom = this.scrollToBottom.bind(this)
     }
 
     componentDidMount() {
         if(this.props.match) {
             const threadId = this.props.match.params.id;
             var currentThread = {...this.props.messages.currentMessageThread, _id: threadId}  
-            this.props.requestAllMessages(currentThread);            
+            this.props.requestAllMessages(currentThread);   
+            const that = this
+
+            const intervalId = setInterval(() => {
+                that.props.requestAllMessages(currentThread)
+                that.props.history.push('/home')
+            }, 2000)
+
+            this.setState({pollRequestId: intervalId})     
         }
         if(!this.props.user.userId) {
             this.props.getUserProfile()
         }
+    }
+
+    componentDidUpdate() {
+        this.scrollToBottom()
+    }
+
+    componentWillUnmount() {
+        const intervalId = this.state.pollRequestId
+        if(intervalId) {
+            clearInterval(intervalId)
+        }
+    }
+
+    scrollToBottom() {
+        const node = this.refs.dummyMessage
+        if(node.scrollHeight > 0) { 
+        }
+        node.scrollIntoView({ behavior: "smooth" });
     }
 
     handleMessageSend(newMessage) {
@@ -38,6 +65,8 @@ class SingleMessageThread extends Component {
             this.props.addMessageToArticle(articleId, articleOwner, newMessage)
         }    
     }
+
+
 
     onMessageThreadClick(messageThread) {
         if (!messageThread.messages) {
@@ -55,7 +84,7 @@ class SingleMessageThread extends Component {
                     messages={this.props.messages.currentMessageThread.messages}
                     currentUser={this.props.user.userId}
                  /> 
-
+                <div ref="dummyMessage"></div>
                 <div>
                     Add message
                 </div>

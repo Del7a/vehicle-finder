@@ -9,6 +9,7 @@ export default class AddMessageComponent extends Component {
     }
 
     handleMessageSend(ev) {
+        ev.preventDefault()
         this.props.handleMessageSend(ev.target.children.inputMessage.value)
         ev.target.children.inputMessage.value = "";
     }

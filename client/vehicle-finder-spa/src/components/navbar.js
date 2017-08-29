@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 
 class NavbarComponent extends Component {
   render () {
-      const isLogged = this.props.isLoggedIn;
+    const isLogged = this.props.isLoggedIn;
     return (
     <div className="bs-example">
     <nav className="navbar navbar-default">
