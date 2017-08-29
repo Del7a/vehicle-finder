@@ -22,6 +22,10 @@ export const PROFILE_UPDATE_FETCHING = 'PROFILE_UPDATE_FETCHING';
 export const PROFILE_UPDATE_SUCCESS = 'PROFILE_UPDATE_SUCCESS';
 export const PROFILE_UPDATE_ERROR = 'PROFILE_UPDATE_ERROR';
 
+export const LOGOUT_FETCHING = 'LOGOUT_FETCHING'
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
+export const LOGOUT_ERROR = 'LOGOUT_ERROR'
+
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 
 
@@ -109,7 +113,7 @@ function fetchProfile() {
 function profileGetSuccess(user) {
     return {
         type: PROFILE_FETCHED,
-        payload: user
+        payload: {user: user}
     }
 }
 
@@ -276,6 +280,50 @@ function postUserProfile(username, email, firstName, lastName) {
     }
 }
 
+function logoutFetching() {
+    return {
+        type: LOGOUT_FETCHING
+    }
+}
+
+function logoutSuccess() {
+    return {
+        type: LOGOUT_SUCCESS
+    }
+}
+
+function logoutError() {
+    return {
+        type: LOGOUT_ERROR
+    }
+}
+
+function logout() {
+    return dispatch => {
+        dispatch(logoutFetching());
+        return fetch(`http://localhost:3000/api/logout`, {
+            credentials: 'include'
+        })
+        .then(response => {
+            return response.json()
+        })
+        .then(json => {
+            console.log(json);
+            debugger
+            if(json.success) {
+                localStorage.setItem("userIsLogged", "0");
+                dispatch(logoutSuccess())
+            } else if(json.message.indexOf('You are not logged in')) {
+                localStorage.setItem("userIsLogged", "0");
+                dispatch(logoutSuccess())
+            } else {
+                localStorage.setItem("userIsLogged", "0");
+                dispatch(logoutError())
+            }
+        })
+    }
+}
+
 function setCurrentUser(user) {
     return {
         type: SET_CURRENT_USER,
@@ -285,4 +333,4 @@ function setCurrentUser(user) {
 
 export {fetchRegistrationRequest, formChanged, requestLogin,
         requestPasswordChange, getUserProfile, postUserProfile,
-        setCurrentUser}
+        setCurrentUser, logout}

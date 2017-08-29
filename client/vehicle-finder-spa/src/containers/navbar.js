@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { logout } from '../actions/user'
 import NavbarComponent from '../components/navbar';
 import { bindActionCreators } from 'redux';
 
@@ -11,10 +12,13 @@ class Navbar extends Component {
 
     render(){
         const isLoggedIn = this.props.user.isLoggedIn
-                || localStorage.getItem("userIsLogged");
+                || localStorage.getItem("userIsLogged") === '1';
+            console.log(this.props)
+            debugger
         return(
             <NavbarComponent
                 isLoggedIn={isLoggedIn}
+                logout={this.props.logout}
             >
             </NavbarComponent>
         )}
@@ -27,7 +31,7 @@ function mapStateToProps({user}) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({}, dispatch);
+    return bindActionCreators({logout}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

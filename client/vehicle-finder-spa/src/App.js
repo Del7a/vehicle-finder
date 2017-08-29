@@ -53,7 +53,7 @@ class App extends Component {
               <div>
                 <Navbar />
                     <Switch>
-                        
+                        <Route path='/home' component={AllArticles} />
                         <Route path='/register' component={RegistrationForm} />
                         <Route path='/login' component={LoginForm} />
                         <Route path='/change-pass' component={ChangePassword} />

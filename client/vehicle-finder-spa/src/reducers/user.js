@@ -17,7 +17,10 @@ import {
     PROFILE_UPDATE_FETCHING,
     PROFILE_UPDATE_SUCCESS,
     PROFILE_UPDATE_ERROR,
-    SET_CURRENT_USER
+    SET_CURRENT_USER,
+    LOGOUT_FETCHING,
+    LOGOUT_SUCCESS,
+    LOGOUT_ERROR
 } from '../actions/user/index'
 
 const defaultState = {
@@ -99,6 +102,13 @@ const user = function(state = defaultState, action) {
                     email: action.payload.user.email,
                     username: action.payload.user.username    
                 }
+        
+        case LOGOUT_FETCHING:
+            return {...state, isFetching: true}
+        case LOGOUT_SUCCESS:
+            return {...state, isFetching: false, isLoggedIn: false}
+        case LOGOUT_ERROR:
+            return {...state, isFetching: false}
          
         default:
             return state

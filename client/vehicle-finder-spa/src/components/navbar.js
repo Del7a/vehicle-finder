@@ -2,6 +2,16 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 
 class NavbarComponent extends Component {
+    constructor(props) {
+        super(props)
+        this.logout = this.logout.bind(this)
+    }
+
+    logout(ev) {
+        ev.preventDefault()
+        this.props.logout()
+    }
+
   render () {
     const isLogged = this.props.isLoggedIn;
     return (
@@ -14,7 +24,7 @@ class NavbarComponent extends Component {
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
             </button>
-            <Link to="/" className="navbar-brand">AutoBot</Link>
+            <Link to="/home" className="navbar-brand">AutoBot</Link>
         </div>
         <div id="navbarCollapse" className="collapse navbar-collapse">
             <ul className="nav navbar-nav">
@@ -40,9 +50,17 @@ class NavbarComponent extends Component {
                 </div>
             </form>
             {isLogged ?
+            <div>
+            <ul className="nav navbar-nav navbar-right">
+                <li onClick={this.logout}>
+                    <Link to="/home">Logout</Link>
+                </li>
+            </ul> 
             <ul className="nav navbar-nav navbar-right">
                 <li><Link to="/profile">Profile</Link></li>
-            </ul> :
+            </ul> 
+            </div>
+            :
             <div>
             <ul className="nav navbar-nav navbar-right">
                 <li><Link to="/login">Login</Link></li>                
