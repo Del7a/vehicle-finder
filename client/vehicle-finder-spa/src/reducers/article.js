@@ -24,8 +24,8 @@ import {
 } from '../actions/article';
 
 const defaultCurrentArticle = {
-        title: '', body: '', year: '', maker: '',
-        model: '', resourceUrl: '', tags: '',
+        title: '', body: '', year: '', price: '',
+        maker: '', model: '', resourceUrl: '', tags: '',
         user: {}, createdAt: ''    
     }
 

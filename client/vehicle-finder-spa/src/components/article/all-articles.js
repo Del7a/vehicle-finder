@@ -26,7 +26,7 @@ export default class ArticleListComponent extends Component {
 
     render() {
         const listItems = this.props.articles.map((article) =>
-            <SingleListItem
+            <SingleListItem key={article._id}
                 article={article}
                 handleDelete={this.handleDelete}
                 handleEditRequest={this.handleEditRequest}

@@ -31,7 +31,7 @@ export default class SingleListItem extends Component {
             imageSrc = this.props.article.imageUrl
         }
         return (
-                <div key={this.props.article._id} onClick={() => this.onClick(this.props.article)}
+                <div onClick={() => this.onClick(this.props.article)}
                     className="row card">
                     <Link to={{pathname: `/article/${this.props.article._id}`}}>
                     <div className="col-md-7">
@@ -44,7 +44,8 @@ export default class SingleListItem extends Component {
                         <p>
                             {this.props.article.body}
                         </p>
-                        <p> Year: {this.props.article.year} </p>
+                        <p> Maker: {this.props.article.model} Model: {this.props.article.model}  </p>                        
+                        <p> Year: {this.props.article.year} Price: {this.props.article.price}  </p>
                     
                     
                         {this.props.article.user.id === this.props.currentUserId?

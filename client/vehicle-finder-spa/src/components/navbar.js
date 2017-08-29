@@ -12,7 +12,7 @@ class NavbarComponent extends Component {
         this.props.logout()
     }
 
-  render () {
+    render () {
     const isLogged = this.props.isLoggedIn;
     return (
     <div className="bs-example">
@@ -28,18 +28,24 @@ class NavbarComponent extends Component {
         </div>
         <div id="navbarCollapse" className="collapse navbar-collapse">
             <ul className="nav navbar-nav">
-                <li className="active"><a href="#">Home</a></li>
-                <li><a href="#">Profile</a></li>
+                <li className="active"/>
                 <li className="dropdown">
-                    <a data-toggle="dropdown" className="dropdown-toggle" href="#">Messages <b className="caret"></b></a>
+                    <a data-toggle="dropdown" className="dropdown-toggle" href="#">Articles <b className="caret"></b></a>
                     <ul className="dropdown-menu">
-                        <li><a href="#">Inbox</a></li>
-                        <li><a href="#">Drafts</a></li>
-                        <li><a href="#">Sent Items</a></li>
-                        <li className="divider"></li>
-                        <li><a href="#">Trash</a></li>
+                        <li><Link to="/articles">All</Link></li>
+                        <li><Link to="/create-article">Create</Link></li>
                     </ul>
                 </li>
+                <li className="dropdown">
+                    <a data-toggle="dropdown" className="dropdown-toggle" href="#">Subscriptions <b className="caret"></b></a>
+                    <ul className="dropdown-menu">
+                        <li><Link to="/subscriptions">All</Link></li>
+                        <li><Link to="/create-subscription">Create</Link></li>
+                    </ul>
+                </li>
+                <li><Link to="/messages">Messages</Link></li>
+                <li><Link to="/all-users">Users</Link></li>
+                <li><Link to="/all-makers">Maker/model</Link></li>
             </ul>
             <form className="navbar-form navbar-left">
             	<div className="input-group">
@@ -57,7 +63,13 @@ class NavbarComponent extends Component {
                 </li>
             </ul> 
             <ul className="nav navbar-nav navbar-right">
-                <li><Link to="/profile">Profile</Link></li>
+                <li className="dropdown">
+                    <a data-toggle="dropdown" className="dropdown-toggle" href="#">Profile <b className="caret"></b></a>
+                    <ul className="dropdown-menu">
+                        <li><Link to="/profile">Edit</Link></li>
+                        <li><Link to="/change-pass">Change pass</Link></li>
+                    </ul>
+                </li>
             </ul> 
             </div>
             :

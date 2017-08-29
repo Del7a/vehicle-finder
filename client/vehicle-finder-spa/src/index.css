@@ -236,12 +236,6 @@ hr{
   margin-right: 0.5em
 }
 
-.bs-example {
-  position: fixed;
-  top: 0;
-  width: 100%
-}
-
 .lastMessage {
   height: 0;
 }
