@@ -48,6 +48,11 @@ class AllMakers extends Component {
             <h1>All makers</h1>
             <div>{allMakers}</div>
             {/* <div>{redirAfterLogin}</div> */}
+            <Link to='/create-maker'
+                className='btn btn-success'
+            >
+                Create New Maker
+            </Link>
         </div>
     )}
     

@@ -1,7 +1,7 @@
 import React,  { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { requestAllMessages,  sendMessage, markAsRead, addMessageToArticle, changeCurrentMessageThread} from '../../actions/messages';
+import { requestAllMessages,  sendMessage, markAsRead, addMessageToArticle, newThreadRead, changeCurrentMessageThread} from '../../actions/messages';
 import { getUserProfile } from '../../actions/user'
 import MessagesListComponent from '../../components/messages/message-list';
 import AddMessageComponent from '../../components/messages/add-message';
@@ -15,9 +15,11 @@ class SingleMessageThread extends Component {
         this.handleMessageSend = this.handleMessageSend.bind(this) 
         this.onMessageThreadClick = this.onMessageThreadClick.bind(this)
         this.scrollToBottom = this.scrollToBottom.bind(this)
+        this.redirectToNewThread = this.redirectToNewThread.bind(this)
     }
 
     componentDidMount() {
+        this.props.newThreadRead()
         if(this.props.match) {
             const threadId = this.props.match.params.id;
             var currentThread = {...this.props.messages.currentMessageThread, _id: threadId}  
@@ -26,7 +28,6 @@ class SingleMessageThread extends Component {
 
             const intervalId = setInterval(() => {
                 that.props.requestAllMessages(currentThread)
-                that.props.history.push('/home')
             }, 2000)
 
             this.setState({pollRequestId: intervalId})     
@@ -37,7 +38,14 @@ class SingleMessageThread extends Component {
     }
 
     componentDidUpdate() {
-        this.scrollToBottom()
+        this.scrollToBottom();
+
+        
+    }
+
+    redirectToNewThread(threadId) {
+        debugger
+        this.props.history.push(`/messages/${threadId}`)
     }
 
     componentWillUnmount() {
@@ -65,8 +73,6 @@ class SingleMessageThread extends Component {
             this.props.addMessageToArticle(articleId, articleOwner, newMessage)
         }    
     }
-
-
 
     onMessageThreadClick(messageThread) {
         if (!messageThread.messages) {
@@ -103,7 +109,8 @@ function mapStateToProps({messages, user}) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({addMessageToArticle, changeCurrentMessageThread, requestAllMessages, 
-                                getUserProfile, sendMessage}, dispatch)
+                                getUserProfile, sendMessage,
+                                newThreadRead}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleMessageThread)

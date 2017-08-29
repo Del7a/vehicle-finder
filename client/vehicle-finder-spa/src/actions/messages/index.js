@@ -20,6 +20,8 @@ export const MESSAGE_READ_ERROR = 'MESSAGE_READ_ERROR'
 
 export const SET_CURRENT_MESSAGE_THREAD = 'SET_CURRENT_MESSAGE_THREAD';
 
+export const NEW_THREAD_OPENED = 'NEW_THREAD_OPENED';
+
 /**
  * Message threads get
  */
@@ -106,11 +108,9 @@ function addMessageToArticle(offerId, recipientId, newMessage) {
                 })
             })
             .then(response => {
-                console.log(response);
                 return response.json()
             })
             .then(json => {
-                console.log(json);
                 if(json.success) {
                     dispatch(messageThreadPostSuccess(json.thread, json.msg))
                 } else {
@@ -274,5 +274,16 @@ function changeCurrentMessageThread(messageThread) {
     }
 }
 
+function newThreadOpened() {
+    return {
+        type: NEW_THREAD_OPENED
+    }
+}
+
+function newThreadRead() {
+    return dispatch => dispatch(newThreadOpened())
+}
+
 export { requestAllMessageThreads, addMessageToArticle, requestAllMessages, 
-        sendMessage, markAsRead, changeCurrentMessageThread}
+        sendMessage, markAsRead, changeCurrentMessageThread, newThreadRead,
+        setCurrentMessageThread}

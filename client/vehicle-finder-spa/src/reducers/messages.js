@@ -15,7 +15,8 @@ import {
     MESSAGE_READ_SUCCESS,
     MESSAGE_READ_ERROR,
 
-    SET_CURRENT_MESSAGE_THREAD
+    SET_CURRENT_MESSAGE_THREAD,
+    NEW_THREAD_OPENED
 } from '../actions/messages'
 
 const defaultMessage = {
@@ -41,6 +42,7 @@ const defaultState = {
     currentInfoMessage: '',
     currentErrorMessage: '',
     messageThreads: [],
+    newMessageThreadId: '',
     currentMessageThread: defaultMessageThread
 }
 
@@ -57,6 +59,7 @@ const messages = function (state = defaultState, action) {
             return {...state, isFetching: true, currentErrorMessage: '', currentInfoMessage: ''}
         case MESSAGE_THREAD_POST_SUCCESS:
             return {...state, isFetching: false, currentInfoMessage: action.payload.message, 
+                    newMessageThreadId: action.payload.messageThread,
                     messageThreads: addElementToArray(state.messageThreads, action.payload.messageThread)}
         case MESSAGE_THREAD_POST_ERROR:
             return {...state, isFetching: false, currentErrorMessage: action.payload.message}
@@ -86,7 +89,9 @@ const messages = function (state = defaultState, action) {
            return {...state, isFetching: false, currentErrorMessage: action.payload.message}
         
         case SET_CURRENT_MESSAGE_THREAD:
-           return {...state, currentMessageThread: action.payload}
+           return {...state, currentMessageThread: action.payload ? action.payload: defaultMessageThread}
+        case NEW_THREAD_OPENED:
+            return {...state, newMessageThreadId: ''}
 
         default: 
             return state

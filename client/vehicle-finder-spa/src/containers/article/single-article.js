@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getSingleArticle, updateForm, setCurrentArticle } from '../../actions/article';
+import { newThreadRead, setCurrentMessageThread } from '../../actions/messages';
 import { Link } from 'react-router-dom';
 import SingleArticleComponent  from '../../components/article/single-item-view';
 import { Redirect } from 'react-router';
@@ -11,6 +12,7 @@ class SingleArticle extends Component {
 
     componentDidMount() {
         let currentArticle = {};
+
         if(this.props.match.params.id) {
             const seatchedId = this.props.match.params.id
             const matched = this.props.article.allArticles.filter((el) => {
@@ -23,6 +25,16 @@ class SingleArticle extends Component {
             } else {
                 this.props.getSingleArticle(this.props.match.params.id);
             }
+        }
+
+        this.props.setCurrentMessageThread()
+    }
+
+    componentDidUpdate() {
+        const newThreadId = this.props.messages.newMessageThreadId
+        if(newThreadId !== '') {
+            this.props.newThreadRead()
+            this.props.history.push(`/messages/${newThreadId}`)
         }
     }
 
@@ -46,13 +58,14 @@ class SingleArticle extends Component {
     }
 }
 
-function mapStateToProps({article}) {
+function mapStateToProps({article, messages}) {
     console.log(article)
-    return {article};
+    return {article, messages};
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ getSingleArticle, updateForm, setCurrentArticle }, dispatch);
+    return bindActionCreators({ getSingleArticle, updateForm, setCurrentArticle,
+                                newThreadRead,setCurrentMessageThread }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleArticle);
