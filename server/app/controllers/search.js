@@ -8,7 +8,7 @@ exports.searchByName = function (req, res) {
     if (!req.body.query)
         return res.json({ success: false, msg: 'Please provide seach query' });
     Article.list({ criteria: {
-        title: new RegExp('^' + req.body.query + '$', "i") 
+        title: new RegExp(req.body.query, "ig") 
     }}, function (err, articles) {
         if (err)
             return res.json({ success: false, msg: err.message });
