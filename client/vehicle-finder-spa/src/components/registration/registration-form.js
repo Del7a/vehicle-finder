@@ -42,20 +42,18 @@ export default class Form extends Component {
 
         return (
             <div className="container">
-
-                <h1 className="welcome text-center">Welcome to AutoBot </h1>
                     <div className="card card-container">
-                    <h2 className='login_title text-center'>{this.props.heading}</h2>
+                    <h2 className='card-title text-center'>{this.props.heading}</h2>
                     
-                        <form className="form-signin"
+                        <form className="form-fill"
                             onSubmit={this.props.handleSubmit}>
                             <span id="reauth-email" className="reauth-email"></span>
                             <p className="input_title">Username</p>
-                            <input type="text" id="inputEmail" className="login_box" placeholder="example" required autofocus 
+                            <input type="text" id="inputEmail" className="text-box" placeholder="example" required autofocus 
                                 value={this.props.username}
                                 onChange={this.handleInputChange('username')}/>
                             <p className="input_title">Password</p>
-                            <input type="password" id="inputPassword" className="login_box" placeholder="******" required 
+                            <input type="password" id="inputPassword" className="text-box" placeholder="******" required 
                                 value={this.props.password}
                                 onChange={this.handleInputChange('password')}/>
                             <div id="remember" className="checkbox">

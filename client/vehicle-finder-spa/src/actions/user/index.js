@@ -130,9 +130,10 @@ function profileUpdateFetch() {
     }
 }
 
-function profileUpdateSuccess() {
+function profileUpdateSuccess(msg) {
     return {
-        type: PROFILE_UPDATE_SUCCESS
+        type: PROFILE_UPDATE_SUCCESS,
+        payload: {message: msg}
     }
 }
 
@@ -265,15 +266,14 @@ function postUserProfile(username, email, firstName, lastName) {
             })
         })
         .then(response => {
-            if(response.status === 200) {
-                dispatch(profileUpdateSuccess())
-            }
             return response.json()
         })
         .then(json => {
             console.log(json);
-            if(json.msg) {
-                dispatch(profileUpdateError(json.msg));
+            if(json.success) {
+                dispatch(profileUpdateSuccess(json.msg));
+            } else {
+                dispatch(profileUpdateError(json.msg))
             }
         })
     }

@@ -99,10 +99,11 @@ function articleUpdateFetching() {
     }
 }
 
-function articleUpdateSuccess(article) {
+function articleUpdateSuccess(msg) {
+    debugger
     return {
         type: ARTICLE_PUT_SUCCESS,
-        payload: {article: article}
+        payload: {message: msg}
     }
 }
 
@@ -116,6 +117,7 @@ function articleUpdateError(msg) {
 function updateArticle(article) {
      return dispatch => {
         dispatch(articleUpdateFetching())
+        debugger
         return fetch(`http://localhost:3000/api/articles/${article._id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
@@ -129,7 +131,7 @@ function updateArticle(article) {
             .then(json => {
                 console.log(json);
                 if(json.success) {
-                    dispatch(articleUpdateSuccess(json.article))
+                    dispatch(articleUpdateSuccess(json.msg))
                 } else {
                     dispatch(articleUpdateError(json.msg))
                 }                

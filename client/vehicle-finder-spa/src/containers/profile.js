@@ -44,13 +44,11 @@ class ProfileForm extends Component {
             password={this.props.user.password}
             firstName={this.props.user.firstName}
             lastName={this.props.user.lastName}
-            email={this.props.user.email} />
-
+            email={this.props.user.email} 
+            currentInfoMessage={this.props.user.currentInfoMessage}
+            currentErrorMessage={this.props.user.currentErrorMessage}/>
     return(
-        <div>
-            <h1>Profile</h1>
-            <div>{form}</div>
-        </div>
+        <div>{form}</div>
     )}
     
 }

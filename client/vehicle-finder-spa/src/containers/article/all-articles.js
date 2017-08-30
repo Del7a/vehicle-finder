@@ -19,12 +19,10 @@ class AllArticles extends Component {
     }
 
     componentDidMount() {
-        if (!this.props.article.allArticles.length) {
-            this.props.requestAllArticles()
-        }
+        this.props.requestAllArticles()
     }
 
-    handleArticleDelete(ev, article) {
+    handleArticleDelete(article) {
         this.props.deleteArticle(article)
     }
 

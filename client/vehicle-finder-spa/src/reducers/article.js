@@ -25,7 +25,7 @@ import {
 
 const defaultCurrentArticle = {
         title: '', body: '', year: '', price: '',
-        maker: '', model: '', resourceUrl: '', tags: '',
+        maker: '', model: '', imageUrl: '', tags: '',
         user: {}, createdAt: ''    
     }
 
@@ -58,7 +58,8 @@ const article = function(state = defaultState, action) {
                 currentErrorMessage: ''
             }
         case SINGLE_ARTICLE_GET_SUCCESS:
-            return {...state, isFetching: false, currentArticle: action.payload.article}
+        debugger
+            return {...state, isFetching: false, currentArticle: setCurrentArticle(state.currentArticle, action.payload.article)}
         case SINGLE_ARTICLE_GET_ERROR:
             return {...state, isFetching: false, currentErrorMessage: action.payload.message}
         
@@ -89,8 +90,7 @@ const article = function(state = defaultState, action) {
                 currentErrorMessage: ''
             }
         case ARTICLE_PUT_SUCCESS:
-            return {...state, isFetching: false,
-                allArticles: updateArticleFromState(state.allArticles, action.payload.article)}
+            return {...state, isFetching: false, currentInfoMessage: action.payload.message}
         case ARTICLE_PUT_ERROR:
             return {...state, isFetching: false, currentErrorMessage: action.payload.message}
            
@@ -128,6 +128,12 @@ function updateArticleFromState(arr, article) {
             return article
         }
     })
+}
+
+function setCurrentArticle(_, newArticle) {
+    debugger
+    return {...newArticle, maker: newArticle.maker._id, 
+        tags: newArticle.tags.join(' '), user: newArticle.user}
 }
 
 export default article

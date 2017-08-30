@@ -35,6 +35,7 @@ const defaultState = {
     newPasswordRepeat: '',
     passwordChanged: false,
     passwordChangeError: false,
+    currentInfoMessage: '',
     currentErrorMessage: '',
     userId: '',
     firstName: '',
@@ -92,7 +93,7 @@ const user = function(state = defaultState, action) {
         case PROFILE_UPDATE_FETCHING:
             return {...state, isFetching: true}
         case PROFILE_UPDATE_SUCCESS:
-            return Object.assign({}, state, {isFetching: false} ,action.payload)
+            return {...state, isFetching: false, currentInfoMessage: action.payload.message}
         case PROFILE_UPDATE_ERROR:
             return{...state, isFetching: false,
                 currentErrorMessage: action.payload.message

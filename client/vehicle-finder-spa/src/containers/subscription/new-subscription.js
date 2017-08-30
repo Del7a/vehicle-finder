@@ -38,7 +38,7 @@ class NewSubscription extends Component {
             <NewSubscriptionForm
               title={this.props.subscription.currentSubscription.title}
               yearFrom={this.props.subscription.currentSubscription.yearFrom}
-              yearTo={this.props.subscription.currentSubscription.yearFrom}
+              yearTo={this.props.subscription.currentSubscription.yearTo}
               priceFrom={this.props.subscription.currentSubscription.priceFrom}
               priceTo={this.props.subscription.currentSubscription.priceTo}
               maker={this.props.subscription.currentSubscription.maker}
@@ -52,7 +52,6 @@ class NewSubscription extends Component {
 
     return(
         <div>
-            <h1>Subscribe</h1>
             <div>{form}</div>
         </div>
     )}

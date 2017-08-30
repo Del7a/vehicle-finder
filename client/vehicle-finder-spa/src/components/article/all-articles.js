@@ -12,8 +12,8 @@ export default class ArticleListComponent extends Component {
         this.onClick = this.onClick.bind(this)
     }
 
-    handleDelete(ev, articleId) {
-        this.props.handleArticleDelete(this.props.makerId, ev)
+    handleDelete(article) {
+        this.props.handleArticleDelete(article)
     }
 
     handleEditRequest(articleId) {

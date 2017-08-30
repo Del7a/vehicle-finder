@@ -19,7 +19,7 @@ class NewArticle extends Component {
     }
 
     componentDidMount() {
-
+        debugger
         if (this.props.match.params.id) {
             this.props.getSingleArticle(this.props.match.params.id)
         } else {
@@ -32,7 +32,6 @@ class NewArticle extends Component {
     }
 
     onInputFormChange(ev) {
-        console.log(ev)
         this.props.updateForm(ev)
     }
     
@@ -46,27 +45,18 @@ class NewArticle extends Component {
     }
 
     render() {
-
-        var divStyle = {
-                color: 'white',
-                maxWidth: '80%',
-                WebkitTransition: 'all', // note the capital 'W' here
-                msTransition: 'all' // 'ms' is the only lowercase vendor prefix
-            };
-
-        const infoMessage = this.props.article.currentInfoMessage !== '' ?
-                <div className="alert alert-success">
-                    <strong>Success!</strong> {this.props.article.currentInfoMessage}
-                </div>
-                : ''
-        const errorMessage = this.props.article.currentErrorMessage !== '' ?
-                <div className="alert alert-danger">
-                    {this.props.article.currentErrorMessage}
-                </div>
-                : ''
-        
-
-
+           
+            const infoMessage = this.props.article.currentInfoMessage !== '' ?
+            <div className="alert alert-success info-message">
+                <strong>Success!</strong> {this.props.article.currentInfoMessage}
+            </div>
+            : ''
+            const errorMessage = this.props.article.currentErrorMessage !== '' ?
+            <div className="alert alert-danger info-message">
+                {this.props.article.currentErrorMessage}
+            </div>
+            : ''
+            debugger
         return (
             <div>
                 {infoMessage}
@@ -76,7 +66,7 @@ class NewArticle extends Component {
                     body={this.props.article.currentArticle.body}
                     year={this.props.article.currentArticle.year}
                     price={this.props.article.currentArticle.price}
-                    tags={this.props.article.currentArticle.tag}
+                    tags={this.props.article.currentArticle.tags}
                     imageUrl={this.props.article.currentArticle.imageUrl}
                     maker={this.props.article.currentArticle.maker}
                     model={this.props.article.currentArticle.model}
@@ -84,10 +74,8 @@ class NewArticle extends Component {
                     formInputChanged={this.onInputFormChange}
                     handleSubmit={this.handleSubmit}
                 />}
-                <img style={divStyle} src={this.props.article.currentArticle.imageUrl} />
-                  <button onClick={ () =>
-                            this.props.history.goBack()
-                            }>Back</button> 
+                <img className="media-object img-rounded car-image" src={this.props.article.currentArticle.imageUrl} />
+        
                 </div> 
         )
     }

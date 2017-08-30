@@ -47,77 +47,50 @@ export default class Form extends Component {
 
         return (
             <div className="container">
-                <div className="row main">
-                    <div className="main-login main-center">
-                    <form className="form-horizontal"
-                    onSubmit={this.props.handleSubmit}>
-                    <div className="form-group">
-                            <label className="cols-sm-2 control-label">Old Password</label>
-                                <div className="cols-sm-10">
-								<div className="input-group">
-                               
-                                <input type="password"
-                                    className={errors.oldPassword ? "error" : ""}
-                                    value={this.props.oldPassword}
-                                    onChange={this.handleInputChange('oldPassword')}
-                                    onBlur={this.handleBlur('oldPassword')}
-                                />
-                                 </div>
-                            </div>   
-                            { this.props.passwordChanged
-                                ? 
-                                <div className="alert alert-success">
-                                    <strong>Success!</strong> Password changed
-                                </div>
-                                : ""}  
-                            { this.props.passwordChangeError
-                                ? 
-                                <div className="alert alert-danger">
-                                    <strong>Error!</strong> {this.props.currentErrorMessage}
-                                </div>
-                                : ""}                         
-                        </div>        
-                         <div className="form-group">
-                            <label className="cols-sm-2 control-label">New Password</label>
-                                <div className="cols-sm-10">
-								<div className="input-group">
-                               
-                                <input type="password"
-                                    className={errors.newPassword ? "error" : ""}
-                                    value={this.props.newPassword}
-                                    onChange={this.handleInputChange('newPassword')}
-                                    onBlur={this.handleBlur('newPassword')}
-                                />
-                                 </div>
-                            </div>                            
-                        </div>
-                        <div className="form-group">
-                            <label className="cols-sm-2 control-label">Repeat Password</label>
-                                <div className="cols-sm-10">
-								<div className="input-group">
-                               
-                                <input type="password"
-                                    className={errors.newPasswordRepeat ? "error" : ""}
-                                    value={this.props.newPasswordRepeat}
-                                    onChange={this.handleInputChange('newPasswordRepeat')}
-                                    onBlur={this.handleBlur('newPasswordRepeat')}
-                                />
+                { this.props.passwordChanged
+                    ? 
+                    <div className="alert alert-success info-message">
+                        <strong>Success!</strong> Password changed
+                    </div>
+                    : ""}  
+                { this.props.passwordChangeError
+                    ? 
+                    <div className="alert alert-danger info-message">
+                        <strong>Error!</strong> {this.props.currentErrorMessage}
+                    </div>
+                    : ""}
+                <div className="card card-container">
+                <h2 className='card-title text-center'>Change password</h2>
+                    <form className="form-fill"
+                        onSubmit={this.props.handleSubmit}>
+                        <p className="input_title">Old password</p>
+                            <input type="password" className="text-box" placeholder="*****" required autofocus 
+                                value={this.props.oldPassword}
+                                onChange={this.handleInputChange('oldPassword')}/> 
+
+                        <p className="input_title">New password</p>
+                            <input type="password" className="text-box" placeholder="******" required autofocus 
+                                value={this.props.newPassword}
+                                onChange={this.handleInputChange('newPassword')}/> 
+                        
+                        <p className="input_title">Repeat password</p>
+                            <input type="password" className="text-box" placeholder="******" required autofocus 
+                                value={this.props.newPasswordRepeat}
+                                onChange={this.handleInputChange('newPasswordRepeat')}/> 
                                 { this.props.newPassword !== this.props.newPasswordRepeat
                                     ? 
                                     <div className="alert alert-danger">
                                         Dont match
                                     </div>
-                                : ""}   
-                                 </div>
-                            </div>                            
-                        </div>
-                        <input type="submit"
+                                : ""}  
+
+                        <button type="submit" 
                             disabled={!isEnabled}
-                            className="btn btn-danger" />
+                            className="btn btn-lg btn-primary">
+                            Change </button>
                     </form>
                     </div>
                 </div>
-            </div>
         )
     }
 } 

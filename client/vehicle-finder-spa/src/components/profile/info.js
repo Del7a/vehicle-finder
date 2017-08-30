@@ -50,92 +50,68 @@ export default class Form extends Component {
 
         return (
             <div className="container">
-                <div className="row main">
-                    <div className="main-login main-center">
-                    <form className="form-horizontal"
-                    onSubmit={this.props.handleSubmit}>
-                    <div className="form-group">
-                            <label className="cols-sm-2 control-label">User name</label>
-                                <div className="cols-sm-10">
-								<div className="input-group">
-                               
-                                <input type="text"
-                                    readOnly={true}
-                                    className={errors.username ? "error" : ""}
-                                    value={this.props.username}
-                                    onChange={this.handleInputChange('username')}
-                                    onBlur={this.handleBlur('username')}
-                                />
-                                 </div>
-                            </div>                            
-                        </div>
-                        <div className="form-group">
-                            <label className="cols-sm-2 control-label">Email</label>
-                                <div className="cols-sm-10">
-								<div className="input-group">
-                               
-                                <input type="email"
-                                    className={errors.email ? "error" : ""}
-                                    value={this.props.email}
-                                    onChange={this.handleInputChange('email')}
-                                    onBlur={this.handleBlur('email')}
-                                />
-                                 </div>
-                            </div> 
+                { this.props.currentInfoMessage
+                    ? 
+                    <div className="alert alert-success info-message">
+                        <strong>Success!</strong> {this.props.currentInfoMessage}
+                    </div>
+                    : ""}  
+                { this.props.currentErrorMessage
+                    ? 
+                    <div className="alert alert-danger info-message">
+                        <strong>Error!</strong> {this.props.currentErrorMessage}
+                    </div>
+                    : ""}
+                <div className="card card-container">
+                <h2 className='card-title text-center'>Edit profile</h2>
+                    <form className="form-fill"
+                        onSubmit={this.props.handleSubmit}>
+                        <p className="input_title">Username</p>
+                        <input type="text" readonly={true} className="text-box" placeholder="example_user" autofocus 
+                            value={this.props.username}
+                            onChange={this.handleInputChange('username')}/> 
+
+                        <p className="input_title">Email</p>
+                        <input type="email" className="text-box" placeholder="example@host.domain" autofocus 
+                            value={this.props.email}
+                            onChange={this.handleInputChange('email')}/> 
                             { errors.email
                                 ? 
                                 <div className="alert alert-danger">
                                     <strong>Danger!</strong> Enter a valid email
                                 </div>
-                                : ""}                             
-                        </div>
-                        <div className="form-group">
-                            <label className="cols-sm-2 control-label">First name</label>
-                                <div className="cols-sm-10">
-								<div className="input-group">
-                               
-                                <input type="text"
-                                    className={errors.firstName ? "error" : ""}
-                                    value={this.props.firstName}
-                                    onChange={this.handleInputChange('firstName')}
-                                    onBlur={this.handleBlur('firstName')}
-                                />
-                                 </div>
-                            </div>  
+                                : ""}
+
+                        <p className="input_title">First name</p>
+                            <input type="text" className="text-box" placeholder="Ivan" autofocus 
+                                value={this.props.firstName}
+                                onChange={this.handleInputChange('firstName')}/>  
                             { errors.firstName
                                 ? 
                                 <div className="alert alert-danger">
                                     <strong>Danger!</strong> Enter a valid name
                                 </div>
-                                : ""}                            
-                        </div>
-                        <div className="form-group">
-                            <label className="cols-sm-2 control-label">Last name</label>
-                                <div className="cols-sm-10">
-								<div className="input-group">
-                               
-                                <input type="text"
-                                    className={errors.lastName ? "error" : ""}
-                                    value={this.props.lastName}
-                                    onChange={this.handleInputChange('lastName')}
-                                    onBlur={this.handleBlur('lastName')}
-                                />
-                                 </div>
-                            </div>  
-                             { errors.lastName
+                                : ""}
+
+                        <p className="input_title">Last name</p>
+                            <input type="text" className="text-box" placeholder="Ivanov" autofocus 
+                                value={this.props.lastName}
+                                onChange={this.handleInputChange('lastName')}/> 
+
+                            { errors.lastName
                                 ? 
                                 <div className="alert alert-danger">
                                     <strong>Danger!</strong> Enter a valid name
                                 </div>
                                 : ""}                            
-                        </div>
-                        <input type="submit"
+                        
+                        <button type="submit"
                             disabled={!isEnabled}
-                            className="btn btn-danger" />
+                            className="btn btn-lg btn-primary">
+                            Change </button>
                     </form>
                     </div>
                 </div>
-            </div>
         )
     }
 }

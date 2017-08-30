@@ -39,10 +39,7 @@ class ChangePassword extends Component {
             currentErrorMessage={this.props.user.currentErrorMessage}/>
 
     return(
-        <div>
-            <h1>Change Password</h1>
-            <div>{form}</div>
-        </div>
+        <div>{form}</div>
     )}
     
 }

@@ -12,8 +12,8 @@ export default class SingleListItem extends Component {
         this.onClick = this.onClick.bind(this)
     }
 
-    handleDelete(ev, articleId) {
-        this.props.handleArticleDelete(this.props.makerId, ev)
+    handleDelete(article) {
+        this.props.handleDelete(article)
     }
 
     handleEditRequest(articleId) {
@@ -37,6 +37,7 @@ export default class SingleListItem extends Component {
                     <div className="col-md-7">
                         <img className="media-object img-rounded img-responsive" src={imageSrc} alt="Offer" />
                     </div>
+                    </Link>                    
                     <div className="col-md-5">
                         <h3>
                             {this.props.article.title} 
@@ -63,7 +64,6 @@ export default class SingleListItem extends Component {
                         <span className="glyphicon glyphicon-exclamation-sign"> </span> : ''
                         }
                     </div>
-                    </Link>
                 </div>
                 
         )
