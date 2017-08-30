@@ -14,6 +14,7 @@ class NavbarComponent extends Component {
 
     render () {
     const isLogged = this.props.isLoggedIn;
+    const isAdmin = this.props.isAdmin;
     return (
     <div className="bs-example">
     <nav className="navbar navbar-default">
@@ -33,25 +34,33 @@ class NavbarComponent extends Component {
                     <a data-toggle="dropdown" className="dropdown-toggle" href="#">Articles <b className="caret"></b></a>
                     <ul className="dropdown-menu">
                         <li><Link to="/articles">All</Link></li>
-                        <li><Link to="/create-article">Create</Link></li>
+                        {isLogged ?
+                        <li><Link to="/create-article">Create</Link></li> : ""}
                     </ul>
                 </li>
+                {isLogged ?
                 <li className="dropdown">
                     <a data-toggle="dropdown" className="dropdown-toggle" href="#">Subscriptions <b className="caret"></b></a>
                     <ul className="dropdown-menu">
                         <li><Link to="/subscriptions">All</Link></li>
                         <li><Link to="/create-subscription">Create</Link></li>
                     </ul>
-                </li>
-                <li><Link to="/messages">Messages</Link></li>
-                <li><Link to="/all-users">Users</Link></li>
-                <li><Link to="/all-makers">Maker/model</Link></li>
+                </li> : ""}
+                {isLogged ?
+                <li><Link to="/messages">Messages</Link></li> : ""}
+                {isAdmin ?
+                <li><Link to="/all-users">Users</Link></li> : ""}
+                {isAdmin ?
+                <li><Link to="/all-makers">Maker/model</Link></li> : ""}
             </ul>
             <form className="navbar-form navbar-left">
             	<div className="input-group">
                     <input type="text" className="form-control" placeholder="Search"></input>
                     <span className="input-group-btn">
-                        <button type="button" className="btn btn-default"><span className="glyphicon glyphicon-search"></span></button>
+                        <button type="button" 
+                            onClick={this.search}
+                            className="btn btn-default">
+                            <span className="glyphicon glyphicon-search"></span></button>
                     </span>
                 </div>
             </form>

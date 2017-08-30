@@ -25,13 +25,13 @@ class RegistrationForm extends Component {
         this.props.formChanged(newFormState);
     }
 
+    componentDidUpdate() {
+        if (this.props.user.isLoggedIn) {
+            this.props.history.push("/home")
+        }
+    }
 
     render(){
-        const redirAfterReg = this.props.user.isLoggedIn ? 
-           <Redirect to={'/home'}/>
-        : '';
-
-
         const form =  this.props.user.isFetching ?
         <div> Loading </div>
         :
@@ -48,7 +48,6 @@ class RegistrationForm extends Component {
     return(
        <div>
            <div>{form}</div>
-           <div>{redirAfterReg}</div>
        </div>
     )}
     

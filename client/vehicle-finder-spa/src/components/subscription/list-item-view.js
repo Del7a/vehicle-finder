@@ -29,20 +29,33 @@ export default class SubscriptionListComponent extends Component {
 
     render() {
         const listItems = this.props.subscriptions.map((subscription) =>
-            <li key={subscription._id}>
+            <div className="row card">
+            <Link to={{pathname: `/subscription/${subscription._id}`}}>
 
-                <Link to={{pathname: `/subscription/${subscription._id}`}}>
-                    {subscription.title} - ( {subscription.yearFrom} - {subscription.yearTo} ) - ( {subscription.priceFrom} - {subscription.priceTo} )
-                </Link>
+            <div className="col-md-6"> Title:{subscription.title}
+            </div>
+            <div className="col-md-2">
+                <div> Year:({subscription.yearFrom}-{subscription.yearTo})</div>
+            </div>
+            <div className="col-md-2"> 
+                <div> Price:({subscription.priceFrom}-{subscription.priceTo})</div>
+            </div>
+            <div className="col-md-2">
+                <div className="col-md-6"> 
                 {this.getCount(subscription._id)
-                ? <span> {this.getCount(subscription._id)} new notification/s </span>
+                ? <div > {this.getCount(subscription._id)} new </div>
                 :""
                 }
-                <button
+                </div>
+                <div className="col-md-6"> 
+                <button className="btn btn-danger"
                     onClick={this.handleDelete.bind(this, subscription)}>
-                    X   
+                    Delete
                 </button>
-            </li>)
+                </div>
+            </div>
+            </Link> 
+            </div>)
 
         return (
             <div>

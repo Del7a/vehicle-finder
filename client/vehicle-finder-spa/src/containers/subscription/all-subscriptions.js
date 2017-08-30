@@ -15,13 +15,8 @@ class AllSubscriptions extends Component {
     }
 
     componentDidMount() {
-        if (this.props.subscription.allSubscriptions.length === 0) {
             this.props.requestAllSubscriptions()
-        }
-        if (this.props.subscription.notifications.length === 0) {
             this.props.requestNotifications()
-        }
-        console.log(this.props)
     }
 
     handleSubscriptionDelete(ev, subscription) {
@@ -39,11 +34,13 @@ class AllSubscriptions extends Component {
                 {!this.props.subscription.allSubscriptions.length
                 ? <div>None</div>
                 :
+                <div className="container article-container">
                 <SubscriptionListComponent 
                     subscriptions={this.props.subscription.allSubscriptions}
                     handleSubscriptionDelete={this.handleSubscriptionDelete}
                     notifications={this.props.subscription.notifications}
-                />}
+                />
+                </div>}
             </div>
         )
     }

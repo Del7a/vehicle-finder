@@ -30,7 +30,7 @@ exports.login = function (req, res) {
                 success: false, msg: 'Wrong username of password.' });
         } else {
             if (user.authenticate(req.body.password)) {
-                res.json({ success: true });
+                res.json({ success: true, isAdmin: user.isAdmin });
             } else {
                 res.json({ success: false, msg: 'Wrong username of password' });
             }

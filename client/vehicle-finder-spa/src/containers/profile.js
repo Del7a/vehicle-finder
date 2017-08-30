@@ -16,8 +16,9 @@ class ProfileForm extends Component {
     }
 
     componentDidMount() {
-        console.log('componentDidMount')
+        debugger
         this.props.getUserProfile()
+        console.log(this.props)
     }
 
     handleSubmit(ev) {
@@ -31,11 +32,7 @@ class ProfileForm extends Component {
     }
 
 
-    render(){
-        const redirAfterLogin = this.props.user.isLoggedIn ? 
-           <Redirect to={'/home'}/>
-        : '';
-       
+    render(){     
 
         const form = this.props.user.isFetching ?
         <div> Носи се! </div>
@@ -53,7 +50,6 @@ class ProfileForm extends Component {
         <div>
             <h1>Profile</h1>
             <div>{form}</div>
-            <div>{redirAfterLogin}</div>
         </div>
     )}
     

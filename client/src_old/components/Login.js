@@ -40,7 +40,7 @@ class Login extends Component {
     setTimeout(() => {
       //TODO: remove IT
        //this.props.dispatch(loginRequest({username, password}))
-       this.props.history.push('/profile'); 
+       this.props.history.push('/profile');
     }, 1000)
   }
 }

@@ -47,7 +47,6 @@ export default class SingleListItem extends Component {
                         <p> Maker: {this.props.article.model} Model: {this.props.article.model}  </p>                        
                         <p> Year: {this.props.article.year} Price: {this.props.article.price}  </p>
                     
-                    
                         {this.props.article.user.id === this.props.currentUserId?
                         <button className="btn btn-primary"
                             onClick={this.handleEditRequest.bind(this, this.props.article._id)}>

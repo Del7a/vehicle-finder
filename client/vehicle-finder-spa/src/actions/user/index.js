@@ -194,6 +194,7 @@ function requestLogin(username, password) {
             if (json.success) {
                 dispatch(loginSuccess())
                 localStorage.setItem("userIsLogged", "1");
+                localStorage.setItem("userIsAdmin", "1")
             }
         })
     }
@@ -240,12 +241,10 @@ function getUserProfile() {
             return response.json()
         })
         .then(json => {
-            console.log(json);
-            if(json.msg) {
-                console.log(json.msg)
-                dispatch(profileGetError(json.msg));
-            } else {
+            if(json.success) {
                 dispatch(profileGetSuccess(json.user))
+            } else {
+                dispatch(profileGetError(json.msg));                
             }
         })
     }
@@ -308,15 +307,12 @@ function logout() {
             return response.json()
         })
         .then(json => {
-            console.log(json);
-            debugger
-            if(json.success) {
+            if(json.success || json.message.indexOf('You are not logged in')) {
                 localStorage.setItem("userIsLogged", "0");
-                dispatch(logoutSuccess())
-            } else if(json.message.indexOf('You are not logged in')) {
-                localStorage.setItem("userIsLogged", "0");
+                localStorage.setItem("userIsAdmin", "0");
                 dispatch(logoutSuccess())
             } else {
+                localStorage.setItem("userIsAdmin", "0");
                 localStorage.setItem("userIsLogged", "0");
                 dispatch(logoutError())
             }

@@ -79,9 +79,11 @@ const user = function(state = defaultState, action) {
         case PROFILE_FETCH_REQUEST:
             return {...state, isFetching: true}
         case PROFILE_FETCHED:
-            var newState = Object.assign({}, state, {isFetching: false}, action.payload);
-            newState.userId = action.payload._id;
-            return newState
+            return {...state, isFetching: false, userId: action.payload.user._id, 
+                    firstName: action.payload.user.firstName,
+                    lastName: action.payload.user.lastName,
+                    email: action.payload.user.email,
+                    username: action.payload.user.username }
         case PROFILE_FETCH_ERROR:
             return{...state, isFetching: false,
                 currentErrorMessage: action.payload.message

@@ -49,7 +49,9 @@ class App extends Component {
         <Provider store={store}>
             <BrowserRouter history={history}>
               <div>
-                <Navbar />
+                <Navbar>
+                  history={history}
+                </Navbar>
                     <Switch>
                         <Route path='/home' component={AllArticles} />
                         <Route path='/register' component={RegistrationForm} />
