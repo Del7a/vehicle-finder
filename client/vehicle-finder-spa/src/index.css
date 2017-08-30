@@ -251,3 +251,14 @@ hr{
     font: 32px Arial, sans-serif;
     display: inline-block;
 }
+
+.search-wrapper {
+    width: 100%;
+}
+
+.search-articles {
+    border-radius: 0em;
+    margin: 0 auto;
+    display: block;
+    text-align: center
+}

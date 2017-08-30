@@ -29,33 +29,42 @@ export default class SubscriptionListComponent extends Component {
 
     render() {
         const listItems = this.props.subscriptions.map((subscription) =>
-            <div className="row card">
-            <Link to={{pathname: `/subscription/${subscription._id}`}}>
-
-            <div className="col-md-6"> Title:{subscription.title}
+        <div className="bs-example">
+        <Link to={{pathname: `/subscription/${subscription._id}`}}>
+        <nav className="navbar navbar-default">
+        <div className="navbar-header">
+            <Link to={{pathname: `/subscription/${subscription._id}`}} className="navbar-brand">{subscription.title}</Link></div>
+        <div id="navbarCollapse" className="collapse navbar-collapse">
+            <ul className="nav navbar-nav">               
+                <li><Link to={{pathname: `/subscription/${subscription._id}`}}>Year:{subscription.yearFrom}~{subscription.yearTo}</Link></li>
+                <li><Link to={{pathname: `/subscription/${subscription._id}`}}>Price:{subscription.priceFrom}~{subscription.priceTo}</Link></li>
+            </ul>
+            <div>
+            <form className="navbar-form navbar-right">
+            <div className="input-group">
+                <span className="input-group-btn">
+                    <button type="button" 
+                        onClick={this.handleDelete.bind(this, subscription)}
+                        className="btn btn-danger">
+                        Remove
+                    </button>
+                </span>
             </div>
-            <div className="col-md-2">
-                <div> Year:({subscription.yearFrom}-{subscription.yearTo})</div>
+        </form>
+            <ul className="nav navbar-nav navbar-right">
+                <li >
+                    <Link to={{pathname: `/subscription/${subscription._id}`}}>
+                    {this.getCount(subscription._id)
+                     ?this.getCount(subscription._id)+" new notifications"
+                     :""
+                }</Link>
+                </li>
+            </ul> 
             </div>
-            <div className="col-md-2"> 
-                <div> Price:({subscription.priceFrom}-{subscription.priceTo})</div>
-            </div>
-            <div className="col-md-2">
-                <div className="col-md-6"> 
-                {this.getCount(subscription._id)
-                ? <div > {this.getCount(subscription._id)} new </div>
-                :""
-                }
-                </div>
-                <div className="col-md-6"> 
-                <button className="btn btn-danger"
-                    onClick={this.handleDelete.bind(this, subscription)}>
-                    Delete
-                </button>
-                </div>
-            </div>
-            </Link> 
-            </div>)
+        </div>
+    </nav>
+    </Link>
+</div>)
 
         return (
             <div>

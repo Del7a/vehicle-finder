@@ -49,11 +49,10 @@ class AllArticles extends Component {
     render() {
         return (
             <div>
-                <Link to='/create-article'>
-                    Create article
-                </Link>
-                <input type="searchArticles" placeholder="search"
+                <div className="search-wrapper">
+                <input className="search-articles" type="searchArticles" placeholder="search"
                     onChange={this.handleSearch} />
+                </div>
                 {this.props.article.allArticles.length === 0
                 ? <div>None</div>
                 :

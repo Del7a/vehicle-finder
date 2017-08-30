@@ -28,9 +28,6 @@ class AllSubscriptions extends Component {
 
         return (
             <div>
-                <Link to='/create-subscription'>
-                    Create subscription
-                </Link>
                 {!this.props.subscription.allSubscriptions.length
                 ? <div>None</div>
                 :
