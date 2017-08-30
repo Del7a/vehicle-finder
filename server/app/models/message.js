@@ -64,7 +64,7 @@ MessageThreadSchema.methods = {
      * @param {Function} cb
      * @api private
      */
-    markSeen: function (userId, cb) {
+    markThreadRead: function (userId, cb) {
         if (userId == this.sendUser.id)
             this.senderLastSeen = Date.now();
         else 
