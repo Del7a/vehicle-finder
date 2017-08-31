@@ -30,6 +30,7 @@ export default class SingleListItem extends Component {
         if (this.props.article.imageUrl) {
             imageSrc = this.props.article.imageUrl
         }
+
         return (
                 <div onClick={() => this.onClick(this.props.article)}
                     className="row card">
@@ -45,7 +46,13 @@ export default class SingleListItem extends Component {
                         <p>
                             {this.props.article.body}
                         </p>
-                        <p> Maker: {this.props.article.model} Model: {this.props.article.model}  </p>                        
+                        <p> 
+                            Maker: 
+                            {this.props.modelAndMakerStrings[this.props.article.maker._id]}
+                            &nbsp;
+                            Model: 
+                            {this.props.modelAndMakerStrings[this.props.article.model]}
+                        </p>                        
                         <p> Year: {this.props.article.year} Price: {this.props.article.price}  </p>
                     
                         {this.props.article.user.id === this.props.currentUserId?

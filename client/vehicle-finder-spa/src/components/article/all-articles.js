@@ -32,6 +32,7 @@ export default class ArticleListComponent extends Component {
                 handleEditRequest={this.handleEditRequest}
                 onClick={this.props.onClick}
                 currentUserId={this.props.currentUserId}
+                modelAndMakerStrings={this.props.modelAndMakerStrings}
             />)
 
 

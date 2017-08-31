@@ -36,7 +36,8 @@ const defaultState = {
     },
     makers: [],
     currentModelName: '',
-    currentModelId: ''
+    currentModelId: '',
+    makersAndModelsString: []
 }
 
 const maker = function(state = defaultState, action) {
@@ -44,7 +45,8 @@ const maker = function(state = defaultState, action) {
         case MAKERS_GET_FETCHING:
             return {...state, isFinite: true}
         case MAKERS_GET_SUCCESS:
-            return {...state, isFetching: false, makers: action.payload}
+            return {...state, isFetching: false, makers: action.payload,
+                        makersAndModelsString: mapMakersAndModelStrings(action.payload, state.makersAndModelsString)}
         case MAKERS_GET_ERROR:
             return {...state, isFetching: false, currentErrorMessage: action.payload.currentErrorMessage}
         case MAKERS_FORM_CHANGED:
@@ -53,7 +55,12 @@ const maker = function(state = defaultState, action) {
             return {...state, isFetching: true}
         case MAKER_CREATE_SUCCESS:
             return {...state, isFetching: false, currentInfoMessage: action.payload.currentInfoMessage,
-                         makers: addMaker(state.makers, action.payload.maker, action.payload.makerId)}
+                         makers: addMaker(state.makers, action.payload.maker, action.payload.makerId),
+                         makersAndModelsString: mapMakersAndModelStrings([{
+                            _id:action.payload.makerId,
+                            name: action.payload.maker,
+                            models: []
+                        }], state.makersAndModelsString)}
         case MAKER_CREATE_ERROR:
             return {...state, isFetching: false, currentErrorMessage: action.payload.currentErrorMessage}
 
@@ -86,7 +93,6 @@ const maker = function(state = defaultState, action) {
         case MAKER_UPDATE_FETCHING:
             return {...state, isFetching: true }
         case MAKER_UPDATE_SUCCESS:
-        debugger
             return {...state, isFetching: false,
                     currentInfoMessage: action.payload.currentInfoMessage, 
                     makers: updateMaker(state.makers, action.payload.maker) }
@@ -128,6 +134,20 @@ function addMaker(makers, maker, makerId) {
     var newMakers = makers.slice()
     newMakers.push({_id: makerId, name: maker, models:[]})
     return newMakers
+}
+
+function mapMakersAndModelStrings(makers, inputStrings) {
+    var newStringArr = inputStrings.slice();
+    for(let i = 0; i < makers.length; i++) {
+        let maker = makers[i];
+        newStringArr[maker._id] = maker.name;
+        for(let j = 0; j < maker.models.length; j++) {
+            let model = maker.models[j];
+            newStringArr[model._id] = model.name;
+        }
+    }
+
+    return newStringArr;
 }
 
 export default maker;

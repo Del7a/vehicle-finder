@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { requestAllArticles, updateForm, deleteArticle, searchArticles, setCurrentArticle } from '../../actions/article';
+import { requestMakers } from '../../actions/maker';
 import { Link } from 'react-router-dom';
 import ArticleListComponent  from '../../components/article/all-articles';
 
@@ -20,6 +21,9 @@ class AllArticles extends Component {
 
     componentDidMount() {
         this.props.requestAllArticles()
+        if (this.props.maker.makers.length === 0) {
+            this.props.requestMakers()
+        }
     }
 
     handleArticleDelete(article) {
@@ -61,20 +65,21 @@ class AllArticles extends Component {
                     currentUserId={this.props.user.currentUserId}
                     setCurrentArticle={this.setCurrentArticle}
                     onClick={this.onClick}
-
+                    modelAndMakerStrings={this.props.maker.makersAndModelsString}
                 />}
             </div>
         )
     }
 }
 
-function mapStateToProps({article, user}) {
-    return {article, user};
+function mapStateToProps({article, user, maker}) {
+    return {article, user, maker};
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({ requestAllArticles, updateForm,
-                                deleteArticle, searchArticles, setCurrentArticle }, dispatch);
+                                deleteArticle, searchArticles, setCurrentArticle,
+                                requestMakers }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllArticles);
