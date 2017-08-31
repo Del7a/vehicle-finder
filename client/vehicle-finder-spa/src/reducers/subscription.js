@@ -124,7 +124,6 @@ function markNotificationAsSeen(notifications, targetId) {
         if(notification._id === targetId) {
             notification.isSeen = true;
         }
-
         return notification;
     }));
 }

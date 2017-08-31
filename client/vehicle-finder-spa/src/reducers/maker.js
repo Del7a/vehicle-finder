@@ -2,13 +2,19 @@ import {
     MAKERS_GET_FETCHING,
     MAKERS_GET_SUCCESS,
     MAKERS_GET_ERROR,
+
     MAKERS_FORM_CHANGED,
     MODEL_FORM_CHANGED,
+
     MAKER_CREATE_FETCHING,
     MAKER_CREATE_SUCCESS,
     MAKER_CREATE_ERROR,
+
     SINGLE_MAKER_GET_SUCCESS,
 
+    MAKER_DELETE_FETCHING,
+    MAKER_DELETE_SUCCESS,
+    MAKER_DELETE_ERROR,
 
     MODEL_CREATE_FETCHING,
     MODEL_CREATE_SUCCESS,
@@ -99,6 +105,15 @@ const maker = function(state = defaultState, action) {
         case MAKER_UPDATE_ERROR:
             return {...state, isFetching: false, currentErrorMessage: action.payload }
 
+        case MAKER_DELETE_FETCHING:
+            return {...state, isFetching: true}
+        case MAKER_DELETE_SUCCESS:
+        debugger
+            return {...state, isFetching: false, makers: removeMaker(state.makers, action.payload.makerId),
+                    currentInfoMessage: action.payload.currentInfoMessage}
+        case MAKER_DELETE_ERROR:
+            return {...state, isFetching: false, currentErrorMessage: action.payload.currentErrorMessage}
+        
         default:
             return state
     }
@@ -118,6 +133,25 @@ function removeDeletedModelFromMakers(arr, makerId, modelId) {
             })
             return makerCopy
     })
+}
+
+function clone(obj) {
+    if (null == obj || "object" != typeof obj) return obj;
+    var copy = obj.constructor();
+    for (var attr in obj) {
+        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+    }
+    return copy;
+}
+
+function removeMaker(arr, makerId) {
+    let newArr = []
+    for(let i=0; i<arr.length; i++) {
+        if(arr[i]._id !== makerId) {
+            newArr.push(clone(arr[i]))
+        }
+    }
+    return newArr
 }
 
 function updateMaker(makers, makerForUpdate) {

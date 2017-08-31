@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { requestMakers, formChanged, createSingleMaker } from '../../actions/maker';
+import { requestMakers, formChanged, createSingleMaker, deleteSingleMaker } from '../../actions/maker';
 import MakersListComponent from '../../components/maker/maker-list-item'
 import NewMakerForm from "../../components/maker/new-maker"
 
@@ -16,10 +16,15 @@ class AllMakers extends Component {
         super(props);
         this.formInputChanged = this.formInputChanged.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     componentDidMount() {
         this.props.requestMakers()
+    }
+
+    handleDelete(makerId) {
+        this.props.deleteSingleMaker(makerId)
     }
 
     handleSubmit(ev) {
@@ -47,6 +52,7 @@ class AllMakers extends Component {
         <div className="modal-body row">
             <MakersListComponent
                 makers={this.props.maker.makers}
+                onHandleDelete={this.handleDelete}
             />
         </div>
         </div>
@@ -60,7 +66,7 @@ function mapStateToProps({maker}) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ requestMakers, formChanged, createSingleMaker }, dispatch);
+    return bindActionCreators({ requestMakers, formChanged, createSingleMaker, deleteSingleMaker }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllMakers);

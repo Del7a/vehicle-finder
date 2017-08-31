@@ -30,7 +30,6 @@ export default class SubscriptionListComponent extends Component {
     render() {
         const listItems = this.props.subscriptions.map((subscription) =>
         <div className="bs-example">
-        <Link to={{pathname: `/subscription/${subscription._id}`}}>
         <nav className="navbar navbar-default">
         <div className="navbar-header">
             <Link to={{pathname: `/subscription/${subscription._id}`}} className="navbar-brand">{subscription.title}</Link></div>
@@ -63,7 +62,6 @@ export default class SubscriptionListComponent extends Component {
             </div>
         </div>
     </nav>
-    </Link>
 </div>)
 
         return (

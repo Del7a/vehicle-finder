@@ -54,10 +54,7 @@ class SingleMaker extends Component {
 
     render(){    
 
-        const form = this.props.maker.isFetching ?
-        <div> Носи се! </div>
-        :
-        <EditMakerForm
+        const form = <EditMakerForm
             currentMakerName={this.props.maker.currentMaker.name}
             currentMakerId={this.props.maker.currentMaker._id}
             formInputChanged={this.formInputChangedMaker}
@@ -65,7 +62,6 @@ class SingleMaker extends Component {
             currentInfoMessage={this.props.maker.currentInfoMessage}
             currentErrorMessage={this.props.maker.currentErrorMessage}/>
 
-        debugger
         const addModel = <EditModelForm
                 currentModelName={this.props.maker.currentModelName}
                 formInputChanged={this.formInputChangedModel}

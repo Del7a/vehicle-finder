@@ -14,9 +14,9 @@ export const MAKER_UPDATE_FETCHING = 'MAKER_UPDATE_FETCHING';
 export const MAKER_UPDATE_SUCCESS = 'MAKER_UPDATE_SUCCESS';
 export const MAKER_UPDATE_ERROR = 'MAKER_UPDATE_ERROR';
 
-export const SINGLE_MAKER_DELETE_FETCHING = 'SINGLE_MAKER_DELETE_FETCHING';
-export const SINGLE_MAKER_DELETE_SUCCESS = 'SINGLE_MAKER_DELETE_SUCCESS';
-export const SINGLE_MAKER_DELETE_ERROR = 'SINGLE_MAKER_DELETE_ERROR';
+export const MAKER_DELETE_FETCHING = 'MAKER_DELETE_FETCHING';
+export const MAKER_DELETE_SUCCESS = 'MAKER_DELETE_SUCCESS';
+export const MAKER_DELETE_ERROR = 'MAKER_DELETE_ERROR';
 
 export const MAKERS_FORM_CHANGED = 'MAKERS_FORM_CHANGED';
 export const MODEL_FORM_CHANGED = 'MODEL_FORM_CHANGED';
@@ -139,7 +139,7 @@ function requestSingleMaker(id) {
                 if(json.success) {
                     dispatch(singleMakerFetchedSuccess(json.maker))
                 } else {
-                    dispatch(singleMakerFetchedDeleteError(json.msg))
+                    dispatch(singleMakerFetchedError(json.msg))
                 }
             })
     }
@@ -188,7 +188,7 @@ function createSingleMaker(maker) {
             })
             .then(json => {
                 if(json.success) {
-                    dispatch(createMakerFetchedSuccess(json.makerId, json.msg, maker))
+                    dispatch(createMakerFetchedSuccess(json.newMakerId, json.msg, maker))
                 } else {
                      dispatch(createMakerFetchedError(json.msg))
                 }
@@ -253,33 +253,35 @@ function requestSingleUpdateMaker(maker) {
  * Delete maker by id
  */
 
- function singleMakerDeleteFetching() {
+ function makerDeleteFetching() {
     return {
-        type: MAKERS_GET_FETCHING
+        type: MAKER_DELETE_FETCHING
     }
 }
 
-function singleMakerFetchedDeleteSuccess(makers) {
+function makerDeleteSuccess(msg, makerId) {
     return {
-        type: MAKERS_GET_SUCCESS,
-        payload: makers
+        type: MAKER_DELETE_SUCCESS,
+        payload: {makerId: makerId, currentInfoMessage: msg}
     }
 }
 
-function singleMakerFetchedDeleteError(msg) {
+function makerDeleteError(msg) {
     return {
-        type: MAKERS_GET_ERROR,
+        type: MAKER_DELETE_ERROR,
         payload: {currentErrorMessage: msg}
     }
 }
 
 
-function requestSingleDeleteMaker(maker) {
+function deleteSingleMaker(makerId) {
+    debugger
     return dispatch => {
-        dispatch(singleMakerDeleteFetching())
-        return fetch(`http:localhost:3000/api/makers/${maker.id}`,
+        dispatch(makerDeleteFetching())
+        return fetch(`http://localhost:3000/api/makers/${makerId}`,
             {
                 method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },                
                 credentials: 'include'
             })
             .then(response => {
@@ -287,8 +289,12 @@ function requestSingleDeleteMaker(maker) {
                 return response.json()
             })
             .then(json => {
-                console.log(json);
-                dispatch(singleMakerFetchedDeleteSuccess(json.maker))
+                debugger
+                if(json.success) {
+                    dispatch(makerDeleteSuccess(json.msg, makerId))
+                } else {
+                    dispatch(makerDeleteError(json.msg))
+                }
             })
     }
 }
@@ -328,7 +334,7 @@ function createSingleModel(makerId, modelName) {
         })
         .then(json => {
             if(json.success) {
-                dispatch(createrModelSuccess(json.msg))
+                dispatch(createrModelSuccess(json.msg, modelName, json.modelId))
             } else {
                 dispatch(createrModelError(json.msg))
             }
@@ -431,7 +437,7 @@ function deleteSingleModel(makerId, modelId) {
 }
 
 export { requestMakers, requestSingleUpdateMaker,
-        requestSingleMaker, requestSingleDeleteMaker,
+        requestSingleMaker, deleteSingleMaker,
         formChanged, createSingleMaker,
         createSingleModel, modelFormChanged,
         deleteSingleModel, updateMaker}

@@ -10,6 +10,7 @@ export default class ModelListComponent extends Component {
     }
 
     handleDelete(ev) {
+        debugger
         this.props.handleModelDelete(this.props.makerId, ev)
     }
 
