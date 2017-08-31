@@ -271,3 +271,33 @@ hr{
     display: block;
     margin: 0 auto;
 }
+
+.outputs{padding:50px;}
+.outputs .panel{}
+.outputs .panel .panel-body{margin:0px; padding:5px;}
+.outputs .panel .description{margin-top:5px;}
+.outputs .panel .description .alert{margin:0 0 5px 0;padding:8px;}
+.outputs .panel .output-box{ 
+    padding: 5px;
+    border-radius: 5px;
+}
+.outputs .panel .output-box.bg-default{  background-color: #F0F0F0;}
+.outputs .panel .output-box.bg-danger .glyphicon{ color: #a94442;;}
+.outputs .panel .output-box h4{ margin:0px; padding:0px; line-height: 34px; padding-left:5px;}
+.outputs .panel .output-box.bg-default h4{color:#999999;}
+
+.small-panel { 
+    width: 350px; 
+    display: block;
+    margin: 0 auto;
+}
+
+.row a {
+    text-decoration: none;
+    color: rgba(164, 164, 164, 0.9);
+}
+
+.centered-text {
+    display: block;
+    margin: 0 auto;
+}

@@ -61,25 +61,6 @@ class SingleModel extends Component {
 
 
     render(){
-        // const redirAfterLogin = this.props.user.isLoggedIn ? 
-        //    <Redirect to={'/home'}/>
-        // : '';
-
-        // const ErrorMessage = this.props.maker.currentErrorMessage ? 
- 
-        //     <div className="alert alert-danger">
-        //         <strong>Danger!</strong> {this.props.maker.currentErrorMessage}
-        //     </div>
-        //     : "";
-
-        // const InfoMessage = this.props.maker.currentInfoMessage ? 
-
-        //     <div className="alert alert-warning">
-        //         <strong>Warning!</strong> {this.props.maker.currentInfoMessage}
-        //     </div>
-        //     : "";
-       
-
         const form = this.props.maker.isFetching ?
             <div> Носи се! </div>
             :
@@ -87,13 +68,12 @@ class SingleModel extends Component {
                 currentModelName={this.props.maker.currentModelName}
                 currentModelId={this.props.match.params.makerId}
                 formInputChanged={this.formInputChanged}
-                handleSubmit={this.handleSubmit} />
+                handleSubmit={this.handleSubmit} 
+                currentInfoMessage={this.props.maker.currentInfoMessage}
+                currentErrorMessage={this.props.maker.currentErrorMessage}/>
 
     return(
         <div>
-            <h1>Sigle model</h1>
-             {/* <h1>{ErrorMessage}</h1> 
-             <h1>{InfoMessage}</h1>  */}
             <div>{form}</div>
         </div>
     )}

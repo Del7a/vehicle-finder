@@ -157,10 +157,10 @@ function requestSingleMaker(id) {
     }
 }
 
-function createMakerFetchedSuccess(msg) {
+function createMakerFetchedSuccess(makerId, msg, maker) {
     return {
         type: MAKER_CREATE_SUCCESS,
-        payload: {currentInfoMessage: msg}
+        payload: {maker: maker, makerId: makerId, currentInfoMessage: msg}
     }
 }
 
@@ -172,7 +172,8 @@ function createMakerFetchedError(msg) {
 }
 
 
-function createSingleMakers(maker) {
+function createSingleMaker(maker) {
+    debugger
     return dispatch => {
         dispatch(createMakerFetching())
         return fetch(`http://localhost:3000/api/makers`, {
@@ -187,7 +188,7 @@ function createSingleMakers(maker) {
             })
             .then(json => {
                 if(json.success) {
-                    dispatch(createMakerFetchedSuccess("Success"))
+                    dispatch(createMakerFetchedSuccess(json.makerId, json.msg, maker))
                 } else {
                      dispatch(createMakerFetchedError(json.msg))
                 }
@@ -301,14 +302,14 @@ function createrModelFetching() {
 function createrModelSuccess(msg) {
     return {
         type: MODEL_CREATE_SUCCESS,
-        payload: msg
+        payload: {currentInfoMessage: msg}
     }
 }
 
 function createrModelError(msg) {
     return {
         type: MODEL_CREATE_ERROR,
-        payload: msg
+        payload: {currentErrorMessage: msg}
     }
 }
 
@@ -349,14 +350,14 @@ function createSingleModel(makerId, modelName) {
 function updateMakerSuccess(msg, maker) {
     return {
         type: MAKER_UPDATE_SUCCESS,
-        payload: {msg: msg, maker: maker}
+        payload: {currentInfoMessage: msg, maker: maker}
     }
 }
 
 function updateMakerError(msg) {
     return {
         type: MAKER_UPDATE_ERROR,
-        payload: msg
+        payload: {currentErrorMessage: msg}
     }
 }
 
@@ -431,6 +432,6 @@ function deleteSingleModel(makerId, modelId) {
 
 export { requestMakers, requestSingleUpdateMaker,
         requestSingleMaker, requestSingleDeleteMaker,
-        formChanged, createSingleMakers,
+        formChanged, createSingleMaker,
         createSingleModel, modelFormChanged,
         deleteSingleModel, updateMaker}

@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 
-export default class EditMakerForm extends Component {  
+export default class NewMakerForm extends Component {  
 
     handleInputChange = (field) => evt =>{
         const newFormState = {[field]: evt.target.value};
         this.props.formInputChanged(newFormState);
     }
-
 
     render() {
         return (
@@ -24,14 +23,14 @@ export default class EditMakerForm extends Component {
             </div>
             : ""}
             <div className="card card-container">
-            <h2 className='card-title text-center'>Edit maker name</h2>
+            <h2 className='card-title text-center'>New maker</h2>
                 <form className="form-fill"
                     onSubmit={this.props.handleSubmit}>
                     <p className="input_title">Maker name</p>
-                    <input type="text"  className="text-box" placeholder="example model" required autofocus 
+                    <input type="text"  className="text-box" placeholder="example maker" required autofocus 
                         value={this.props.currentMakerName}
                         onChange={this.handleInputChange('currentMakerName')}/>
-                    <button className="btn btn-lg btn-primary" type="submit" >Edit </button>
+                    <button className="btn btn-lg btn-primary" type="submit" >Create </button>
                 </form>
             </div>
         </div>

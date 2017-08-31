@@ -34,7 +34,7 @@ exports.create = function (req, res) {
         var newMaker = new Maker({ name: req.body.name });
         newMaker.save(function (err) {
             if (err) return res.json({ success: false, msg: err.message });
-            res.json({ success: true, msg: 'Maker created' });
+            res.json({ success: true, msg: 'Maker created', newMakerId: newMaker._id });
         });
     }
 };

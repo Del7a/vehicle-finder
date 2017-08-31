@@ -5,40 +5,34 @@ export default class EditModelForm extends Component {
     handleInputChange = (field) => evt =>{
         const newFormState = {[field]: evt.target.value};
         this.props.formInputChanged(newFormState);
-        //this.handleBlur(field);
     }
-
 
     render() {
         return (
-         <div className="container">
-                <div className="row main">
-                    <div className="main-login main-center">
-                    <form className="form-horizontal"
-                    onSubmit={this.props.handleSubmit}>
-                    <div className="form-group">
-                            <label className="cols-sm-2 control-label">Model</label>
-                                <div className="cols-sm-10">
-								<div className="input-group">
-                               
-                               <input type="hidden" value={this.props.currentModelId} />
-                                <input type="text"
-                                    //className={errors.oldPassword ? "error" : ""}
-                                    value={this.props.currentModelName}
-                                    onChange={this.handleInputChange('currentModelName')}
-                                    //onBlur={this.handleBlur('oldPassword')}
-                                />
-                                 </div>
-                            </div>                            
-                        </div>
-                        
-                        <input type="submit"
-                            //disabled={!isEnabled}
-                            className="btn btn-danger" />
-                    </form>
-                    </div>
-                </div>
+        <div className="container">
+            { this.props.currentInfoMessage
+            ? 
+            <div className="alert alert-success info-message">
+                <strong>Success!</strong> {this.props.currentInfoMessage}
             </div>
-        )
+            : ""}
+            { this.props.currentErrorMessage
+            ? 
+            <div className="alert alert-danger info-message">
+                <strong>Danger!</strong> {this.props.currentErrorMessage}
+            </div>
+            : ""}
+            <div className="card card-container">
+            <h2 className='card-title text-center'>New model</h2>
+                <form className="form-fill"
+                    onSubmit={this.props.handleSubmit}>
+                        <p className="input_title">Model name</p>
+                        <input type="text"  className="text-box" placeholder="example model" required autofocus 
+                            value={this.props.currentModelName}
+                            onChange={this.handleInputChange('currentModelName')}/>
+                        <button className="btn btn-lg btn-primary" type="submit" >Create </button>
+                </form>
+            </div>
+        </div>)
     }
 }

@@ -31,7 +31,7 @@ class AllSubscriptions extends Component {
                 {!this.props.subscription.allSubscriptions.length
                 ? <div>None</div>
                 :
-                <div className="container article-container">
+                <div className="container">
                 <SubscriptionListComponent 
                     subscriptions={this.props.subscription.allSubscriptions}
                     handleSubscriptionDelete={this.handleSubscriptionDelete}

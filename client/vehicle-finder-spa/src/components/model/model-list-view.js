@@ -14,26 +14,36 @@ export default class ModelListComponent extends Component {
     }
 
     render() {
-        console.log(this.props)
         const listItems = 
             this.props.models.length > 0 ?
             this.props.models.map((model) =>
-                <li key={model._id}>
-                    {/* <Link to={{
-                        pathname: `/model/${this.props.makerId}/${model._id}`,
-                        state: { maker: true }}}>
-                        {model.name}
-                    </Link> */}
-                    {model.name}
-                    <button
-                        onClick={this.handleDelete.bind(this, model._id)}>
-                        X
-                    </button> 
-                </li>)
+                <div className="panel panel-default">
+                    <div className="panel-body">
+                        <div className="output-box bg-info">
+                            <div className="row">
+                                <div className="col-xs-6">
+                                    <h4 className='name'>{model.name}</h4>
+                                </div>
+                            <div className="col-xs-6">
+                                {localStorage.getItem("userIsAdmin") ?
+                                    <button className="btn btn-danger pull-right"
+                                        onClick={this.handleDelete.bind(this, model._id)}>
+                                        Remove
+                                    </button>
+                                : ''}
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>)
             :<div>Nothing to display</div>
 
         return (
-            <div>{listItems}</div>
+            <div className="outputs">
+                <div className="small-panel">
+                    {listItems}
+                </div>
+            </div>
         )
     }
 }

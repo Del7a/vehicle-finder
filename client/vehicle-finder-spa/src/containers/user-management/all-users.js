@@ -44,15 +44,14 @@ class AllUsers extends Component {
         : <div>Needs resync</div>
         
         return (
-            <div>
-                <h1>All users</h1>
+            <div className="modal-body row">
                 <div className="hidden">{needResync}</div>
+                <RegistrationForm 
+                    handleSubmit = {this.regiterUserSubmited}
+                />
                 <UserListComponent
                     users={this.props.userManagement.allUsers}
                     onHandleDelete={this.handleDelete}
-                />
-                <RegistrationForm 
-                    handleSubmit = {this.regiterUserSubmited}
                 />
                 {this.props.userManagement.usersNeedResync}
             </div>

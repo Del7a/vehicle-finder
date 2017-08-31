@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import EditModelForm from '../../components/model/edit-form'
 import EditMakerForm from '../../components/maker/edit-form';
 import ModelListComponent from '../../components/model/model-list-view';
 import { bindActionCreators } from 'redux';
-import { requestSingleMaker, formChanged, updateMaker,
-        createSingleMakers, deleteSingleModel } from '../../actions/maker';
+import { requestSingleMaker, formChanged, modelFormChanged, updateMaker, 
+        createSingleModel, deleteSingleModel } from '../../actions/maker';
 import { Link } from 'react-router-dom';
 
 import { Redirect } from 'react-router'
@@ -14,8 +15,10 @@ class SingleMaker extends Component {
 
     constructor(props) {
         super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.formInputChanged = this.formInputChanged.bind(this);
+        this.handleSubmitMaker = this.handleSubmitMaker.bind(this);
+        this.handleSubmitModel = this.handleSubmitModel.bind(this);
+        this.formInputChangedMaker = this.formInputChangedMaker.bind(this);
+        this.formInputChangedModel = this.formInputChangedModel.bind(this);
         this.handleModelDelete = this.handleModelDelete.bind(this);
     }
 
@@ -25,43 +28,31 @@ class SingleMaker extends Component {
         }
     }
 
-    handleSubmit(ev) {
+    handleSubmitMaker(ev) {
         ev.preventDefault();
-        if(this.props.match.params.id) {
-            this.props.updateMaker(this.props.maker.currentMaker);
-        } else {
-            this.props.createSingleMakers(this.props.maker.currentMaker.name);
-        }
+        this.props.updateMaker(this.props.maker.currentMaker);
+    }
+
+    handleSubmitModel(ev) {
+        ev.preventDefault();
+        debugger
+        this.props.createSingleModel(this.props.match.params.id,
+                    this.props.maker.currentModelName);
     }
 
     handleModelDelete(makerId, modelId) {
         this.props.deleteSingleModel(makerId, modelId)
     }
 
-    formInputChanged(newFormState) {
+    formInputChangedMaker(newFormState) {
         this.props.formChanged(newFormState);
     }
 
+    formInputChangedModel(newFormState) {
+        this.props.modelFormChanged(newFormState);
+    }
 
-    render(){
-        // const redirAfterLogin = this.props.user.isLoggedIn ? 
-        //    <Redirect to={'/home'}/>
-        // : '';
-
-        // const ErrorMessage = this.props.maker.currentErrorMessage ? 
- 
-        //     <div className="alert alert-danger">
-        //         <strong>Danger!</strong> {this.props.maker.currentErrorMessage}
-        //     </div>
-        //     : "";
-
-        // const InfoMessage = this.props.maker.currentInfoMessage ? 
-
-        //     <div className="alert alert-warning">
-        //         <strong>Warning!</strong> {this.props.maker.currentInfoMessage}
-        //     </div>
-        //     : "";
-       
+    render(){    
 
         const form = this.props.maker.isFetching ?
         <div> Носи се! </div>
@@ -69,14 +60,18 @@ class SingleMaker extends Component {
         <EditMakerForm
             currentMakerName={this.props.maker.currentMaker.name}
             currentMakerId={this.props.maker.currentMaker._id}
-            formInputChanged={this.formInputChanged}
-            handleSubmit={this.handleSubmit} />
+            formInputChanged={this.formInputChangedMaker}
+            handleSubmit={this.handleSubmitMaker} 
+            currentInfoMessage={this.props.maker.currentInfoMessage}
+            currentErrorMessage={this.props.maker.currentErrorMessage}/>
 
-        const addModel = <Link to={ `/model/${this.props.maker.currentMaker._id}/0` }
-                    className="btn btn-success">Add model
-                </Link>
-
-        console.log(this.props.maker.currentMaker.models)
+        debugger
+        const addModel = <EditModelForm
+                currentModelName={this.props.maker.currentModelName}
+                formInputChanged={this.formInputChangedModel}
+                handleSubmit={this.handleSubmitModel} 
+                currentInfoMessage={this.props.maker.currentInfoMessage}
+                currentErrorMessage={this.props.maker.currentErrorMessage}/>
 
         const modelsForCurrentMakersModels = 
             <ModelListComponent
@@ -87,14 +82,9 @@ class SingleMaker extends Component {
 
     return(
         <div>
-            <h1>Sigle maker</h1>
-             {/* <h1>{ErrorMessage}</h1> 
-             <h1>{InfoMessage}</h1>  */}
             <div>{form}</div>
             <div>{addModel}</div>
-            <div> List of models </div>
             <div> {modelsForCurrentMakersModels} </div>
-            {/* <div>{redirAfterLogin}</div> */}
         </div>
     )}
     
@@ -106,9 +96,8 @@ function mapStateToProps({maker}) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({formChanged, requestSingleMaker,
-        updateMaker, createSingleMakers,
-        deleteSingleModel}, dispatch);
+    return bindActionCreators({formChanged, modelFormChanged, requestSingleMaker,
+        createSingleModel, updateMaker, deleteSingleModel}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleMaker);

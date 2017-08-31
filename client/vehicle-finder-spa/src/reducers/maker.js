@@ -46,18 +46,16 @@ const maker = function(state = defaultState, action) {
         case MAKERS_GET_SUCCESS:
             return {...state, isFetching: false, makers: action.payload}
         case MAKERS_GET_ERROR:
-            return {...state, isFetching: false, currentErrorMessage: action.payload}
+            return {...state, isFetching: false, currentErrorMessage: action.payload.currentErrorMessage}
         case MAKERS_FORM_CHANGED:
-        console.log(action.payload)
             return {...state, currentMaker: {...state.currentMaker, name: action.payload.currentMakerName}}
         case MAKER_CREATE_FETCHING:
             return {...state, isFetching: true}
         case MAKER_CREATE_SUCCESS:
             return {...state, isFetching: false, currentInfoMessage: action.payload.currentInfoMessage,
-                        currentErrorMessage: '' }
+                         makers: addMaker(state.makers, action.payload.maker, action.payload.makerId)}
         case MAKER_CREATE_ERROR:
-            return {...state, isFetching: false, currentErrorMessage: action.payload.currentErrorMessage,
-                        currentInfoMessage: '' }
+            return {...state, isFetching: false, currentErrorMessage: action.payload.currentErrorMessage}
 
         case SINGLE_MAKER_GET_SUCCESS:
             return {...state, currentMaker: action.payload}
@@ -68,35 +66,32 @@ const maker = function(state = defaultState, action) {
         case MODEL_CREATE_FETCHING:
             return {...state, isFetching: true }
         case MODEL_CREATE_SUCCESS:
-            return {...state, isFetching: false, currentInfoMessage: action.payload,
+            return {...state, isFetching: false, currentInfoMessage: action.payload.currentInfoMessage,
                 currentErrorMessage: '' }
         case MODEL_CREATE_ERROR:
-            return {...state, isFetching: false, currentInfoMessage: '',
-                currentErrorMessage: action.payload }
+            return {...state, isFetching: false, currentErrorMessage: action.payload }
 
         case MODEL_DELETE_FETCHING:
             return {...state, isFetching: true }
         case MODEL_DELETE_SUCCESS:
-            return {...state, isFetching: false, currentInfoMessage: action.payload.message,
+            return {...state, isFetching: false, currentInfoMessage: action.payload.currentInfoMessage,
                 currentErrorMessage: '',
                 makers: removeDeletedModelFromMakers(state.makers, action.payload.makerId,
                     action.payload.modelId),
                 currentMaker: {...state.currentMaker,
                     models: removeDeletedModelFromCurrent(state.currentMaker.models, action.payload.modelId)} }
         case MODEL_DELETE_ERROR:
-            return {...state, isFetching: false, currentInfoMessage: '',
-                currentErrorMessage: action.payload }
+            return {...state, isFetching: false, currentErrorMessage: action.payload }
 
         case MAKER_UPDATE_FETCHING:
             return {...state, isFetching: true }
         case MAKER_UPDATE_SUCCESS:
+        debugger
             return {...state, isFetching: false,
-                    currentInfoMessage: action.payload.currentInfoMessage,
-                    currentErrorMessage: '', 
+                    currentInfoMessage: action.payload.currentInfoMessage, 
                     makers: updateMaker(state.makers, action.payload.maker) }
         case MAKER_UPDATE_ERROR:
-            return {...state, isFetching: false, currentInfoMessage: '',
-                currentErrorMessage: action.payload }
+            return {...state, isFetching: false, currentErrorMessage: action.payload }
 
         default:
             return state
@@ -127,6 +122,12 @@ function updateMaker(makers, makerForUpdate) {
             return el
         }
     })
+}
+
+function addMaker(makers, maker, makerId) {
+    var newMakers = makers.slice()
+    newMakers.push({_id: makerId, name: maker, models:[]})
+    return newMakers
 }
 
 export default maker;
