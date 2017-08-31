@@ -7,8 +7,9 @@ const Article = mongoose.model('Article');
 exports.searchByName = function (req, res) {
     if (!req.body.query)
         return res.json({ success: false, msg: 'Please provide seach query' });
-    Article.list({ criteria: {
-        title: new RegExp(req.body.query, "ig") 
+
+    Article.textSearch({ criteria: {
+        $text: { $search: req.body.query }
     }}, function (err, articles) {
         if (err)
             return res.json({ success: false, msg: err.message });

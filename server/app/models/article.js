@@ -20,6 +20,8 @@ const ArticleSchema = new Schema({
     createdAt: { type: Date, default: Date.now }
 });
 
+ArticleSchema.index({ title: 'text', tags: 'text' });
+
 ArticleSchema.path('title').required(true, 'An offer must have a title');
 ArticleSchema.path('body').required(true, 'An offer must have a body');
 ArticleSchema.path('year').required(true, 'An offer must have a year');
@@ -69,8 +71,29 @@ ArticleSchema.statics = {
             .populate('maker', 'name models')
             .populate('user', 'username email')
             .sort({ createdAt: -1 })
-            .limit(limit)
             .skip(limit * page)
+            .limit(limit)            
+            .exec(cb);
+    },
+
+    /**
+     * Search in the articles based on indexes
+     * 
+     * @param {Object} options
+     * @param {Function} cb
+     * @api private
+     */
+    textSearch: function (options, cb) {
+        const criteria = options.criteria || {};
+        const page = options.page || 0;
+        const limit = options.limit || 30;
+        return this.find(criteria, { score: { $meta: "textScore" }})
+            .sort({ score: { $meta: "textScore" }})
+            .select('title model maker user body year price imageUrl tags createdAt')
+            .populate('maker', 'name models')
+            .populate('user', 'username email')
+            .skip(limit * page)
+            .limit(limit)
             .exec(cb);
     }
 };
