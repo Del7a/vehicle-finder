@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const getTags = tags => tags.join(',');
-const setTags = tags => tags.split(',');
+const setTags = tags => tags.split(',').map((tag => tag.trim()));
 
 const ArticleSchema = new Schema({
     title: { type: String, default: '', trim: true },
