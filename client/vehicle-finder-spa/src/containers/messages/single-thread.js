@@ -19,18 +19,22 @@ class SingleMessageThread extends Component {
 
     componentDidMount() {
         this.props.newThreadRead()
+
         if(this.props.match) {
             const threadId = this.props.match.params.id;
             var currentThread = {...this.props.messages.currentMessageThread, _id: threadId}  
             this.props.requestAllMessages(currentThread);   
+            
             const that = this
 
             const intervalId = setInterval(() => {
-                that.props.requestAllMessages(currentThread)
+                that.props.requestAllMessages(currentThread);
+                this.props.markAsRead(currentThread);
             }, 2000)
 
             this.setState({pollRequestId: intervalId})     
         }
+
         if(!this.props.user.userId) {
             this.props.getUserProfile()
         }
@@ -76,8 +80,33 @@ class SingleMessageThread extends Component {
 
         this.props.changeCurrentMessageThread(messageThread)
     }
+
+    getMinutesBetweenDates(startDate, endDate) {
+        var diff = endDate - startDate;
+        var diffInMins = (diff / 60000);
+        return Math.floor(diffInMins)
+    }
     
     render() {
+        let currentThread = this.props.messages.currentMessageThread
+        
+        let otherUserLastSeen = currentThread.sendUser === this.props.user.userId
+                                ? currentThread.recieverLastSeen
+                                : currentThread.senderLastSeen;
+
+        let minutesDifference = '';
+
+        if(otherUserLastSeen) {
+            let startDate = Date.parse(otherUserLastSeen)
+            minutesDifference = this.getMinutesBetweenDates(startDate, Date.now());
+
+            if (minutesDifference < 2) {
+                minutesDifference = 'The other user is active';
+            } else {
+                minutesDifference = `Other user last seen ${minutesDifference} minutes ago`;
+            }
+        }
+
         return (
             <div>
                 <MessagesListComponent 
@@ -85,6 +114,12 @@ class SingleMessageThread extends Component {
                     currentUser={this.props.user.userId}
                  /> 
                 <div ref="dummyMessage"></div>
+                <div>
+                    Add message
+                </div>
+                <div>
+                    {minutesDifference}
+                </div>
                 <AddMessageComponent
                     handleMessageSend={this.handleMessageSend}
                 />
@@ -100,7 +135,7 @@ function mapStateToProps({messages, user}) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({addMessageToArticle, changeCurrentMessageThread, requestAllMessages, 
-                                getUserProfile, sendMessage,
+                                getUserProfile, sendMessage, markAsRead,
                                 newThreadRead}, dispatch)
 }
 

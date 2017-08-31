@@ -67,7 +67,7 @@ module.exports = function (app, passport) {
 
     // makers routes
     app.param('id', maker.load);    
-    app.get('/makers', isAdmin, maker.showAll);
+    app.get('/makers', maker.showAll);
     app.post('/makers', isAdmin, maker.create);
     app.get('/makers/:id', isAdmin, maker.show);
     app.put('/makers/:id', isAdmin, maker.update);

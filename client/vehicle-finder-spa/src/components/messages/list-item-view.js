@@ -14,9 +14,10 @@ export default class MessageThreadListComponent extends Component {
     }
 
     render() {
+        var that = this;
 
         const listItems = this.props.messageThreads.map((messageThread) => {
-            let corespondentsName = messageThread.receiveUser._id === this.props.currentUserId ?
+            let corespondentsName = messageThread.receiveUser._id === that.props.currentUserId ?
                             `${messageThread.receiveUser.firstName} ${messageThread.receiveUser.lastName} (${messageThread.receiveUser.email})` :
                             `${messageThread.sendUser.firstName} ${messageThread.sendUser.lastName} (${messageThread.sendUser.email})`
             debugger                
