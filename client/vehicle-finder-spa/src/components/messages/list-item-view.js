@@ -14,16 +14,20 @@ export default class MessageThreadListComponent extends Component {
     }
 
     render() {
-        const listItems = this.props.messageThreads.map((messageThread) =>
-            <li key={messageThread._id} onClick={() => this.onMessageThreadClick(messageThread)}>
+
+        const listItems = this.props.messageThreads.map((messageThread) => {
+            let corespondentsName = messageThread.receiveUser._id === this.props.currentUserId ?
+                            messageThread.receiveUser.firstName + ' ' + messageThread.receiveUser.lastName:
+                            messageThread.sendUser.firstName + ' ' + messageThread.sendUser.lastName;
+
+            return <li key={messageThread._id} onClick={() => this.onMessageThreadClick(messageThread)}>
                 <Link to={{pathname: `/messages/${messageThread._id}`}}>
                     <span>
-                        {messageThread.receiveUser.firstName} &nbsp;
-                        {messageThread.receiveUser.lastName}
+                        {corespondentsName}
                     </span>
                         {messageThread.consernedOffer}
                 </Link>
-            </li>)
+        </li>})
         return (
             <div> {listItems} </div>
         )

@@ -112,7 +112,9 @@ function addMessageToArticle(offerId, recipientId, newMessage) {
             })
             .then(json => {
                 if(json.success) {
+                    debugger
                     dispatch(messageThreadPostSuccess(json.thread, json.msg))
+                    dispatch(requestAllMessageThreads())
                 } else {
                     dispatch(messageThreadPostError(json.msg))
                 }                

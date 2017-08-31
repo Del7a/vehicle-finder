@@ -32,13 +32,14 @@ class AllMessageThreads extends Component {
             <MessageThreadListComponent
                 messageThreads={this.props.messages.messageThreads}
                 onMessageThreadClick={this.onMessageThreadClick}
+                currentUserId={this.props.user.currentUserId}
             />
         )
     }
 }
 
-function mapStateToProps({messages}) {
-    return {messages};
+function mapStateToProps({messages, user}) {
+    return {messages, user};
 }
 
 function mapDispatchToProps(dispatch) {
