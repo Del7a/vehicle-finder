@@ -16,12 +16,13 @@ export default class AddMessageComponent extends Component {
 
     render() {
         return(
+            
             <div>
                 <form onSubmit={this.handleMessageSend} >
-                    <input id="inputMessage" type="text" />
-                    <input type="submit" value="Send"/>
+                    <input className="centered-text" id="inputMessage" type="text" placeholder="send a message"/>
                 </form>
             </div>
+            
         )
     }
 }

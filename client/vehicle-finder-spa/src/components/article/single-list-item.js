@@ -64,7 +64,7 @@ export default class SingleListItem extends Component {
                         {this.props.article.user.id === this.props.currentUserId?
                         <button className="btn btn-danger"
                             onClick={this.handleDelete.bind(this, this.props.article)}>
-                            X
+                            Remove
                         </button> : ''}
                     
                         { this.props.article.seen === false ?

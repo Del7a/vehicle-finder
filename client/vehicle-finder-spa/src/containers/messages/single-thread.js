@@ -15,7 +15,6 @@ class SingleMessageThread extends Component {
         this.handleMessageSend = this.handleMessageSend.bind(this) 
         this.onMessageThreadClick = this.onMessageThreadClick.bind(this)
         this.scrollToBottom = this.scrollToBottom.bind(this)
-        this.redirectToNewThread = this.redirectToNewThread.bind(this)
     }
 
     componentDidMount() {
@@ -39,14 +38,9 @@ class SingleMessageThread extends Component {
 
     componentDidUpdate() {
         this.scrollToBottom();
-
-        
     }
 
-    redirectToNewThread(threadId) {
-        debugger
-        this.props.history.push(`/messages/${threadId}`)
-    }
+
 
     componentWillUnmount() {
         const intervalId = this.state.pollRequestId
@@ -86,14 +80,11 @@ class SingleMessageThread extends Component {
     render() {
         return (
             <div>
-                 <MessagesListComponent 
+                <MessagesListComponent 
                     messages={this.props.messages.currentMessageThread.messages}
                     currentUser={this.props.user.userId}
                  /> 
                 <div ref="dummyMessage"></div>
-                <div>
-                    Add message
-                </div>
                 <AddMessageComponent
                     handleMessageSend={this.handleMessageSend}
                 />

@@ -17,19 +17,32 @@ export default class MessageThreadListComponent extends Component {
 
         const listItems = this.props.messageThreads.map((messageThread) => {
             let corespondentsName = messageThread.receiveUser._id === this.props.currentUserId ?
-                            messageThread.receiveUser.firstName + ' ' + messageThread.receiveUser.lastName:
-                            messageThread.sendUser.firstName + ' ' + messageThread.sendUser.lastName;
-
-            return <li key={messageThread._id} onClick={() => this.onMessageThreadClick(messageThread)}>
-                <Link to={{pathname: `/messages/${messageThread._id}`}}>
-                    <span>
-                        {corespondentsName}
-                    </span>
-                        {messageThread.consernedOffer}
-                </Link>
-        </li>})
+                            `${messageThread.receiveUser.firstName} ${messageThread.receiveUser.lastName} (${messageThread.receiveUser.email})` :
+                            `${messageThread.sendUser.firstName} ${messageThread.sendUser.lastName} (${messageThread.sendUser.email})`
+            debugger                
+            return (
+            <div className="panel panel-default">
+                <div className="panel-body">
+                    <div className="output-box bg-info">
+                        <div className="row">
+                            <div key={messageThread._id} onClick={() => this.onMessageThreadClick(messageThread)}
+                                className="col-xs-12">
+                                <Link to={{pathname: `/messages/${messageThread._id}`}}>
+                                    <span>
+                                        {corespondentsName}
+                                    </span>
+                                        {messageThread.consernedOffer}
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>)
+            })
         return (
-            <div> {listItems} </div>
+            <div className="outputs">
+            <div className="small-panel">
+            {listItems} </div></div>
         )
     }
 }

@@ -27,7 +27,7 @@ export default class NewMakerForm extends Component {
                 <form className="form-fill"
                     onSubmit={this.props.handleSubmit}>
                     <p className="input_title">Maker name</p>
-                    <input type="text"  className="text-box" placeholder="example maker" required autofocus 
+                    <input type="text" className="text-box" placeholder="example maker" required autofocus 
                         value={this.props.currentMakerName}
                         onChange={this.handleInputChange('currentMakerName')}/>
                     <button className="btn btn-lg btn-primary" type="submit" >Create </button>

@@ -29,11 +29,13 @@ class AllMessageThreads extends Component {
 
     render() {
         return (
+            <div className="modal-body row">
             <MessageThreadListComponent
                 messageThreads={this.props.messages.messageThreads}
                 onMessageThreadClick={this.onMessageThreadClick}
                 currentUserId={this.props.user.currentUserId}
             />
+            </div>
         )
     }
 }

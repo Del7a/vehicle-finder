@@ -4,9 +4,9 @@ import { bindActionCreators } from 'redux';
 import { getSingleArticle, updateForm, setCurrentArticle } from '../../actions/article';
 import { newThreadRead, setCurrentMessageThread } from '../../actions/messages';
 import { Link } from 'react-router-dom';
+import { requestMakers } from '../../actions/maker';
 import SingleArticleComponent  from '../../components/article/single-item-view';
 import { Redirect } from 'react-router';
-import SingleMessageThread from '../messages/single-thread';
 
 class SingleArticle extends Component {
 
@@ -27,6 +27,10 @@ class SingleArticle extends Component {
             }
         }
 
+        if (this.props.maker.makers.length === 0) {
+            this.props.requestMakers()
+        }
+
         this.props.setCurrentMessageThread()
     }
 
@@ -39,17 +43,20 @@ class SingleArticle extends Component {
     }
 
     render() {
-
+        debugger
+        const maker = this.props.maker.makersAndModelsString[this.props.article.currentArticle.maker]
+        const model = this.props.maker.makersAndModelsString[this.props.article.currentArticle.model]
         return (
             <div>
                 <SingleArticleComponent
                     title={this.props.article.currentArticle.title}
                     body={this.props.article.currentArticle.body}
                     year={this.props.article.currentArticle.year}
+                    price={this.props.article.currentArticle.price}
                     imageUrl={this.props.article.currentArticle.imageUrl}
+                    maker={maker}
+                    model={model}
                     tags={this.props.article.currentArticle.tags}
-                />
-                <SingleMessageThread
                     articleId={this.props.article.currentArticle._id}
                     articleOwner={this.props.article.currentArticle.user}
                 />
@@ -58,14 +65,13 @@ class SingleArticle extends Component {
     }
 }
 
-function mapStateToProps({article, messages}) {
-    console.log(article)
-    return {article, messages};
+function mapStateToProps({article, messages, maker}) {
+    return {article, messages, maker};
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({ getSingleArticle, updateForm, setCurrentArticle,
-                                newThreadRead,setCurrentMessageThread }, dispatch);
+                                newThreadRead,setCurrentMessageThread, requestMakers }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleArticle);
