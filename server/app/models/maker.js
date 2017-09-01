@@ -34,9 +34,10 @@ MakerSchema.methods = {
      * @api private
      */
     addModel: function (name, cb) {
-        this.models.push({ name: name });
+        var arrIndex = this.models.push({ name: name });
+        const modelId = this.models[arrIndex - 1]._id;
         return this.save(function (err) {
-            return cb(err);
+            return cb(err, modelId);
         });
     },
 

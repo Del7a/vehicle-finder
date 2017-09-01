@@ -15,9 +15,9 @@ exports.get = function (req, res) {
 };
 
 exports.create = function (req, res) {
-    req.maker.addModel(req.body.name, function (err) {
+    req.maker.addModel(req.body.name, function (err, modelId) {
         if (err) return res.json({ success: false, msg: err });
-        res.json({ success: true, msg: 'Model added' });
+        res.json({ success: true, modelId: modelId, msg: 'Model added' });
     });
 };
 
