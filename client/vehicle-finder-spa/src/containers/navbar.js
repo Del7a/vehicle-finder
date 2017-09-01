@@ -10,7 +10,6 @@ import { Redirect } from 'react-router'
 class Navbar extends Component {
 
     render(){
-        debugger
         const isLoggedIn = this.props.user.isLoggedIn
                 || localStorage.getItem("userIsLogged") === '1';
         const admin = localStorage.getItem("userIsAdmin") === '1';

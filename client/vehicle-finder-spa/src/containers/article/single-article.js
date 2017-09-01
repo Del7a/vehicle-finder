@@ -62,6 +62,7 @@ class SingleArticle extends Component {
                     tags={this.props.article.currentArticle.tags}
                     articleId={this.props.article.currentArticle._id}
                     articleOwner={this.props.article.currentArticle.user}
+                    modelAndMakerStrings={this.props.maker.modelAndMakerStrings}
                 />
             </div>
         )

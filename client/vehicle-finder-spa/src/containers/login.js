@@ -29,7 +29,6 @@ class LoginForm extends Component {
         const redirAfterLogin = this.props.user.isLoggedIn ? 
            <Redirect to={'/home'}/>
         : '';
-       
 
         const form = this.props.user.isFetching ?
         <div> Носи се! </div>

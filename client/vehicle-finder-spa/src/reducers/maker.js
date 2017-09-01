@@ -80,7 +80,7 @@ const maker = function(state = defaultState, action) {
             return {...state, isFetching: true }
         case MODEL_CREATE_SUCCESS:
             return {...state, isFetching: false, currentInfoMessage: action.payload.currentInfoMessage,
-                currentErrorMessage: '' }
+                currentErrorMessage: '',  currentMaker: addModelToCurrentMaker(state.currentMaker, action.payload.model, action.payload.modelId) }
         case MODEL_CREATE_ERROR:
             return {...state, isFetching: false, currentErrorMessage: action.payload }
 
@@ -170,8 +170,14 @@ function addMaker(makers, maker, makerId) {
     return newMakers
 }
 
-function mapMakersAndModelStrings(makers, inputStrings) {
+function addModelToCurrentMaker(currentMaker, model, modelId) {
+    var newModels = currentMaker.models.slice()
+    newModels.push({_id: modelId, name: model})
     debugger
+    return {...currentMaker, models: newModels}
+}
+
+function mapMakersAndModelStrings(makers, inputStrings) {
     var newStringArr = inputStrings.slice();
     for(let i = 0; i < makers.length; i++) {
         let maker = makers[i];

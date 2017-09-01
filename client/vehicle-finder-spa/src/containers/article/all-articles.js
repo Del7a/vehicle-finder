@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { requestAllArticles, updateForm, deleteArticle, searchArticles, setCurrentArticle } from '../../actions/article';
+import { getUserProfile } from '../../actions/user'
 import { requestMakers } from '../../actions/maker';
 import { Link } from 'react-router-dom';
 import ArticleListComponent  from '../../components/article/all-articles';
@@ -20,9 +21,13 @@ class AllArticles extends Component {
     }
 
     componentDidMount() {
+        debugger
         this.props.requestAllArticles()
         if (this.props.maker.makers.length === 0) {
             this.props.requestMakers()
+        }
+        if(!this.props.user.userId) {
+            this.props.getUserProfile()
         }
     }
 
@@ -50,6 +55,8 @@ class AllArticles extends Component {
     }
 
     render() {
+        debugger
+        console.log(this.props)
         return (
             <div>
                 <div className="search-wrapper">
@@ -63,7 +70,8 @@ class AllArticles extends Component {
                     articles={this.props.article.allArticles}
                     handleArticleDelete={this.handleArticleDelete}
                     handleEditRequest={this.handleEditRequest}
-                    currentUserId={this.props.user.currentUserId}
+                    currentUserId={this.props.user.userId}
+                    isAdmin={this.props.user.isAdmin}
                     setCurrentArticle={this.setCurrentArticle}
                     onClick={this.onClick}
                     modelAndMakerStrings={this.props.maker.makersAndModelsString}
@@ -80,7 +88,7 @@ function mapStateToProps({article, user, maker}) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({ requestAllArticles, updateForm,
                                 deleteArticle, searchArticles, setCurrentArticle,
-                                requestMakers }, dispatch);
+                                requestMakers, getUserProfile }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllArticles);

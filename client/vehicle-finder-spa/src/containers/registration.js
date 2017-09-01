@@ -17,21 +17,21 @@ class RegistrationForm extends Component {
 
     handleSubmit(ev) {
         ev.preventDefault();
+
+        var isFromAdmin = this.props.location.pathname === '/all-users';
         const {username, password} = this.props.user;
-        this.props.fetchRegistrationRequest(username, password);
+        this.props.fetchRegistrationRequest(username, password, isFromAdmin);
     }
 
     formInputChanged(newFormState) {
         this.props.formChanged(newFormState);
     }
 
-    componentDidUpdate() {
-        if (this.props.user.isLoggedIn) {
-            this.props.history.push("/home")
-        }
-    }
-
     render(){
+        const redirAfterLogin = this.props.user.isLoggedIn ? 
+        <Redirect to={'/home'}/>
+        : '';
+
         const form =  this.props.user.isFetching ?
         <div> Loading </div>
         :
@@ -48,6 +48,7 @@ class RegistrationForm extends Component {
     return(
        <div>
            <div>{form}</div>
+           <div>{redirAfterLogin}</div>
        </div>
     )}
     

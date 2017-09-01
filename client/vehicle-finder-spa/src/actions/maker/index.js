@@ -305,10 +305,11 @@ function createrModelFetching() {
     }
 }
 
-function createrModelSuccess(msg) {
+function createrModelSuccess(msg, model, modelId, makerId) {
+    debugger
     return {
         type: MODEL_CREATE_SUCCESS,
-        payload: {currentInfoMessage: msg}
+        payload: {model: model, modelId: modelId, currentInfoMessage: msg, makerId: makerId}
     }
 }
 
@@ -334,7 +335,8 @@ function createSingleModel(makerId, modelName) {
         })
         .then(json => {
             if(json.success) {
-                dispatch(createrModelSuccess(json.msg, modelName, json.modelId))
+                debugger
+                dispatch(createrModelSuccess(json.msg, modelName, json.modelId, json.makerId))
             } else {
                 dispatch(createrModelError(json.msg))
             }

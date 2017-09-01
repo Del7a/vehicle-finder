@@ -36,6 +36,7 @@ export default class NotificationListComponent extends Component {
                         article={article}
                         handleDelete={this.handleDelete}
                         handleEditRequest={this.handleEditRequest}
+                        modelAndMakerStrings={this.props.modelAndMakerStrings}
                         onClick={this.onClick}
                         currentUserId={this.props.currentUserId}
                     />

@@ -26,6 +26,7 @@ class SingleMaker extends Component {
         if(this.props.match.params.id) {
             this.props.requestSingleMaker(this.props.match.params.id)
         }
+        debugger
     }
 
     handleSubmitMaker(ev) {
@@ -41,6 +42,7 @@ class SingleMaker extends Component {
     }
 
     handleModelDelete(makerId, modelId) {
+        debugger
         this.props.deleteSingleModel(makerId, modelId)
     }
 
@@ -68,7 +70,7 @@ class SingleMaker extends Component {
                 handleSubmit={this.handleSubmitModel} 
                 currentInfoMessage={this.props.maker.currentInfoMessage}
                 currentErrorMessage={this.props.maker.currentErrorMessage}/>
-
+        debugger
         const modelsForCurrentMakersModels = 
             <ModelListComponent
                 models={this.props.maker.currentMaker.models}

@@ -200,6 +200,7 @@ function requestLogin(username, password) {
                     localStorage.setItem("userIsAdmin", "0");                    
                 }
                 dispatch(loginSuccess())
+                dispatch(getUserProfile())
             }
         })
     }
@@ -207,7 +208,7 @@ function requestLogin(username, password) {
 
 
 //Actions creators
-function fetchRegistrationRequest(username, password) {
+function fetchRegistrationRequest(username, password, isFromAdmin) {
     return dispatch => {
         dispatch(reqestRegistration(username, password));
         return fetch(`http://localhost:3000/api/register`,{
@@ -224,7 +225,9 @@ function fetchRegistrationRequest(username, password) {
             console.log(json);
             if(json.success) {
                 dispatch(registratinSuccess())
-                dispatch(requestLogin(username, password))
+                if(!isFromAdmin) {
+                    dispatch(requestLogin(username, password))
+                }
             }
             if(json.msg && json.msg.indexOf('already exists') > 0) {
                 console.log('Username exists');

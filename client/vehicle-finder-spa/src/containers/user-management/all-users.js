@@ -11,12 +11,14 @@ import { Redirect } from 'react-router'
 class AllUsers extends Component {
 
     constructor(props) {
+        debugger
         super(props);
 
         this.handleDelete = this.handleDelete.bind(this);
     }
     
     componentDidMount() {
+        debugger
         const emptyUser = {username: '', email: '',
                         firstName: '', lastName: ''}
 
@@ -29,6 +31,7 @@ class AllUsers extends Component {
     }
 
     componentDidUpdate() {
+        debugger
         if(this.props.userManagement.usersNeedResync) {
                 this.props.requestAllUsers()
         }
@@ -42,6 +45,7 @@ class AllUsers extends Component {
         const needResync = !this.props.userManagement.usersNeedResync ?
         <div> No need</div>
         : <div>Needs resync</div>
+        debugger
         
         return (
             <div className="modal-body row">

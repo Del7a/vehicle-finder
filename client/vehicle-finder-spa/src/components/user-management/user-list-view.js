@@ -5,7 +5,7 @@ export default class UserListComponent extends Component {
 
     constructor(props) {
         super(props)
-
+        debugger
         this.handleDelete = this.handleDelete.bind(this)
     }
 

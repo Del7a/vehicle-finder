@@ -33,6 +33,7 @@ export default class ArticleListComponent extends Component {
                 onClick={this.props.onClick}
                 currentUserId={this.props.currentUserId}
                 modelAndMakerStrings={this.props.modelAndMakerStrings}
+                isAdmin={this.props.isAdmin}
             />)
 
 

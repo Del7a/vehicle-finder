@@ -94,6 +94,7 @@ class SingleSubscription extends Component {
 
     render() {
         const notifs = this.props.subscription.notifications;
+        debugger
         return (
             <div>
                 <input type="hidden" value={notifs.length} />
@@ -102,6 +103,7 @@ class SingleSubscription extends Component {
                 :
                 <NotificationListComponent 
                     articles= {this.props.subscription.notifArticles}
+                    modelAndMakerStrings={this.props.maker.makersAndModelsString}
                     handleArticleDelete={this.handleArticleDelete}
                     handleEditRequest={this.handleEditRequest}
                     currentUserId={this.props.user.currentUserId}
@@ -115,9 +117,9 @@ class SingleSubscription extends Component {
     }
 }
 
-function mapStateToProps({subscription, user}) {
+function mapStateToProps({subscription, user, maker}) {
     console.log(subscription)
-    return {subscription, user};
+    return {subscription, user, maker};
 }
 
 function mapDispatchToProps(dispatch) {

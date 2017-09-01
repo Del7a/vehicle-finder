@@ -10,7 +10,12 @@ export default class SingleListItem extends Component {
         this.handleDelete = this.handleDelete.bind(this)
         this.handleEditRequest = this.handleEditRequest.bind(this)
         this.onClick = this.onClick.bind(this)
+        //TODO refactor
+        debugger
+        this.state = {isAdmin: localStorage.getItem('userIsAdmin') == '1'}
     }
+
+
 
     handleDelete(article) {
         this.props.handleDelete(article)
@@ -55,13 +60,13 @@ export default class SingleListItem extends Component {
                         </p>                        
                         <p> Year: {this.props.article.year} Price: {this.props.article.price}  </p>
                     
-                        {this.props.article.user.id === this.props.currentUserId?
+                        {this.props.article.user._id === this.props.currentUserId || this.state.isAdmin ?
                         <button className="btn btn-primary"
                             onClick={this.handleEditRequest.bind(this, this.props.article._id)}>
                             Edit
                         </button> : ''}
 
-                        {this.props.article.user.id === this.props.currentUserId?
+                        {this.props.article.user._id === this.props.currentUserId || this.state.isAdmin ?
                         <button className="btn btn-danger"
                             onClick={this.handleDelete.bind(this, this.props.article)}>
                             Remove
