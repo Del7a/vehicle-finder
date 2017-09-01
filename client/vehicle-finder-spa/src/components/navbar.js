@@ -53,17 +53,6 @@ class NavbarComponent extends Component {
                 {isAdmin ?
                 <li><Link to="/all-makers">Maker/model</Link></li> : ""}
             </ul>
-            <form className="navbar-form navbar-left">
-            	<div className="input-group">
-                    <input type="text" className="form-control" placeholder="Search"></input>
-                    <span className="input-group-btn">
-                        <button type="button" 
-                            onClick={this.search}
-                            className="btn btn-default">
-                            <span className="glyphicon glyphicon-search"></span></button>
-                    </span>
-                </div>
-            </form>
             {isLogged ?
             <div>
             <ul className="nav navbar-nav navbar-right">

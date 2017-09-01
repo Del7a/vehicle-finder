@@ -14,7 +14,6 @@ class SingleMessageThread extends Component {
         this.state = {pollRequestId: -1}
         this.handleMessageSend = this.handleMessageSend.bind(this) 
         this.onMessageThreadClick = this.onMessageThreadClick.bind(this)
-        this.scrollToBottom = this.scrollToBottom.bind(this)
     }
 
     componentDidMount() {
@@ -40,24 +39,12 @@ class SingleMessageThread extends Component {
         }
     }
 
-    componentDidUpdate() {
-        this.scrollToBottom();
-    }
-
-
-
+    
     componentWillUnmount() {
         const intervalId = this.state.pollRequestId
         if(intervalId) {
             clearInterval(intervalId)
         }
-    }
-
-    scrollToBottom() {
-        const node = this.refs.dummyMessage
-        if(node.scrollHeight > 0) { 
-        }
-        node.scrollIntoView({ behavior: "smooth" });
     }
 
     handleMessageSend(newMessage) {
@@ -108,15 +95,12 @@ class SingleMessageThread extends Component {
         }
 
         return (
-            <div>
-                <MessagesListComponent 
+            <div className='scroller-wrap'>
+                <MessagesListComponent
                     messages={this.props.messages.currentMessageThread.messages}
                     currentUser={this.props.user.userId}
-                 /> 
-                <div ref="dummyMessage"></div>
-                <div>
-                    Add message
-                </div>
+                />
+
                 <div>
                     {minutesDifference}
                 </div>

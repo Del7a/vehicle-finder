@@ -21,18 +21,19 @@ export default class SingleArticleComponent extends Component {
                 </div>
               </header>
               <main>
-                <a href="#" className="cta-wrap">
+                <div className="cta-wrap">
+                    <div className="centered-text"> Contact the seller
                 <SingleMessageThread
                     articleId={this.props.articleId}
                     articleOwner={this.props.articleOwner}
                 />
-                </a>
+                </div>
+                </div>
                 <div className="info-wrap">
                   <h4>Description: {this.props.body}</h4>
                   <h4>Maker: {this.props.maker} &nbsp; Model: {this.props.model}</h4>
                   <h4>Year: {this.props.year} &nbsp; Price: {this.props.price}</h4>
-                  <p> Tags: {this.props.tags}</p>
-                  <p> Created at: {this.props.createdAt}</p>
+                  <p> Tags: {this.props.tags}</p>   
                  </div>
               </main>
             </div>

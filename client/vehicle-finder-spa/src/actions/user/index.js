@@ -193,9 +193,13 @@ function requestLogin(username, password) {
         .then(json => {
             console.log(json)
             if (json.success) {
-                dispatch(loginSuccess())
                 localStorage.setItem("userIsLogged", "1");
-                localStorage.setItem("userIsAdmin", "1")
+                if(json.isAdmin) {
+                    localStorage.setItem("userIsAdmin", "1");
+                } else {
+                    localStorage.setItem("userIsAdmin", "0");                    
+                }
+                dispatch(loginSuccess())
             }
         })
     }

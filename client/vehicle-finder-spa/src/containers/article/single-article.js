@@ -26,7 +26,7 @@ class SingleArticle extends Component {
                 this.props.getSingleArticle(this.props.match.params.id);
             }
         }
-
+        debugger
         if (this.props.maker.makers.length === 0) {
             this.props.requestMakers()
         }
@@ -43,8 +43,11 @@ class SingleArticle extends Component {
     }
 
     render() {
+        const makerId = this.props.article.currentArticle.maker._id ? this.props.article.currentArticle.maker._id :
+                                                                    this.props.article.currentArticle.maker
+        const maker = this.props.maker.makersAndModelsString[makerId]
+
         debugger
-        const maker = this.props.maker.makersAndModelsString[this.props.article.currentArticle.maker]
         const model = this.props.maker.makersAndModelsString[this.props.article.currentArticle.model]
         return (
             <div>

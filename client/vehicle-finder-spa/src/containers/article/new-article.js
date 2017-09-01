@@ -19,6 +19,7 @@ class NewArticle extends Component {
     }
 
     componentDidMount() {
+        this.props.setCurrentArticle()
         debugger
         if (this.props.match.params.id) {
             this.props.getSingleArticle(this.props.match.params.id)

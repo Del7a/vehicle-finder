@@ -171,6 +171,7 @@ function addMaker(makers, maker, makerId) {
 }
 
 function mapMakersAndModelStrings(makers, inputStrings) {
+    debugger
     var newStringArr = inputStrings.slice();
     for(let i = 0; i < makers.length; i++) {
         let maker = makers[i];

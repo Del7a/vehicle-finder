@@ -31,6 +31,7 @@ class AllArticles extends Component {
     }
 
     handleSearch(ev) {
+        debugger
         const {value} = ev.target;
         if (value) {
             this.props.searchArticles(value)
