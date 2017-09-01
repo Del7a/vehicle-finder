@@ -11,7 +11,7 @@ class SingleMessageThread extends Component {
     constructor(props) {
         super(props)
 
-        this.state = {pollRequestId: -1}
+        this.state = {pollRequestId: -1}        
         this.handleMessageSend = this.handleMessageSend.bind(this) 
         this.onMessageThreadClick = this.onMessageThreadClick.bind(this)
     }

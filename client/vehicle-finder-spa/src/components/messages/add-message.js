@@ -5,6 +5,7 @@ export default class AddMessageComponent extends Component {
     constructor(props) {
         super(props)
 
+        this.state = {isLogged: localStorage.getItem('userIsLogged') == '1'}        
         this.handleMessageSend = this.handleMessageSend.bind(this)
     }
 
@@ -17,9 +18,12 @@ export default class AddMessageComponent extends Component {
     render() {
         return(
             <div>
+            { this.state.isLogged ?
+            <div>
                 <form onSubmit={this.handleMessageSend} >
                     <input className="centered-text" id="inputMessage" type="text" placeholder="send a message"/>
                 </form>
+            </div> : ""}
             </div>
             
         )

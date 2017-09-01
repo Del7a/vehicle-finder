@@ -26,19 +26,22 @@ export default class NewSubscriptionForm extends Component {
     }
 
     validate(title, yearFrom, yearTo, priceFrom, priceTo) {
+        debugger
         return {
             title: title !== undefined && title.length === 0,
             yearFrom: yearFrom !== undefined && yearFrom.length === 0,
             yearTo: yearTo !== undefined && yearTo.length === 0,
             priceFrom: priceFrom !== undefined && priceFrom.length === 0,
             priceTo: priceTo !== undefined && priceTo.length === 0,
+            year: yearFrom > yearTo && yearFrom !== '' && yearTo !== '',
+            price: priceFrom > priceTo && priceFrom !== '' && priceTo !== ''
         };
     }
 
     render() {
         const errors = this.validate(this.props.title, this.props.yearFrom, this.props.yearTo, this.props.priceFrom, this.props.priceTo);
         const isEnabled = !Object.keys(errors).some(x => errors[x]);
-
+        debugger
         const makerDropDown = 
         <select className='fill-box text-box' onChange={this.onMakerChange}
             value={this.props.maker._id}
@@ -123,6 +126,11 @@ export default class NewSubscriptionForm extends Component {
                             min="1900" max="2099" step="1" required autofocus 
                             value={this.props.yearTo}
                             onChange={this.handleInputChange('yearTo')}/>
+                            { errors.year ? 
+                                <div className="alert alert-danger">
+                                    <strong>Danger!</strong> Must be less than Year from
+                                </div>
+                                : ""}
 
                         <p className="input_title">Price from</p>
                         <input type="number" className="text-box" placeholder="2000" autofocus 
@@ -133,6 +141,11 @@ export default class NewSubscriptionForm extends Component {
                         <input type="number" className="text-box" placeholder="3000" autofocus 
                             value={this.props.priceTo}
                             onChange={this.handleInputChange('priceTo')}/>
+                            { errors.price ? 
+                                <div className="alert alert-danger">
+                                    <strong>Danger!</strong> Must be less than Price from
+                                </div>
+                                : ""}
                     
                         <button className="btn btn-lg btn-primary" type="submit" disabled={!isEnabled} onClick={topFunction}>Submit </button>
                     </form>
