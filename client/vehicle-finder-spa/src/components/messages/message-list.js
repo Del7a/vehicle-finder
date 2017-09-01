@@ -3,6 +3,30 @@ import {Link} from 'react-router-dom';
 
 export default class MessagesListComponent extends Component {
 
+    constructor(props) {
+        super(props)
+        this.state = {messageCount: 0}
+
+        this.scrollToBottom = this.scrollToBottom.bind(this)
+    }
+
+    componentDidUpdate() {
+        if (this.state.messageCount !== this.props.messages.length) {
+            this.setState({messageCount: this.props.messages.length})
+            this.scrollToBottom();
+        }
+    }
+
+    scrollToBottom() {
+        const node = this.refs.dummyMessage
+        debugger
+        if(node.scrollHeight > 0) { 
+            alert('a')
+            debugger
+        }
+        node.scrollIntoView({ behavior: "smooth" });
+    }
+
     render() {
         const me = this.props.currentUser
         const listItems = this.props.messages.map((message) =>
@@ -18,8 +42,11 @@ export default class MessagesListComponent extends Component {
             </li>)
 
         return (
-            <ul> 
+            <ul className='scroller'> 
                 {listItems}
+                <li>
+                    <div ref="dummyMessage"></div>
+                </li>
             </ul>
         )
     }

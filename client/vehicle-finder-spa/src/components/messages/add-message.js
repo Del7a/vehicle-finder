@@ -16,7 +16,6 @@ export default class AddMessageComponent extends Component {
 
     render() {
         return(
-            
             <div>
                 <form onSubmit={this.handleMessageSend} >
                     <input className="centered-text" id="inputMessage" type="text" placeholder="send a message"/>

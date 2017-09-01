@@ -441,4 +441,10 @@ hr{
   }
 
   /*chat*/
-  
+  .scroller-wrap {
+    max-height: 500px
+  }
+  .scroller {
+      max-height: 500px;
+      overflow-y: auto;
+  }

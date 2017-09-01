@@ -308,6 +308,7 @@ function articlesSearchError(msg) {
 }
 
 function searchArticles(input) {
+    debugger
      return dispatch => {
         dispatch(articlesSearchFetching())
         return fetch(`http://localhost:3000/api/search`, {
@@ -322,8 +323,10 @@ function searchArticles(input) {
             .then(json => {
                 console.log(json);
                 if(json.success) {
+                    debugger
                     dispatch(articlesSearchSuccess(json.articles))
                 } else {
+                    debugger
                     dispatch(articlesSearchError(json.msg))
                 }                
             })
