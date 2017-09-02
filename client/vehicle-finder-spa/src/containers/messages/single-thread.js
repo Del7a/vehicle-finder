@@ -75,10 +75,9 @@ class SingleMessageThread extends Component {
     }
     
     render() {
-        let currentThread = this.props.messages.currentMessageThread
-        
-        let otherUserLastSeen = currentThread.sendUser === this.props.user.userId
-                                ? currentThread.recieverLastSeen
+        let currentThread = this.props.messages.currentMessageThread;
+        let otherUserLastSeen = currentThread.sendUser._id === this.props.user.userId
+                                ? currentThread.receiverLastSeen
                                 : currentThread.senderLastSeen;
 
         let minutesDifference = '';

@@ -17,11 +17,11 @@ export default class AddMessageComponent extends Component {
 
     render() {
         return(
-            <div>
+            <div className="msg-input-container">
             { this.state.isLogged ?
             <div>
                 <form onSubmit={this.handleMessageSend} >
-                    <input className="centered-text" id="inputMessage" type="text" placeholder="send a message"/>
+                    <input className="text-box" id="inputMessage" type="text" placeholder="send a message"/>
                 </form>
             </div> : ""}
             </div>

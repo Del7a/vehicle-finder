@@ -33,7 +33,7 @@ export default class MessagesListComponent extends Component {
             <li key={message._id}>
                     <div className={me === message.from? "me message-box": "other message-box" }>
                         <span className="date-created">
-                            {message.createdAt}
+                            {new Date(message.createdAt).toLocaleString()}
                         </span>
                         <div className="message-body">
                             {message.body}
@@ -45,7 +45,7 @@ export default class MessagesListComponent extends Component {
             <ul className='scroller'> 
                 {listItems}
                 <li>
-                    <div ref="dummyMessage"></div>
+                    <div ref="dummyMessage" id='dummyMessage'></div>
                 </li>
             </ul>
         )

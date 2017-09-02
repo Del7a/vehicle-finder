@@ -20,7 +20,7 @@ export default class MessageThreadListComponent extends Component {
             let corespondentsName = messageThread.receiveUser._id !== that.props.currentUserId ?
                             `${messageThread.receiveUser.firstName} ${messageThread.receiveUser.lastName} (${messageThread.receiveUser.email})` :
                             `${messageThread.sendUser.firstName} ${messageThread.sendUser.lastName} (${messageThread.sendUser.email})`
-            debugger                
+                                            
             return (
             <div className="panel panel-default">
                 <div className="panel-body">

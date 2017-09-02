@@ -13,8 +13,12 @@ ul {
  **/
 
 .message-box {
+  width: 70%;
   border-radius: 10em;
-  padding: 2em; 
+  padding-top: .7em; 
+  padding-bottom: .7em;
+  padding-right: 2em;
+  padding-left: 2em;
   margin-bottom: .5em;
   transition: background-color 100s;
   transition: border-radius 3s;
@@ -30,11 +34,17 @@ li:last-child .other {
 }
 
 .me {
+  float: right;
   background-color: #5F98F4;
 }
 
 .other {
+  float: left;
   background-color: #95f78a;
+}
+
+.date-created {
+  font-size: .7em;
 }
 
 /**
@@ -442,9 +452,16 @@ hr{
 
   /*chat*/
   .scroller-wrap {
+    width: 70%;
+    margin: 0 auto;
     max-height: 500px
   }
   .scroller {
       max-height: 500px;
       overflow-y: auto;
+  }
+
+  .msg-input-container {
+      width: 80%;
+      margin: 0 auto;
   }
