@@ -1,5 +1,3 @@
-'use strict';
-
 const account = require('../app/controllers/account');
 const profile = require('../app/controllers/profile');
 const users = require('../app/controllers/users');
