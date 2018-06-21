@@ -254,6 +254,7 @@ function markAsRead(messageThread) {
             })
             .then(json => {
                 console.log(json);
+                //TODO: Check what to do with the response
                 if(json.success) {
                     //dispatch(messagePutSuccess(json.msg))
                 } else {
